@@ -1,0 +1,27 @@
+.register-container {
+  width: 350px;
+  margin: auto;
+  padding: 20px;
+  box-shadow: 0 0 10px #ccc;
+  border-radius: 10px;
+}
+
+.register-container h2 {
+  text-align: center;
+  color: #2e8b57;
+}
+
+.register-container input {
+  width: 100%;
+  margin: 8px 0;
+  padding: 10px;
+}
+
+.register-container button {
+  width: 100%;
+  padding: 10px;
+  background: #2e8b57;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
