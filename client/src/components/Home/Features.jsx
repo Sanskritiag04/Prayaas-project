@@ -16,7 +16,7 @@ const Features = () => {
     <section className="features-section">
       <div className="features-header">
         <h2>Everything You Need to <span>Make a Difference</span></h2>
-        <p>Prayas provides all the tools you need to find, participate in, and track your volunteering journey.</p>
+        <p>Prayaas provides all the tools you need to find, participate in, and track your volunteering journey.</p>
       </div>
       <div className="features-grid">
         {features.map((f, i) => (

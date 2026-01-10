@@ -30,12 +30,20 @@
   margin-bottom: 40px;
 }
 
+/* Primary button */
 .hero-btn-primary {
-  background-color:#10b981;
+  background-color: #10b981;
   color: white;
-  border: none;
   padding: 14px 28px;
   border-radius: 10px;
   font-weight: 600;
   cursor: pointer;
+  text-decoration: none;   /* IMPORTANT for Link */
+  display: inline-block;   /* IMPORTANT for padding */
 }
+
+/* Secondary button (future use) */
+.hero-btn-secondary {
+  background-color: #065f46;
+}
+

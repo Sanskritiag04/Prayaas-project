@@ -1,7 +1,7 @@
 import React from 'react';
 import './Footer.css';
 
-const CTA = () => {
+const Footer = () => {
   return (
     <section className="footer-section">
       <div className="footer-container">
