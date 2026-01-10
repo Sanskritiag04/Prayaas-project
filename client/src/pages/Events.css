@@ -1,0 +1,25 @@
+.events-page {
+  padding: 40px;
+  background: #f9fafb;
+}
+
+.events-page h1 {
+  text-align: center;
+  font-size: 36px;
+}
+
+.events-page span {
+  color: #10b981;
+}
+
+.subtitle {
+  text-align: center;
+  color: #6b7280;
+  margin-bottom: 30px;
+}
+
+.event-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 25px;
+}
