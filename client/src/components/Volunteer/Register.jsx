@@ -34,20 +34,50 @@ export default function Register() {
       <h2>Volunteer Registration</h2>
 
       <form onSubmit={handleSubmit}>
-        <input name="name" placeholder="Name" onChange={handleChange} required />
-        <input name="email" placeholder="Email" onChange={handleChange} required />
-        <input name="age" placeholder="Age" onChange={handleChange} required />
-        <input name="phone" placeholder="Phone" onChange={handleChange} required />
-        <input name="address" placeholder="Address" onChange={handleChange} required />
         <input
-          name="password"
-          type="password"
-          placeholder="Password"
+          name="name"
+          placeholder="Full Name"
           onChange={handleChange}
           required
         />
 
-        <button type="submit">Register</button>
+        <input
+          name="email"
+          placeholder="Email Address"
+          onChange={handleChange}
+          required
+        />
+
+        <input
+          name="age"
+          placeholder="Age"
+          onChange={handleChange}
+          required
+        />
+
+        <input
+          name="phone"
+          placeholder="Phone Number"
+          onChange={handleChange}
+          required
+        />
+
+        <input
+          name="address"
+          placeholder="Address"
+          onChange={handleChange}
+          required
+        />
+
+        <input
+          name="password"
+          type="password"
+          placeholder="Create Password"
+          onChange={handleChange}
+          required
+        />
+
+        <button type="submit">Create Account</button>
       </form>
     </div>
   );
