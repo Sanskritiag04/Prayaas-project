@@ -55,6 +55,50 @@ router.post("/register", async (req, res) => {
 
 });
 
+
+/* =========================
+   VOLUNTEER LOGIN
+   ========================= */
+router.post("/login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    // 1. Check if volunteer exists
+    const volunteer = await Volunteer.findOne({ email });
+    if (!volunteer) {
+      return res.status(400).json({ message: "Invalid email or password" });
+    }
+
+    // 2. Compare password
+    const isMatch = await bcrypt.compare(password, volunteer.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: "Invalid email or password" });
+    }
+
+    // 3. Generate JWT
+    const token = jwt.sign(
+      { id: volunteer._id, role: "volunteer" },
+      "PRAYAAS_SECRET",
+      { expiresIn: "1h" }
+    );
+
+    // 4. Success response
+    res.status(200).json({
+      message: "Login successful",
+      token,
+      volunteer: {
+        id: volunteer._id,
+        name: volunteer.name,
+        email: volunteer.email
+      }
+    });
+
+  } catch (error) {
+    console.error("LOGIN ERROR 👉", error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
 module.exports = router;
 
 // const express = require("express");

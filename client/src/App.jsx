@@ -6,7 +6,7 @@ import Events from './pages/Events';
 import VolunteerRegister from "./components/Volunteer/Register";
 import NGORegister from "./components/NGO/Register";
 import About from "./pages/About";
-
+import Leaderboard from "./pages/Leaderboard";
 
 
 function App() {
@@ -18,6 +18,7 @@ function App() {
         <Route path="/events" element={<Events/>}/>
         <Route path="/login" element={<Login/>}/>
         <Route path="/about" element={<About />} />
+        <Route path="/leaderboard" element={<Leaderboard />} />
         {/* Volunteer Registration */}
         <Route
           path="/volunteer/register"

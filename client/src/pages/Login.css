@@ -61,3 +61,9 @@
   text-decoration: none;
   color: #2e8b57;
 }
+
+.error-text {
+  color: red;
+  margin-bottom: 10px;
+  font-size: 14px;
+}

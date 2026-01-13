@@ -1,0 +1,71 @@
+.leaderboard-container {
+  width: 70%;
+  margin: 50px auto;
+  text-align: center;
+}
+
+.leaderboard-container h2 {
+  color: #2e8b57;
+  margin-bottom: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  box-shadow: 0 0 10px #ccc;
+}
+
+th, td {
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background: #2e8b57;
+  color: white;
+}
+
+tr:hover {
+  background: #f3f3f3;
+}
+
+/* BADGES */
+.badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.elite {
+  background: gold;
+  color: black;
+}
+
+.intermediate {
+  background: #4caf50;
+  color: white;
+}
+
+.beginner {
+  background: #2196f3;
+  color: white;
+}
+
+/* BACK BUTTON */
+.back-btn{
+  background:#2e8b57;
+  color:white;
+  border:none;
+  padding:8px 16px;
+  border-radius:8px;
+  cursor:pointer;
+  margin-bottom:15px;
+  font-weight:600;
+}
+
+.back-btn:hover{
+  background:#256f46;
+}
+

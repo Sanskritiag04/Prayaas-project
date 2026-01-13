@@ -1,21 +1,44 @@
 import { useState } from "react";
+import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
 import "./Login.css";
 
 export default function Login() {
+  const navigate = useNavigate();
 
   const [form, setForm] = useState({
     email: "",
     password: ""
   });
 
+  const [error, setError] = useState("");
+
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(form); // backend integration later
-    alert("Login clicked!");
+    setError("");
+
+    try {
+      const res = await axios.post(
+        "http://localhost:5000/api/volunteer/login",
+        form
+      );
+
+      // ✅ Save token
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("userRole", "volunteer");
+
+      alert("Login successful!");
+
+      // ✅ Redirect after login
+      navigate("/events");
+
+    } catch (err) {
+      setError(err.response?.data?.message || "Login failed");
+    }
   };
 
   return (
@@ -25,11 +48,14 @@ export default function Login() {
         <h2>Login to Prayaas</h2>
         <p>Welcome back! Please login to continue</p>
 
+        {error && <p className="error-text">{error}</p>}
+
         <form onSubmit={handleSubmit}>
           <input
             type="email"
             name="email"
             placeholder="Email"
+            value={form.email}
             onChange={handleChange}
             required
           />
@@ -38,6 +64,7 @@ export default function Login() {
             type="password"
             name="password"
             placeholder="Password"
+            value={form.password}
             onChange={handleChange}
             required
           />
@@ -46,8 +73,8 @@ export default function Login() {
         </form>
 
         <div className="links">
-          <a href="#">Forgot password?</a>
-          <a href="/register">Create account</a>
+          <Link to="#">Forgot password?</Link>
+          <Link to="/volunteer/register">Create account</Link>
         </div>
 
       </div>
