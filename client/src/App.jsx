@@ -1,12 +1,13 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-
-<Route path="/events" element={<Events />} />
-
+import Login from './pages/Login';
 import Home from './pages/Home';
 import Events from './pages/Events';
 import VolunteerRegister from "./components/Volunteer/Register";
 import NGORegister from "./components/NGO/Register";
+import About from "./pages/About";
+
+
 
 function App() {
   return (
@@ -15,6 +16,8 @@ function App() {
         {/* Landing Page */}
         <Route path="/" element={<Home />} />
         <Route path="/events" element={<Events/>}/>
+        <Route path="/login" element={<Login/>}/>
+        <Route path="/about" element={<About />} />
         {/* Volunteer Registration */}
         <Route
           path="/volunteer/register"
