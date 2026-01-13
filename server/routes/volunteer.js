@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Volunteer = require("../models/volunteer");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 /* =========================
    VOLUNTEER REGISTRATION
@@ -10,16 +11,16 @@ router.post("/register", async (req, res) => {
   try {
     const { name, email, phone, age, address, password } = req.body;
 
-    // 1️⃣ Check if volunteer exists
+    // Check if volunteer already exists
     const existingVolunteer = await Volunteer.findOne({ email });
     if (existingVolunteer) {
       return res.status(400).json({ message: "Volunteer already registered" });
     }
 
-    // 2️⃣ Hash password
+    // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // 3️⃣ Save volunteer
+    // Create new volunteer
     const volunteer = new Volunteer({
       name,
       email,
@@ -31,21 +32,30 @@ router.post("/register", async (req, res) => {
 
     await volunteer.save();
 
+    // Generate JWT
+    const token = jwt.sign(
+      { id: volunteer._id, role: "volunteer" },
+      "PRAYAAS_SECRET",
+      { expiresIn: "1h" }
+    );
+
     res.status(201).json({
-      message: "Volunteer registered successfully"
+      message: "Volunteer registered successfully",
+      token
     });
 
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Server error" });
-  }
+  console.error("REGISTER ERROR 👉", error);
+  res.status(500).json({
+    message: "Server error",
+    error: error.message
+  });
+}
+
 });
 
 module.exports = router;
 
-
-
-// module.exports = router;
 // const express = require("express");
 // const router = express.Router();
 
