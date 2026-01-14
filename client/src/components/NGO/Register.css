@@ -1,27 +1,87 @@
-.register-box {
-  width: 360px;
-  margin: 40px auto;
-  padding: 25px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+body {
+  background: linear-gradient(135deg, #e0f7fa, #e8f5e9);
+  font-family: Arial, sans-serif;
 }
 
+/* Main container */
+.register-box {
+  width: 420px;
+  margin: 60px auto;
+  padding: 30px;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  position: relative;
+}
+
+/* Heading */
 .register-box h2 {
   text-align: center;
-  color: #006400;
+  color: #2e8b57;
+  margin-bottom: 20px;
+  font-size: 24px;
 }
 
+/* Inputs */
 .register-box input {
   width: 100%;
-  margin: 8px 0;
-  padding: 10px;
+  margin: 10px 0;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
 }
 
+/* File upload */
+.register-box input[type="file"] {
+  border: 2px dashed #2e8b57;
+  background: #f0fff7;
+  padding: 10px;
+  cursor: pointer;
+}
+
+/* Input focus */
+.register-box input:focus {
+  outline: none;
+  border-color: #2e8b57;
+  box-shadow: 0 0 5px #2e8b57;
+}
+
+/* Button */
 .register-box button {
   width: 100%;
-  padding: 10px;
-  background-color: #006400;
+  padding: 12px;
+  margin-top: 15px;
+  background: linear-gradient(135deg, #2e8b57, #3cb371);
   color: white;
   border: none;
+  border-radius: 8px;
+  font-size: 16px;
   cursor: pointer;
+  transition: 0.3s;
+}
+
+/* Button hover */
+.register-box button:hover {
+  background: linear-gradient(135deg, #3cb371, #2e8b57);
+  transform: scale(1.02);
+}
+
+/* BACK BUTTON (TOP LEFT CORNER) */
+.back-btn {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background: transparent;
+  border: 2px solid #2e8b57;
+  color: #2e8b57;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.back-btn:hover {
+  background: #2e8b57;
+  color: white;
 }

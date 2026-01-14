@@ -1,8 +1,18 @@
 import "./EventCard.css";
+import { useNavigate } from "react-router-dom";
 
 export default function EventCard({ event }) {
+
+  const navigate = useNavigate();
+
   return (
     <div className="event-card">
+
+      {/* Back Button */}
+      <button className="back-btn" onClick={() => navigate(-1)}>
+        ⬅ Back
+      </button>
+
       <img src={event.image} alt={event.title} />
 
       <div className="event-body">

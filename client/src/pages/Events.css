@@ -1,75 +1,41 @@
-.events-page {
+.events-container {
   display: flex;
-  min-height: 100vh;
-  background: #f9fafb;
 }
 
-/* SIDEBAR */
-.events-sidebar {
-  width: 220px;
-  background: white;
-  padding: 30px 20px;
-  border-right: 1px solid #e5e7eb;
+.sidebar {
+  width: 200px;
+  padding: 20px;
+  background: #2e8b57;
 }
 
-.events-sidebar h3 {
-  margin-bottom: 20px;
-  color: #111827;
-}
-
-.events-sidebar button {
+.sidebar button {
   width: 100%;
   padding: 10px;
   margin-bottom: 10px;
+  background: white;
   border: none;
-  background: #e5e7eb;
   cursor: pointer;
-  border-radius: 6px;
-  font-weight: 600;
 }
 
-.events-sidebar button.active {
-  background: #10b981;
-  color: white;
-}
-
-/* CONTENT */
-.events-content {
+.events-list {
+  padding: 20px;
   flex: 1;
-  padding: 40px;
-}
-
-.events-content h2 {
-  margin-bottom: 30px;
-  color: #111827;
-}
-
-/* EVENTS GRID */
-.events-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 20px;
 }
 
 .event-card {
+  display: flex;
   background: white;
-  padding: 20px;
-  border-radius: 12px;
-  border: 1px solid #e5e7eb;
-  transition: 0.3s;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
-.event-card:hover {
-  transform: translateY(-5px);
-  border-color: #10b981;
+.event-card img {
+  width: 150px;
+  object-fit: cover;
 }
 
-.event-card h4 {
-  margin-bottom: 10px;
-  color: #10b981;
-}
-
-.event-card p {
-  font-size: 14px;
-  color: #374151;
+.event-info {
+  padding: 15px;
 }

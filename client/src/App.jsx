@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './pages/Login';
 import Home from './pages/Home';
-import Events from './pages/Events/Events';
+import Events from './pages/Events';
 import VolunteerRegister from "./components/Volunteer/Register";
 import NGORegister from "./components/NGO/Register";
 import About from "./pages/About";
