@@ -1,4 +1,4 @@
-.navbar {
+.common-navbar {
   height: 80px;
   display: flex;
   align-items: center;
@@ -8,7 +8,7 @@
   background: white;
   z-index: 1000;
 }
-.nav-container {
+.common-nav-container {
   max-width: 1200px;
   width: 100%;
   margin: 0 auto;
@@ -16,7 +16,7 @@
   justify-content: space-between;
   padding: 0 20px;
 }
-.logo {
+.common-logo {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -24,22 +24,22 @@
   font-size: 22px;
   color: var(--dark-green);
 }
-.logo-icon {
+.common-logo-icon {
   background: var(--primary-green);
   color: white;
   padding: 5px;
   border-radius: 8px;
 }
-.nav-links {
+.common-nav-links {
   display: flex;
   gap: 32px;
 }
-.nav-links a {
+.common-nav-links a {
   text-decoration: none;
   color: var(--text-muted);
   font-weight: 500;
 }
-.login-btn {
+.common-login-btn {
   background: var(--primary-green);
   color: white;
   border: none;

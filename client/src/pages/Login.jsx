@@ -34,7 +34,7 @@ export default function Login() {
       alert("Login successful!");
 
       // ✅ Redirect after login
-      navigate("/events");
+      navigate("/dashboard");
 
     } catch (err) {
       setError(err.response?.data?.message || "Login failed");

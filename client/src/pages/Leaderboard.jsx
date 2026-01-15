@@ -23,7 +23,7 @@ export default function Leaderboard() {
     <div className="leaderboard-container">
 
       {/* BACK BUTTON */}
-      <button className="back-btn" onClick={() => navigate("/")}>
+      <button className="back-btn" onClick={() => navigate(-1)}>
         ← Back
       </button>
 

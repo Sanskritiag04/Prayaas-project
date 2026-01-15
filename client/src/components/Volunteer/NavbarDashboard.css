@@ -1,0 +1,32 @@
+.dash-navbar {
+  height: 64px;
+  background: #2e8b57;
+  color: white;
+  display: flex;
+  align-items: center;
+  padding: 0 30px;
+}
+
+.nav-left {
+  font-size: 22px;
+  font-weight: bold;
+  flex: 1;
+}
+
+.nav-center {
+  display: flex;
+  gap: 30px;
+}
+
+.nav-center a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.nav-right {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  cursor: pointer;
+}

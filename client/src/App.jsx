@@ -7,7 +7,7 @@ import VolunteerRegister from "./components/Volunteer/Register";
 import NGORegister from "./components/NGO/Register";
 import About from "./pages/About";
 import Leaderboard from "./pages/Leaderboard";
-
+import VolunteerDashboard from './pages/Volunteer/VolunteerDashboard';
 
 function App() {
   return (
@@ -24,7 +24,7 @@ function App() {
           path="/volunteer/register"
           element={<VolunteerRegister />}
         />
-
+        <Route path="/dashboard" element={<VolunteerDashboard />} />
         {/* NGO Registration */}
         <Route
           path="/ngo/register"
