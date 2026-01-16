@@ -8,6 +8,9 @@ import NGORegister from "./components/NGO/Register";
 import About from "./pages/About";
 import Leaderboard from "./pages/Leaderboard";
 import VolunteerDashboard from './pages/Volunteer/VolunteerDashboard';
+import ForgotPassword from "./pages/ForgotPassword";
+
+
 
 function App() {
   return (
@@ -17,6 +20,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/events" element={<Events/>}/>
         <Route path="/login" element={<Login/>}/>
+        <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/about" element={<About />} />
         <Route path="/leaderboard" element={<Leaderboard />} />
         {/* Volunteer Registration */}

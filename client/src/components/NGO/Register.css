@@ -1,87 +1,83 @@
-body {
-  background: linear-gradient(135deg, #e0f7fa, #e8f5e9);
-  font-family: Arial, sans-serif;
-}
-
-/* Main container */
-.register-box {
+.ngo-register-container {
   width: 420px;
-  margin: 60px auto;
+  margin: 50px auto;
   padding: 30px;
-  background: white;
-  border-radius: 15px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-  position: relative;
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
 }
 
-/* Heading */
-.register-box h2 {
+.ngo-register-container h2 {
   text-align: center;
-  color: #2e8b57;
   margin-bottom: 20px;
-  font-size: 24px;
+  color: #2e8b57;
 }
 
-/* Inputs */
-.register-box input {
+.ngo-register-container label {
+  display: block;
+  margin-top: 12px;
+  font-weight: 500;
+  color: #333;
+}
+
+.ngo-register-container input,
+.ngo-register-container select {
   width: 100%;
-  margin: 10px 0;
-  padding: 12px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  font-size: 14px;
-}
-
-/* File upload */
-.register-box input[type="file"] {
-  border: 2px dashed #2e8b57;
-  background: #f0fff7;
   padding: 10px;
+  margin-top: 6px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.password-box {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-top: 6px;
+}
+
+.password-box input {
+  border: none;
+  flex: 1;
+  padding: 10px;
+}
+
+.password-box span {
   cursor: pointer;
+  padding: 0 10px;
 }
 
-/* Input focus */
-.register-box input:focus {
-  outline: none;
-  border-color: #2e8b57;
-  box-shadow: 0 0 5px #2e8b57;
-}
-
-/* Button */
-.register-box button {
+.ngo-register-container button {
   width: 100%;
+  margin-top: 20px;
   padding: 12px;
-  margin-top: 15px;
   background: linear-gradient(135deg, #2e8b57, #3cb371);
   color: white;
   border: none;
   border-radius: 8px;
   font-size: 16px;
   cursor: pointer;
-  transition: 0.3s;
 }
 
-/* Button hover */
-.register-box button:hover {
-  background: linear-gradient(135deg, #3cb371, #2e8b57);
-  transform: scale(1.02);
+.ngo-register-container button:hover {
+  opacity: 0.9;
 }
 
-/* BACK BUTTON (TOP LEFT CORNER) */
+/* BACK BUTTON */
 .back-btn {
   position: absolute;
-  top: 15px;
-  left: 15px;
-  background: transparent;
-  border: 2px solid #2e8b57;
-  color: #2e8b57;
-  padding: 6px 12px;
+  top: 18px;
+  left: 18px;
+  background: #2e8b57;
+  color: white;
+  border: none;
+  padding: 7px 14px;
   border-radius: 6px;
   cursor: pointer;
   font-size: 13px;
 }
 
 .back-btn:hover {
-  background: #2e8b57;
-  color: white;
+  background: #256f46;
 }

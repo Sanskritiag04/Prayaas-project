@@ -8,6 +8,8 @@
 
 /* PROFILE */
 .profile-card {
+  display: flex;
+  flex-direction: column;
   background: white;
   border-radius: 15px;
   padding: 25px;
@@ -45,6 +47,22 @@
   background: transparent;
   color: #2e8b57;
   border: 1px solid #2e8b57;
+}
+
+.logout-btn {
+  margin-top: auto;
+  background: #e53935;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 100%;
+  font-weight: bold;
+}
+
+.logout-btn:hover {
+  background: #c62828;
 }
 
 /* RIGHT CONTENT */

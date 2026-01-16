@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import NavbarDashboard from "../../components/Volunteer/NavbarDashboard";
 import "./Dashboard.css";
+import { useNavigate } from "react-router-dom";
 import goldBadge from "../../assets/badges/gold-badge.png";
 import silverBadge from "../../assets/badges/silver-badge.png";
 
@@ -11,9 +12,17 @@ const badges = [
 ];
 
 
+
+
 export default function VolunteerDashboard() {
   const [data, setData] = useState(null);
+  const navigate = useNavigate();
 
+const handleLogout = () => {
+  localStorage.removeItem("token");
+  localStorage.removeItem("userRole");
+  navigate("/");
+};
   useEffect(() => {
     axios.get("http://localhost:5000/api/volunteer/dashboard", {
       headers: {
@@ -39,6 +48,9 @@ export default function VolunteerDashboard() {
 
           <button>Edit Profile</button>
           <button className="outline">Change Photo</button>
+          <button className="logout-btn" onClick={handleLogout}>
+    Logout
+  </button>
         </div>
 
         {/* RIGHT */}

@@ -6,6 +6,7 @@ import axios from "axios";
 export default function Register() {
 
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false); // 👁
 
   const [form, setForm] = useState({
     name: "",
@@ -19,115 +20,155 @@ export default function Register() {
     confirmPassword: ""
   });
 
+  const states = [
+    "Andhra Pradesh","Arunachal Pradesh","Assam","Bihar",
+    "Chhattisgarh","Goa","Gujarat","Haryana","Himachal Pradesh",
+    "Jharkhand","Karnataka","Kerala","Madhya Pradesh","Maharashtra",
+    "Manipur","Meghalaya","Mizoram","Nagaland","Odisha","Punjab",
+    "Rajasthan","Sikkim","Tamil Nadu","Telangana","Tripura",
+    "Uttar Pradesh","Uttarakhand","West Bengal"
+  ];
+
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const validateForm = () => {
 
+    // Email
+    if (
+      !form.email.includes("@") ||
+      !(form.email.endsWith(".com") || form.email.endsWith(".in"))
+    ) {
+      alert("Email must contain @ and end with .com or .in");
+      return false;
+    }
+
+    // Age
+    if (!/^\d+$/.test(form.age)) {
+      alert("Age must contain only numbers");
+      return false;
+    }
+
+    if (form.age < 18 || form.age > 90) {
+      alert("Age must be between 18 and 90");
+      return false;
+    }
+
+    // ✅ Phone (10 digits)
+    if (!/^\d{10}$/.test(form.phone)) {
+      alert("Phone number must be exactly 10 digits");
+      return false;
+    }
+
+    // Pincode
+    if (!/^\d{6}$/.test(form.pincode)) {
+      alert("Pincode must be exactly 6 digits");
+      return false;
+    }
+
+    // Password
+    const passwordPattern =
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&]).{6,}$/;
+
+    if (!passwordPattern.test(form.password)) {
+      alert(
+        "Password must contain:\n• One letter\n• One digit\n• One special character\n• Min 6 characters"
+      );
+      return false;
+    }
+
+    // Confirm password
     if (form.password !== form.confirmPassword) {
       alert("Passwords do not match");
-      return;
+      return false;
     }
+
+    return true;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!validateForm()) return;
 
     try {
       const res = await axios.post(
         "http://localhost:5000/api/volunteer/register",
         form
       );
-
       alert(res.data.message);
-
     } catch (err) {
-      alert(
-        err.response?.data?.message || "Something went wrong"
-      );
+      alert(err.response?.data?.message || "Something went wrong");
     }
   };
 
   return (
     <div className="register-container">
+
+      {/* BACK */}
+      <button
+        className="back-btn"
+        onClick={() => navigate(-1)}
+      >
+        ⬅ Back
+      </button>
+
       <h2>Volunteer Registration</h2>
 
       <form onSubmit={handleSubmit}>
 
-        <input
-          name="name"
-          placeholder="Full Name"
-          onChange={handleChange}
-          required
-        />
+        <label>Full Name</label>
+        <input name="name" onChange={handleChange} required />
 
-        <input
-          name="email"
-          placeholder="Email Address"
-          onChange={handleChange}
-          required
-        />
+        <label>Email (.com / .in)</label>
+        <input name="email" onChange={handleChange} required />
 
-        <input
-          name="age"
-          placeholder="Age"
-          onChange={handleChange}
-          required
-        />
+        <label>Age (18 - 90)</label>
+        <input name="age" onChange={handleChange} required />
 
-        <input
-          name="phone"
-          placeholder="Phone Number"
-          onChange={handleChange}
-          required
-        />
+        <label>Phone Number</label>
+        <input name="phone" onChange={handleChange} required />
 
-        <input
-          name="city"
-          placeholder="City"
-          onChange={handleChange}
-          required
-        />
+        <label>City</label>
+        <input name="city" onChange={handleChange} required />
 
-        <input
-          name="state"
-          placeholder="State"
-          onChange={handleChange}
-          required
-        />
+        <label>State</label>
+        <select name="state" onChange={handleChange} required>
+          <option value="">Select State</option>
+          {states.map((s, i) => (
+            <option key={i}>{s}</option>
+          ))}
+        </select>
 
-        <input
-          name="pincode"
-          placeholder="Pincode"
-          onChange={handleChange}
-          required
-        />
+        <label>Pincode (6 digits)</label>
+        <input name="pincode" onChange={handleChange} required />
 
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={form.password}
-          onChange={handleChange}
-          required
-        />
+        {/* PASSWORD WITH EYE */}
+        <label>Password</label>
+        <div className="password-box">
+          <input
+            type={showPassword ? "text" : "password"}
+            name="password"
+            value={form.password}
+            onChange={handleChange}
+            required
+          />
+          <span onClick={() => setShowPassword(!showPassword)}>
+            {showPassword ? "🙈" : "👁"}
+          </span>
+        </div>
 
+        <label>Confirm Password</label>
         <input
           type="password"
           name="confirmPassword"
-          placeholder="Confirm Password"
           value={form.confirmPassword}
           onChange={handleChange}
           required
         />
 
-        {/* Submit */}
         <button type="submit">Create Account</button>
-        <button
-          type="button"
-          className="back-btn"
-          onClick={() => navigate(-1)}
-        >
-          ⬅ Back
-        </button>
+
       </form>
     </div>
   );

@@ -1,16 +1,20 @@
 body {
   background: linear-gradient(135deg, #e0f7fa, #e8f5e9);
+  font-family: Arial, sans-serif;
 }
 
+/* Main box */
 .register-container {
-  width: 380px;
+  width: 420px;
   margin: 60px auto;
-  padding: 30px;
+  padding: 35px;
   background: white;
   border-radius: 15px;
   box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  position: relative;
 }
 
+/* Heading */
 .register-container h2 {
   text-align: center;
   color: #2e8b57;
@@ -18,25 +22,40 @@ body {
   font-size: 24px;
 }
 
-.register-container input {
+/* Labels */
+.register-container label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  display: block;
+  margin-top: 10px;
+}
+
+/* Inputs & select */
+.register-container input,
+.register-container select {
   width: 100%;
-  margin: 10px 0;
+  margin-top: 6px;
   padding: 12px;
   border-radius: 8px;
   border: 1px solid #ccc;
   font-size: 14px;
+  box-sizing: border-box;
 }
 
-.register-container input:focus {
+/* Focus */
+.register-container input:focus,
+.register-container select:focus {
   outline: none;
   border-color: #2e8b57;
   box-shadow: 0 0 5px #2e8b57;
 }
 
-.register-container button{
+/* Submit button */
+.register-container button[type="submit"] {
   width: 100%;
   padding: 12px;
-  margin-top: 15px;
+  margin-top: 20px;
   background: linear-gradient(135deg, #2e8b57, #3cb371);
   color: white;
   border: none;
@@ -46,7 +65,58 @@ body {
   transition: 0.3s;
 }
 
-.register-container button:hover {
+.register-container button[type="submit"]:hover {
   background: linear-gradient(135deg, #3cb371, #2e8b57);
   transform: scale(1.02);
+}
+
+/* BACK BUTTON */
+.back-btn {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  background: #2e8b57;
+  color: white;
+  border: none;
+  padding: 7px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.back-btn:hover {
+  background: #256f46;
+}
+
+/* Dropdown arrow fix */
+select {
+  background: white;
+  cursor: pointer;
+}
+
+/* 👁 PASSWORD EYE ICON STYLE (FIXED) */
+.password-box {
+  position: relative;
+  width: 100%;
+  margin-top: 6px;
+}
+
+.password-box input {
+  width: 100%;
+  padding: 12px;
+  padding-right: 40px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  box-sizing: border-box; /* KEY FIX */
+}
+
+.password-box span {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 18px;
+  user-select: none;
 }

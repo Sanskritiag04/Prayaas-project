@@ -1,14 +1,17 @@
 const jwt = require("jsonwebtoken");
 
-module.exports = (req, res, next) => {
-  const token = req.header("auth-token");
-  if (!token) return res.status(401).send("Access denied");
+module.exports = function (req, res, next) {
+  const token = req.headers.authorization?.split(" ")[1];
+
+  if (!token) {
+    return res.status(401).json({ message: "No token provided" });
+  }
 
   try {
-    const verified = jwt.verify(token, "SECRET123");
-    req.user = verified;
+    const decoded = jwt.verify(token, "PRAYAAS_SECRET");
+    req.user = decoded;
     next();
-  } catch {
-    res.status(400).send("Invalid token");
+  } catch (err) {
+    return res.status(401).json({ message: "Invalid token" });
   }
 };

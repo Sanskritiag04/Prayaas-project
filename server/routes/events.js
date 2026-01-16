@@ -1,17 +1,18 @@
 const express = require("express");
 const router = express.Router();
+const Event = require("../models/Event");
 
-const {
-  createEvent,
-  getUpcomingEvents,
-  getPastEvents
-} = require("../controllers/eventController");
+/* GET EVENTS BY TYPE */
+router.get("/:type", async (req, res) => {
+  try {
+    const { type } = req.params;
 
-/* Create Event */
-router.post("/create", createEvent);
+    const events = await Event.find({ type });
+    res.status(200).json(events);
 
-/* Filters */
-router.get("/upcoming", getUpcomingEvents);
-router.get("/past", getPastEvents);
+  } catch (error) {
+    res.status(500).json({ message: "Server Error" });
+  }
+});
 
 module.exports = router;
