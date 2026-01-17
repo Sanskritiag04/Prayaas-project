@@ -5,6 +5,7 @@ import "./Dashboard.css";
 import { useNavigate } from "react-router-dom";
 import goldBadge from "../../assets/badges/gold-badge.png";
 import silverBadge from "../../assets/badges/silver-badge.png";
+import React, { useRef } from "react";
 
 const badges = [
   { name: "Beginner", image: silverBadge },
@@ -17,6 +18,45 @@ const badges = [
 export default function VolunteerDashboard() {
   const [data, setData] = useState(null);
   const navigate = useNavigate();
+  const fileInputRef = useRef(null);
+
+const handlePhotoClick = () => {
+  fileInputRef.current.click();
+};
+
+const handlePhotoChange = async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  // validation
+  if (!["image/jpeg", "image/png"].includes(file.type)) {
+    alert("Only JPG or PNG allowed");
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("photo", file);
+
+  try {
+    await axios.put(
+      "http://localhost:5000/api/volunteer/upload-photo",
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-Type": "multipart/form-data"
+        }
+      }
+    );
+
+    alert("Profile photo updated");
+    window.location.reload();
+
+  } catch (err) {
+    alert("Upload failed");
+  }
+};
+
 
 const handleLogout = () => {
   localStorage.removeItem("token");
@@ -46,11 +86,20 @@ const handleLogout = () => {
           <h3>{data.name}</h3>
           <p>{data.email}</p>
 
-          <button>Edit Profile</button>
-          <button className="outline">Change Photo</button>
-          <button className="logout-btn" onClick={handleLogout}>
-    Logout
-  </button>
+          <button onClick={() => navigate("/volunteer/edit-profile")}>Edit Profile</button>
+<button className="outline" onClick={handlePhotoClick}>
+  Change Photo
+</button>
+
+<input
+  type="file"
+  ref={fileInputRef}
+  style={{ display: "none" }}
+  accept="image/png, image/jpeg"
+  onChange={handlePhotoChange}
+/>
+
+          <button className="logout-btn" onClick={handleLogout}>Logout</button>
         </div>
 
         {/* RIGHT */}

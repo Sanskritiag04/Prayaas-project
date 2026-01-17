@@ -16,6 +16,7 @@ const Navbar = () => (
         <Link to="/events">Events</Link>
         <Link to="/leaderboard">Leaderboard</Link>
         <Link to="/about">About</Link>
+        <Link to="/faqs">FAQs</Link>   {/* ✅ ADDED */}
       </div>
 
       <div className="common-nav-auth">

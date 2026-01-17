@@ -3,10 +3,13 @@ import { useNavigate } from "react-router-dom";
 import "./Register.css";
 import axios from "axios";
 
+
+
 export default function Register() {
 
   const navigate = useNavigate();
-  const [showPassword, setShowPassword] = useState(false); // 👁
+  const [showPassword, setShowPassword] = useState(false); // 👁 Password
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false); // 👁 Confirm Password
 
   const [form, setForm] = useState({
     name: "",
@@ -35,7 +38,6 @@ export default function Register() {
 
   const validateForm = () => {
 
-    // Email
     if (
       !form.email.includes("@") ||
       !(form.email.endsWith(".com") || form.email.endsWith(".in"))
@@ -44,7 +46,6 @@ export default function Register() {
       return false;
     }
 
-    // Age
     if (!/^\d+$/.test(form.age)) {
       alert("Age must contain only numbers");
       return false;
@@ -55,19 +56,16 @@ export default function Register() {
       return false;
     }
 
-    // ✅ Phone (10 digits)
     if (!/^\d{10}$/.test(form.phone)) {
       alert("Phone number must be exactly 10 digits");
       return false;
     }
 
-    // Pincode
     if (!/^\d{6}$/.test(form.pincode)) {
       alert("Pincode must be exactly 6 digits");
       return false;
     }
 
-    // Password
     const passwordPattern =
       /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&]).{6,}$/;
 
@@ -78,7 +76,6 @@ export default function Register() {
       return false;
     }
 
-    // Confirm password
     if (form.password !== form.confirmPassword) {
       alert("Passwords do not match");
       return false;
@@ -97,21 +94,34 @@ export default function Register() {
         form
       );
       alert(res.data.message);
+      navigate("/");
     } catch (err) {
       alert(err.response?.data?.message || "Something went wrong");
     }
   };
 
+//   const handleSubmit = async (e) => {
+//   e.preventDefault();
+
+//   try {
+//     await axios.post(
+//       "http://localhost:5000/api/volunteer/register",
+//       formData
+//     );
+
+//     alert("Registration successful");
+
+//     // ✅ REDIRECT TO HOME PAGE
+//     navigate("/");
+
+//   } catch (error) {
+//     alert("Registration failed");
+//   }
+// };
+
+
   return (
     <div className="register-container">
-
-      {/* BACK */}
-      <button
-        className="back-btn"
-        onClick={() => navigate(-1)}
-      >
-        ⬅ Back
-      </button>
 
       <h2>Volunteer Registration</h2>
 
@@ -158,14 +168,20 @@ export default function Register() {
           </span>
         </div>
 
+        {/* CONFIRM PASSWORD WITH EYE */}
         <label>Confirm Password</label>
-        <input
-          type="password"
-          name="confirmPassword"
-          value={form.confirmPassword}
-          onChange={handleChange}
-          required
-        />
+        <div className="password-box">
+          <input
+            type={showConfirmPassword ? "text" : "password"}
+            name="confirmPassword"
+            value={form.confirmPassword}
+            onChange={handleChange}
+            required
+          />
+          <span onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
+            {showConfirmPassword ? "🙈" : "👁"}
+          </span>
+        </div>
 
         <button type="submit">Create Account</button>
 

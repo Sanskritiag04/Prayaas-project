@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+
 import "./Register.css";
 import axios from "axios";
 
 export default function NGORegister() {
-  const navigate = useNavigate();
+ 
   const [showPassword, setShowPassword] = useState(false);
 
   const [form, setForm] = useState({
@@ -46,14 +46,7 @@ export default function NGORegister() {
   return (
     <div className="ngo-register-container">
 
-      {/* ✅ BACK BUTTON */}
-      <button
-        type="button"
-        className="back-btn"
-        onClick={() => navigate(-1)}
-      >
-        ⬅ Back
-      </button>
+      
 
       <h2>NGO Registration</h2>
 
@@ -101,12 +94,17 @@ export default function NGORegister() {
         </div>
 
         <label>Confirm Password</label>
-        <input
-          type="password"
-          name="confirmPassword"
-          onChange={handleChange}
-          required
-        />
+        <div className="password-box">
+          <input
+            type={showPassword ? "text" : "password"}
+            name="confirmPassword"
+            onChange={handleChange}
+            required
+          />
+          <span onClick={() => setShowPassword(!showPassword)}>
+            {showPassword ? "🙈" : "👁"}
+          </span>
+        </div>
 
         <button type="submit">Register NGO</button>
       </form>

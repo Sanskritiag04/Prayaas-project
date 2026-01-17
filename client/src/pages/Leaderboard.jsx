@@ -1,10 +1,7 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import "./Leaderboard.css";
 
 export default function Leaderboard() {
-
-  const navigate = useNavigate();
 
   const [users, setUsers] = useState([
     { id: 1, name: "Amit", points: 90 },
@@ -21,11 +18,6 @@ export default function Leaderboard() {
 
   return (
     <div className="leaderboard-container">
-
-      {/* BACK BUTTON */}
-      <button className="back-btn" onClick={() => navigate(-1)}>
-        ← Back
-      </button>
 
       <h2>🏆 Volunteer Leaderboard</h2>
 

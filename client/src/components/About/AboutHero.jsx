@@ -28,7 +28,18 @@ const AboutHero = () => {
         every small effort counts toward building a better society.
       </p>
 
+      
+
+
     </section>
+    
+
+
+
+
+
+
+
   );
 };
 

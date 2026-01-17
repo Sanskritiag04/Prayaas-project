@@ -5,6 +5,29 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const auth = require("../middleware/auth");
 const generateOTP = require("../utils/generateOTP");
+const multer = require("multer");
+const path = require("path");
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads/profile");
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${req.user.id}-${Date.now()}${path.extname(file.originalname)}`);
+  }
+});
+
+const upload = multer({
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
+      cb(null, true);
+    } else {
+      cb(new Error("Only JPG/PNG allowed"), false);
+    }
+  },
+  storage
+});
+
+
 /* =====================
    SEND OTP
 ===================== */
@@ -27,6 +50,24 @@ router.post("/forgot-password", async (req, res) => {
     otp // ⚠️ DUMMY (remove later)
   });
 });
+
+router.put(
+  "/upload-photo",
+  auth,
+  upload.single("photo"),
+  async (req, res) => {
+    try {
+      const volunteer = await Volunteer.findById(req.user.id);
+      volunteer.photo = `uploads/profile/${req.file.filename}`;
+      await volunteer.save();
+
+      res.json({ message: "Photo uploaded" });
+    } catch (err) {
+      res.status(500).json({ message: "Upload failed" });
+    }
+  }
+);
+
 
 /* =====================
    VERIFY OTP
@@ -191,6 +232,42 @@ router.get("/dashboard", auth, async (req, res) => {
   }
 });
 
+router.get("/profile", auth, async (req, res) => {
+  try {
+    const volunteer = await Volunteer.findById(req.user.id).select("-password");
+    res.json(volunteer);
+  } catch (err) {
+    res.status(500).json({ message: "Failed to fetch profile" });
+  }
+});
+
+// UPDATE PROFILE
+router.put("/profile", auth, async (req, res) => {
+  try {
+    const { name, phone, age, city, state, pincode } = req.body;
+
+    const updatedVolunteer = await Volunteer.findByIdAndUpdate(
+      req.user.id,
+      {
+        name,
+        phone,
+        age,
+        city,
+        state,
+        pincode
+      },
+      { new: true, runValidators: true }
+    ).select("-password");
+
+    res.json({
+      message: "Profile updated successfully",
+      volunteer: updatedVolunteer
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Profile update failed" });
+  }
+});
 
 
 module.exports= router;

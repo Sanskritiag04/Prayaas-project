@@ -71,8 +71,8 @@ const volunteerSchema = new mongoose.Schema(
     ],
 
     // 🔐 FORGOT PASSWORD (OTP)
-    resetOTP: String,
-    resetOTPExpiry: Date
+    // resetOTP: String,
+    // resetOTPExpiry: Date
   },
   { timestamps: true }
 );

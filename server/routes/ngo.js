@@ -7,122 +7,52 @@ const generateOTP = require("../utils/generateOTP");
 /* =========================
    NGO REGISTRATION
 ========================= */
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import "./Register.css";
-import axios from "axios";
+router.post("/register", async (req, res) => {
+  try {
+    const {
+      ngoName,
+      email,
+      registrationId,
+      panNumber,
+      state,
+      pincode,
+      password,
+      confirmPassword
+    } = req.body;
 
-export default function NGORegister() {
-  const navigate = useNavigate();
-  const [showPassword, setShowPassword] = useState(false);
-
-  const [form, setForm] = useState({
-    ngoName: "",
-    email: "",
-    registrationId: "",
-    panNumber: "",
-    state: "",
-    pincode: "",
-    password: "",
-    confirmPassword: ""
-  });
-
-  const states = [
-    "Andhra Pradesh","Arunachal Pradesh","Assam","Bihar",
-    "Chhattisgarh","Goa","Gujarat","Haryana","Himachal Pradesh",
-    "Jharkhand","Karnataka","Kerala","Madhya Pradesh","Maharashtra",
-    "Manipur","Meghalaya","Mizoram","Nagaland","Odisha","Punjab",
-    "Rajasthan","Sikkim","Tamil Nadu","Telangana","Tripura",
-    "Uttar Pradesh","Uttarakhand","West Bengal"
-  ];
-
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    try {
-      await axios.post("http://localhost:5000/api/ngo/register", form);
-      alert("NGO Registered Successfully");
-      navigate("/login");
-    } catch (err) {
-      alert(err.response?.data?.message || "Registration failed");
+    if (password !== confirmPassword) {
+      return res.status(400).json({ message: "Passwords do not match" });
     }
-  };
 
-  return (
-    <div className="ngo-register-container">
+    const existingNGO = await NGO.findOne({
+      $or: [{ email }, { registrationId }, { panNumber }]
+    });
 
-      {/* ✅ BACK BUTTON */}
-      <button
-        type="button"
-        className="back-btn"
-        onClick={() => navigate(-1)}
-      >
-        ⬅ Back
-      </button>
+    if (existingNGO) {
+      return res.status(400).json({ message: "NGO already registered" });
+    }
 
-      <h2>NGO Registration</h2>
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-      <form onSubmit={handleSubmit}>
+    const ngo = new NGO({
+      ngoName,
+      email,
+      registrationId,
+      panNumber,
+      state,
+      pincode,
+      password: hashedPassword
+    });
 
-        <label>NGO Name</label>
-        <input name="ngoName" onChange={handleChange} required />
+    await ngo.save();
 
-        <label>Email (.com / .in)</label>
-        <input name="email" onChange={handleChange} required />
+    res.status(201).json({ message: "NGO registered successfully" });
 
-        <label>Registration ID</label>
-        <input name="registrationId" onChange={handleChange} required />
-
-        <label>PAN Number</label>
-        <input
-          name="panNumber"
-          placeholder="ABCDE1234F"
-          onChange={handleChange}
-          required
-        />
-
-        <label>State</label>
-        <select name="state" onChange={handleChange} required>
-          <option value="">Select State</option>
-          {states.map((s, i) => (
-            <option key={i}>{s}</option>
-          ))}
-        </select>
-
-        <label>Pincode</label>
-        <input name="pincode" onChange={handleChange} required />
-
-        <label>Password</label>
-        <div className="password-box">
-          <input
-            type={showPassword ? "text" : "password"}
-            name="password"
-            onChange={handleChange}
-            required
-          />
-          <span onClick={() => setShowPassword(!showPassword)}>
-            {showPassword ? "🙈" : "👁"}
-          </span>
-        </div>
-
-        <label>Confirm Password</label>
-        <input
-          type="password"
-          name="confirmPassword"
-          onChange={handleChange}
-          required
-        />
-
-        <button type="submit">Register NGO</button>
-      </form>
-    </div>
-  );
-}
-
+  } catch (error) {
+    console.error("NGO REGISTER ERROR 👉", error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
 
 /* =========================
    VERIFY OTP

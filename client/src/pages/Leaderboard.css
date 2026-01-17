@@ -53,19 +53,4 @@ tr:hover {
   color: white;
 }
 
-/* BACK BUTTON */
-.back-btn{
-  background:#2e8b57;
-  color:white;
-  border:none;
-  padding:8px 16px;
-  border-radius:8px;
-  cursor:pointer;
-  margin-bottom:15px;
-  font-weight:600;
-}
-
-.back-btn:hover{
-  background:#256f46;
-}
 

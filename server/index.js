@@ -8,6 +8,10 @@ app.use(express.json());
 // app.use("/api/ngo", require("./routes/ngo"));
 app.use("/api/events", require("./routes/events"));
 app.use("/api/volunteer", require("./routes/volunteer"));
+app.use("/uploads", express.static("uploads"));
+app.use("/api/event-registration", require("./routes/eventRegistration"));
+app.use("/uploads", express.static("uploads"));
+
 
 
 

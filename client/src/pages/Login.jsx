@@ -131,12 +131,12 @@ export default function Login() {
 
   return (
     <div className="login-wrapper">
-      <button
+      {/* <button
         className="back-btn"
         onClick={() => navigate("/")}
       >
         ⬅ Back
-      </button>
+      </button> */}
       <div className="login-card">
 
         <h2>Login to Prayaas</h2>

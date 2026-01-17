@@ -8,39 +8,60 @@
   background: white;
   z-index: 1000;
 }
+
 .common-nav-container {
   max-width: 1200px;
   width: 100%;
   margin: 0 auto;
   display: flex;
+  align-items: center;
   justify-content: space-between;
   padding: 0 20px;
 }
+
+/* LOGO */
 .common-logo {
   display: flex;
   align-items: center;
   gap: 8px;
   font-weight: 700;
   font-size: 22px;
-  color: var(--dark-green);
+  color: #1f4f3c;
 }
+
 .common-logo-icon {
-  background: var(--primary-green);
+  background: #2e8b57;
   color: white;
-  padding: 5px;
+  padding: 6px;
   border-radius: 8px;
 }
+
+/* NAV LINKS */
 .common-nav-links {
   display: flex;
   gap: 32px;
 }
+
 .common-nav-links a {
   text-decoration: none;
-  color: var(--text-muted);
+  color: #6b7280;
   font-weight: 500;
+  transition: 0.3s;
 }
+
+.common-nav-links a:hover {
+  color: #2e8b57;
+  font-weight: 600;
+}
+
+/* LOGIN BUTTON */
+.common-nav-auth {
+  display: flex;
+  align-items: center;
+}
+
 .common-login-btn {
-  background: var(--primary-green);
+  background: #2e8b57;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -49,4 +70,9 @@
   cursor: pointer;
   margin-left: 15px;
   text-decoration: none;
+  transition: 0.3s;
+}
+
+.common-login-btn:hover {
+  background: #256f46;
 }
