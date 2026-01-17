@@ -208,16 +208,24 @@
   cursor: pointer;
 }
 
-/* BACK BUTTON INSIDE DETAILS */
-.back-btn {
+.close-btn {
   position: absolute;
   top: 16px;
   left: 20px;
-  background: white;
+  background: rgba(255, 255, 255, 0.9);
   border: none;
-  padding: 8px 14px;
-  border-radius: 20px;
-  font-weight: 600;
+  font-size: 22px;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  color: #333;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
+.close-btn:hover {
+  background: #e0e0e0;
+}
+

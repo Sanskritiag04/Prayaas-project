@@ -70,9 +70,7 @@ body {
   transform: scale(1.02);
 }
 
-
-
-/* 👁 PASSWORD EYE ICON STYLE (FIXED) */
+/* 👁 PASSWORD & CONFIRM PASSWORD EYE ICON STYLE */
 .password-box {
   position: relative;
   width: 100%;
@@ -82,11 +80,11 @@ body {
 .password-box input {
   width: 100%;
   padding: 12px;
-  padding-right: 40px;
+  padding-right: 40px; /* space for eye icon */
   border-radius: 8px;
   border: 1px solid #ccc;
   font-size: 14px;
-  box-sizing: border-box; /* KEY FIX */
+  box-sizing: border-box; /* important for layout */
 }
 
 .password-box span {
@@ -97,4 +95,10 @@ body {
   cursor: pointer;
   font-size: 18px;
   user-select: none;
+  transition: color 0.2s;
+}
+
+/* Optional hover effect for better UX */
+.password-box span:hover {
+  color: #2e8b57;
 }

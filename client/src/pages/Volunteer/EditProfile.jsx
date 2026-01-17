@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-
+import {useNavigate} from "react-router-dom";
 import "./EditProfile.css";
 
 export default function EditProfile() {
-   
+  const navigate= useNavigate();
   const [form, setForm] = useState({});
   const [editable, setEditable] = useState({});
 
@@ -37,6 +37,7 @@ export default function EditProfile() {
         }
       );
       alert("Profile updated successfully");
+      navigate("/dashboard")
     } catch {
       alert("Update failed");
     }

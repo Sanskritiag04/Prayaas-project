@@ -7,6 +7,8 @@ const auth = require("../middleware/auth");
 const generateOTP = require("../utils/generateOTP");
 const multer = require("multer");
 const path = require("path");
+
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "uploads/profile");
@@ -47,7 +49,7 @@ router.post("/forgot-password", async (req, res) => {
 
   res.json({
     message: "OTP sent to your email",
-    otp // ⚠️ DUMMY (remove later)
+    otp 
   });
 });
 
@@ -220,11 +222,8 @@ router.get("/dashboard", auth, async (req, res) => {
   {
     name: "Active Volunteer",
     image: "gold.png"
-  }], // dummy for now
-        myEvents: [
-          { title: "Beach Cleanup", date: "2025-02-10" },
-          { title: "Food Donation Drive", date: "2025-01-20" }
-        ]
+  }],
+        myEvents: []
       }
     });
   } catch (error) {

@@ -100,25 +100,6 @@ export default function Register() {
     }
   };
 
-//   const handleSubmit = async (e) => {
-//   e.preventDefault();
-
-//   try {
-//     await axios.post(
-//       "http://localhost:5000/api/volunteer/register",
-//       formData
-//     );
-
-//     alert("Registration successful");
-
-//     // ✅ REDIRECT TO HOME PAGE
-//     navigate("/");
-
-//   } catch (error) {
-//     alert("Registration failed");
-//   }
-// };
-
 
   return (
     <div className="register-container">

@@ -13,12 +13,12 @@ const badges = [
 ];
 
 
-
-
 export default function VolunteerDashboard() {
   const [data, setData] = useState(null);
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
+  const [myEvents, setMyEvents] = useState([]);
+  const [activeEvent, setActiveEvent] = useState(null);
 
 const handlePhotoClick = () => {
   fileInputRef.current.click();
@@ -59,19 +59,46 @@ const handlePhotoChange = async (e) => {
 
 
 const handleLogout = () => {
+  const confirmLogout = window.confirm(
+    "Are you sure you want to logout?"
+  );
+
+  if (!confirmLogout) return;
+
   localStorage.removeItem("token");
   localStorage.removeItem("userRole");
   navigate("/");
 };
+
   useEffect(() => {
-    axios.get("http://localhost:5000/api/volunteer/dashboard", {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    alert("Please login first");
+    return;
+  }
+
+  // 1️⃣ Get volunteer dashboard data
+  axios
+    .get("http://localhost:5000/api/volunteer/dashboard", {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`
+        Authorization: `Bearer ${token}`
       }
     })
     .then(res => setData(res.data.volunteer))
     .catch(() => alert("Unauthorized"));
-  }, []);
+
+  // 2️⃣ Get registered events
+  axios
+    .get("http://localhost:5000/api/event-registration/my-events", {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+    .then(res => setMyEvents(res.data))
+    .catch(() => console.log("Could not load registered events"));
+
+}, []); 
 
   if (!data) return <p>Loading...</p>;
 
@@ -109,14 +136,19 @@ const handleLogout = () => {
           <section>
             <h2>My Events</h2>
             <div className="event-grid">
-              {data.myEvents.map((e, i) => (
-                <div className="event-card" key={i}>
-                  <img src="/event.jpg" alt="" />
-                  <h4>{e.title}</h4>
-                  <p>{e.date}</p>
-                  <button>View Details</button>
-                </div>
-              ))}
+              {myEvents.length === 0 ? (
+  <p>No events registered yet</p>
+) : (
+  myEvents.map((e) => (
+    <div className="event-card" key={e._id}>
+      <img src={`http://localhost:5000${e.image}`} alt={e.title} />
+      <h4>{e.title}</h4>
+      <p>{new Date(e.start_date).toLocaleDateString()}</p>
+      <button onClick={() => setActiveEvent(e)}>View Details</button>
+    </div>
+  ))
+)}
+
             </div>
           </section>
 
@@ -137,6 +169,45 @@ const handleLogout = () => {
 
         </div>
       </div>
+
+      {activeEvent && (
+  <div className="event-overlay">
+    <div className="expanded-card">
+
+      {/* CLOSE BUTTON */}
+      <button
+        className="close-btn"
+        onClick={() => setActiveEvent(null)}
+      >
+        ✕
+      </button>
+
+      <img
+        src={`http://localhost:5000${activeEvent.image}`}
+        alt={activeEvent.title}
+      />
+
+      <div className="expanded-content">
+        <span className="event-type">{activeEvent.event_type}</span>
+        <h2>{activeEvent.title}</h2>
+
+        <p className="description">
+          {activeEvent.description}
+        </p>
+
+        <div className="meta">
+          <p><strong>📍 Location:</strong> {activeEvent.location}</p>
+          <p><strong>📅 Start:</strong> {new Date(activeEvent.start_date).toDateString()}</p>
+          {activeEvent.end_date && (
+            <p><strong>📅 End:</strong> {new Date(activeEvent.end_date).toDateString()}</p>
+          )}
+          <p><strong>Status:</strong> {activeEvent.status}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
+
     </>
   );
 }

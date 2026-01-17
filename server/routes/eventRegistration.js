@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const EventRegistration = require("../models/EventRegistration");
-const auth = require("../middleware/auth"); // volunteer auth
+const auth = require("../middleware/auth");
 
 router.post("/register", auth, async (req, res) => {
   const { event_id } = req.body;
@@ -29,5 +29,21 @@ router.post("/register", auth, async (req, res) => {
     res.status(500).json({ message: "Registration failed" });
   }
 });
+
+router.get("/my-events", auth, async (req, res) => {
+  try {
+    const registrations = await EventRegistration.find({
+      v_id: req.user.id,
+      status: "registered"
+    }).populate("event_id");
+
+    const events = registrations.map(r => r.event_id);
+
+    res.json(events);
+  } catch (err) {
+    res.status(500).json({ message: "Failed to load registered events" });
+  }
+});
+
 
 module.exports = router;
