@@ -28,7 +28,7 @@ const handlePhotoChange = async (e) => {
   const file = e.target.files[0];
   if (!file) return;
 
-  // validation
+  
   if (!["image/jpeg", "image/png"].includes(file.type)) {
     alert("Only JPG or PNG allowed");
     return;
@@ -78,7 +78,7 @@ const handleLogout = () => {
     return;
   }
 
-  // 1️⃣ Get volunteer dashboard data
+ 
   axios
     .get("http://localhost:5000/api/volunteer/dashboard", {
       headers: {
@@ -88,7 +88,7 @@ const handleLogout = () => {
     .then(res => setData(res.data.volunteer))
     .catch(() => alert("Unauthorized"));
 
-  // 2️⃣ Get registered events
+  
   axios
     .get("http://localhost:5000/api/event-registration/my-events", {
       headers: {
@@ -107,7 +107,7 @@ const handleLogout = () => {
       <NavbarDashboard />
 
       <div className="dashboard-wrapper">
-        {/* LEFT */}
+        
         <div className="profile-card">
           <img src="/profile.png" alt="profile" />
           <h3>{data.name}</h3>
@@ -129,7 +129,7 @@ const handleLogout = () => {
           <button className="logout-btn" onClick={handleLogout}>Logout</button>
         </div>
 
-        {/* RIGHT */}
+      
         <div className="dashboard-content">
 
           {/* EVENTS */}

@@ -19,23 +19,16 @@ function App() {
   return (
     <Router>
       <Routes>
-
-        {/* Landing Page */}
         <Route path="/" element={<Home />} />
         <Route path="/events" element={<Events />} />
         <Route path="/login" element={<Login />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/about" element={<About />} />
-        <Route path="/leaderboard" element={<Leaderboard />} />
-
-        {/* Volunteer Registration */}
         <Route path="/volunteer/register" element={<VolunteerRegister />} />
         <Route path="/dashboard" element={<VolunteerDashboard />} />
-        {/* NGO Registration */}
         <Route path="/ngo/register" element={<NGORegister />} />
          <Route path="/volunteer/edit-profile" element={<EditProfile />} />
-        {/* FAQs */}
-        <Route path="/faqs" element={<FAQs />} />   {/* ⭐ New route */}
+        <Route path="/faqs" element={<FAQs />} /> 
 
       </Routes>
     </Router>

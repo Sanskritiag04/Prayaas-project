@@ -229,3 +229,7 @@
   background: #e0e0e0;
 }
 
+.register-btn.disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
