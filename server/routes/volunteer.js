@@ -30,9 +30,7 @@ const upload = multer({
 });
 
 
-/* =====================
-   SEND OTP
-===================== */
+
 router.post("/forgot-password", async (req, res) => {
   const { email } = req.body;
 
@@ -71,9 +69,7 @@ router.put(
 );
 
 
-/* =====================
-   VERIFY OTP
-===================== */
+
 router.post("/verify-otp", async (req, res) => {
   const { email, otp } = req.body;
 
@@ -92,9 +88,7 @@ router.post("/verify-otp", async (req, res) => {
   res.json({ message: "OTP verified successfully" });
 });
 
-/* =========================
-   VOLUNTEER REGISTRATION
-   ========================= */
+
 
 router.post("/register", async (req, res) => {
   try {
@@ -111,21 +105,21 @@ router.post("/register", async (req, res) => {
 } = req.body;
 
 
-    // 1️⃣ Check password match
+    
     if (password !== confirmPassword) {
       return res.status(400).json({ message: "Passwords do not match" });
     }
 
-    // 2️⃣ Check existing volunteer
+   
     const existingVolunteer = await Volunteer.findOne({ email });
     if (existingVolunteer) {
       return res.status(400).json({ message: "Volunteer already registered" });
     }
 
-    // 3️⃣ Hash password
+   
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // 4️⃣ Save volunteer (NO confirmPassword)
+    
     const volunteer = new Volunteer({
     name,
     email,
@@ -140,7 +134,7 @@ router.post("/register", async (req, res) => {
 
     await volunteer.save();
 
-    // 5️⃣ Generate JWT
+   
     const token = jwt.sign(
       { id: volunteer._id, role: "volunteer" },
       "PRAYAAS_SECRET",
@@ -158,33 +152,34 @@ router.post("/register", async (req, res) => {
   }
 });
 
-/* =========================
-   VOLUNTEER LOGIN
-   ========================= */
+
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // 1. Check if volunteer exists
+ 
     const volunteer = await Volunteer.findOne({ email });
     if (!volunteer) {
       return res.status(400).json({ message: "Invalid email or password" });
     }
 
-    // 2. Compare password
+ 
     const isMatch = await bcrypt.compare(password, volunteer.password);
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid email or password" });
     }
 
-    // 3. Generate JWT
+ 
     const token = jwt.sign(
-      { id: volunteer._id, role: "volunteer" },
-      "PRAYAAS_SECRET",
-      { expiresIn: "1h" }
-    );
+  {
+    id: volunteer._id,
+    role: "volunteer" 
+  },
+  "PRAYAAS_SECRET",
+  { expiresIn: "1d" }
+);
 
-    // 4. Success response
+  
     res.status(200).json({
       message: "Login successful",
       token,
@@ -202,10 +197,8 @@ router.post("/login", async (req, res) => {
 });
 
 
-/* =========================
-   VOLUNTEER DASHBOARD
-========================= */
-router.get("/dashboard", auth, async (req, res) => {
+
+router.get("/dashboard", auth("volunteer"), async (req, res) => {
   try {
     const volunteer = await Volunteer.findById(req.user.id).select("-password");
 
@@ -240,7 +233,7 @@ router.get("/profile", auth, async (req, res) => {
   }
 });
 
-// UPDATE PROFILE
+
 router.put("/profile", auth, async (req, res) => {
   try {
     const { name, phone, age, city, state, pincode } = req.body;

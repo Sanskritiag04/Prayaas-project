@@ -1,19 +1,55 @@
 const mongoose = require("mongoose");
 
-const ngoSchema = new mongoose.Schema({
-  ngoName: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
+const ngoSchema = new mongoose.Schema(
+  {
+    ngoName: {
+      type: String,
+      required: true,
+      trim: true
+    },
 
-  registrationId: { type: String, required: true, unique: true },
-  panNumber: { type: String, required: true, unique: true },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      lowercase: true,
+      trim: true
+    },
 
-  state: { type: String, required: true },
-  pincode: { type: Number, required: true },
+    registrationId: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true
+    },
 
-  password: { type: String, required: true },
+    panNumber: {
+      type: String,
+      required: true,
+      unique: true,
+      uppercase: true,
+      trim: true
+    },
 
-  resetOTP: String,
-  resetOTPExpiry: Date
-});
+    state: {
+      type: String,
+      required: true
+    },
+
+    pincode: {
+      type: Number,
+      required: true
+    },
+
+    password: {
+      type: String,
+      required: true
+    },
+
+    resetOTP: String,
+    resetOTPExpiry: Date
+  },
+  { timestamps: true }
+);
 
 module.exports = mongoose.model("NGO", ngoSchema);

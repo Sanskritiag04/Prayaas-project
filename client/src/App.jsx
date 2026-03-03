@@ -9,10 +9,11 @@ import NGORegister from "./components/NGO/Register";
 import About from "./pages/About";
 import Leaderboard from "./pages/Leaderboard";
 import VolunteerDashboard from './pages/Volunteer/VolunteerDashboard';
+import NGODashboard from "./pages/NGO/NGODashboard";
 import ForgotPassword from "./pages/ForgotPassword";
 import FAQs from "./pages/FAQs"; 
 import EditProfile from "./pages/Volunteer/EditProfile";
-
+import PostEvent from "./pages/NGO/PostEvent";
 
 
 function App() {
@@ -25,11 +26,13 @@ function App() {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/about" element={<About />} />
         <Route path="/volunteer/register" element={<VolunteerRegister />} />
+        <Route path="/leaderboard" element={<Leaderboard/>}/>
         <Route path="/dashboard" element={<VolunteerDashboard />} />
+        <Route path="/ngo/dashboard" element={<NGODashboard />} />
         <Route path="/ngo/register" element={<NGORegister />} />
          <Route path="/volunteer/edit-profile" element={<EditProfile />} />
         <Route path="/faqs" element={<FAQs />} /> 
-
+      <Route path="/ngo/post-event" element={<PostEvent />} />
       </Routes>
     </Router>
   );

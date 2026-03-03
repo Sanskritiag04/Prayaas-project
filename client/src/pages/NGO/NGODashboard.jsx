@@ -1,27 +1,61 @@
-import { useState } from "react";
-import ".NGODashboard.css";
+import { useState,useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import "./NGODashboard.css";
 
 export default function NGODashboard() {
   const [filter, setFilter] = useState("upcoming");
+  const navigate = useNavigate();
+  const [ngo, setNgo] = useState(null);
+  const [events, setEvents] = useState([]);
 
-  const upcomingEvents = [
-    { id: 1, title: "Tree Plantation Drive", date: "20 Feb 2026" },
-    { id: 2, title: "Health Checkup Camp", date: "5 Mar 2026" },
-    { id: 3, title: "Education Workshop", date: "18 Mar 2026" }
-  ];
+  useEffect(() => {
 
-  const pastEvents = [
-    { id: 4, title: "Blood Donation Camp", date: "10 Jan 2026" },
-    { id: 5, title: "Cleanliness Drive", date: "22 Dec 2025" }
-  ];
+    const token = localStorage.getItem("token");
+    if (!token) {
+    navigate("/login");
+    return;
+  }
+    axios.get("http://localhost:5000/api/ngo/dashboard", {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+    .then(res => setNgo(res.data.ngo))
+    .catch(() => navigate("/login"));
 
-  const eventsToShow =
-    filter === "upcoming" ? upcomingEvents : pastEvents;
+    axios.get("http://localhost:5000/api/events/ngo-events", {
+  headers: {
+    Authorization: `Bearer ${token}`
+  }
+})
+.then(res => setEvents(res.data))
+.catch(err => console.log(err));
+  }, []);
+
+  const handleLogout = () => {
+  localStorage.removeItem("token");
+  localStorage.removeItem("userRole");
+  navigate("/login");
+};
+
+  // const upcomingEvents = [
+  //   { id: 1, title: "Tree Plantation Drive", date: "20 Feb 2026" },
+  //   { id: 2, title: "Health Checkup Camp", date: "5 Mar 2026" },
+  //   { id: 3, title: "Education Workshop", date: "18 Mar 2026" }
+  // ];
+
+  // const pastEvents = [
+  //   { id: 4, title: "Blood Donation Camp", date: "10 Jan 2026" },
+  //   { id: 5, title: "Cleanliness Drive", date: "22 Dec 2025" }
+  // ];
+
+  // const eventsToShow =
+  //   filter === "upcoming" ? upcomingEvents : pastEvents;
 
   return (
     <div className="ngo-dashboard">
 
-      {/* LEFT 1/4 SECTION */}
       <div className="ngo-left">
         <img
           src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
@@ -29,15 +63,14 @@ export default function NGODashboard() {
           className="ngo-photo"
         />
 
-        <h3>Prayaas Foundation</h3>
+        <h3>{ngo?.ngoName}</h3>
         <p className="ngo-category">Category: Education & Health</p>
 
         <button className="edit-btn">Edit NGO Details</button>
-
+      <button className="logout-btn" onClick={handleLogout}>Logout</button>
         <p className="status verified">✔ Verified</p>
       </div>
 
-      {/* RIGHT 3/4 SECTION */}
       <div className="ngo-right">
 
         {/* Top Bar */}
@@ -58,15 +91,18 @@ export default function NGODashboard() {
             </button>
           </div>
 
-          <button className="post-btn">+ Post Event</button>
+          <button className="post-btn" onClick={() => navigate("/ngo/post-event")}>+ Post Event</button>
         </div>
 
         {/* Events List */}
         <div className="events-list">
-          {eventsToShow.map((event) => (
-            <div className="event-card" key={event.id}>
+          {events
+          .filter(e => e.status === filter)
+          .map(event => (
+            <div className="event-card" key={event._id}>
               <h4>{event.title}</h4>
-              <p>{event.date}</p>
+              <p>{new Date(event.start_date).toLocaleDateString()}</p>
+              <p>{new Date(event.end_date).toLocaleDateString()}</p>
             </div>
           ))}
         </div>

@@ -14,15 +14,20 @@ export default function Events() {
       .catch((err) => console.log(err));
   }, [type]);
 
-  // REGISTER HANDLER
-  const handleRegister = async () => {
-    const token = localStorage.getItem("token");
+ const handleRegister = async () => {
+  const token = localStorage.getItem("token");
+  const role = localStorage.getItem("userRole");
+console.log("Active event:", activeEvent);
+console.log("Event ID:", activeEvent?._id);
+  if (!token || role !== "volunteer") {
+    alert("Please login first");
+    return;
+  }
 
-    if (!token) {
-      alert("Please login first to register as volunteer");
-      return;
-    }
-  if (!window.confirm("Do you want to register for this event?")) return;
+  const confirmRegister = window.confirm(
+    "Do you want to register for this event?"
+  );
+  if (!confirmRegister) return;
 
   try {
     await axios.post(
@@ -30,7 +35,7 @@ export default function Events() {
       { event_id: activeEvent._id },
       {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`
+          Authorization: `Bearer ${token}`
         }
       }
     );
@@ -39,19 +44,16 @@ export default function Events() {
   } catch (err) {
     alert(err.response?.data?.message || "Registration failed");
   }
-
-  };
+};
 
   return (
     <>
-      {/* MAIN PAGE */}
       <div className={`events-page ${activeEvent ? "blurred" : ""}`}>
         <h1 className="events-heading">Discover Events</h1>
         <p className="events-subheading">
           Join hands, make an impact, and be the reason for someone’s smile.
         </p>
 
-        {/* FILTERS */}
         <div className="event-filters">
           <button
             className={type === "upcoming" ? "active" : ""}
@@ -68,7 +70,6 @@ export default function Events() {
           </button>
         </div>
 
-        {/* EVENTS GRID */}
         <div className="events-container">
           {events.map((event) => (
             <div className="event-card" key={event._id}>
@@ -96,12 +97,9 @@ export default function Events() {
         </div>
       </div>
 
-      {/* OVERLAY EVENT DETAILS */}
       {activeEvent && (
         <div className="event-overlay">
           <div className="expanded-card">
-
-            {/* ❌ CLOSE BUTTON */}
             <button
               className="close-btn"
               onClick={() => setActiveEvent(null)}
@@ -133,7 +131,6 @@ export default function Events() {
                 <p><strong>Status:</strong> {activeEvent.status}</p>
               </div>
 
-              {/* 🚫 HIDE REGISTER FOR PAST EVENTS */}
               {type === "upcoming" && (
                 <button className="register-btn" onClick={handleRegister}>
                   Register as Volunteer

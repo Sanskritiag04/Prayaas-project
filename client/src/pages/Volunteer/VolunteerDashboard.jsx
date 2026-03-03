@@ -131,8 +131,6 @@ const handleLogout = () => {
 
       
         <div className="dashboard-content">
-
-          {/* EVENTS */}
           <section>
             <h2>My Events</h2>
             <div className="event-grid">
@@ -152,7 +150,6 @@ const handleLogout = () => {
             </div>
           </section>
 
-          {/* BADGES */}
           <section>
             <h2>Badges</h2>
             <div className="badges">
@@ -174,7 +171,6 @@ const handleLogout = () => {
   <div className="event-overlay">
     <div className="expanded-card">
 
-      {/* CLOSE BUTTON */}
       <button
         className="close-btn"
         onClick={() => setActiveEvent(null)}
