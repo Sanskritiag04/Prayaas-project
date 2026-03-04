@@ -14,7 +14,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 import FAQs from "./pages/FAQs"; 
 import EditProfile from "./pages/Volunteer/EditProfile";
 import PostEvent from "./pages/NGO/PostEvent";
-
+import EditNGOProfile from "./pages/NGO/EditNGOProfile" 
 
 function App() {
   return (
@@ -33,6 +33,7 @@ function App() {
          <Route path="/volunteer/edit-profile" element={<EditProfile />} />
         <Route path="/faqs" element={<FAQs />} /> 
       <Route path="/ngo/post-event" element={<PostEvent />} />
+      <Route path="/ngo/edit-profile" element={<EditNGOProfile />} />
       </Routes>
     </Router>
   );

@@ -45,6 +45,8 @@ export default function PostEvent() {
     });
 
     data.append("image", image);
+//     const ngo_id = localStorage.getItem("ngo_id");
+// data.append("ngo_id", ngo_id);
 
     try {
 
@@ -61,7 +63,7 @@ export default function PostEvent() {
 
       alert("Event created successfully");
 
-      navigate("/ngo-dashboard");
+      navigate("/ngo/dashboard");
 
     } catch (err) {
       console.log(err);
@@ -143,7 +145,7 @@ export default function PostEvent() {
             required
           />
 
-          <button type="submit" className="create-btn" onChange={handleSubmit}>
+          <button type="submit" className="create-btn">
             Create Event
           </button>
 

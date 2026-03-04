@@ -137,6 +137,62 @@ router.get("/dashboard", auth("ngo"), async (req, res) => {
     res.status(500).json({ message: "Dashboard error" });
   }
 });
+// EDIT NGO PROFILE
+router.put("/edit-profile", auth("ngo"), async (req, res) => {
+  try {
+    const { ngoName, state, pincode } = req.body;
 
+    // basic validation
+    if (!ngoName || !state || !pincode) {
+      return res.status(400).json({
+        message: "All fields are required"
+      });
+    }
+
+    const updatedNGO = await NGO.findByIdAndUpdate(
+      req.user.id,
+      {
+        ngoName: ngoName.trim(),
+        state: state.trim(),
+        pincode: Number(pincode)
+      },
+      { new: true, runValidators: true }
+    ).select("-password");
+
+    res.json({
+      message: "NGO profile updated successfully",
+      ngo: updatedNGO
+    });
+
+  } catch (error) {
+    console.error("EDIT NGO PROFILE ERROR 👉", error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+// UPDATE NGO PROFILE
+router.put("/profile", auth("ngo"), async (req, res) => {
+  try {
+    const { ngoName, state, pincode } = req.body;
+
+    const updatedNGO = await NGO.findByIdAndUpdate(
+      req.user.id,
+      {
+        ngoName,
+        state,
+        pincode
+      },
+      { new: true, runValidators: true }
+    ).select("-password");
+
+    res.json({
+      message: "NGO profile updated successfully",
+      ngo: updatedNGO
+    });
+
+  } catch (error) {
+    console.error("NGO UPDATE ERROR 👉", error);
+    res.status(500).json({ message: "Update failed" });
+  }
+});
 
 module.exports = router;

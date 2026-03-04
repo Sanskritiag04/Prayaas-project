@@ -66,7 +66,12 @@ export default function NGODashboard() {
         <h3>{ngo?.ngoName}</h3>
         <p className="ngo-category">Category: Education & Health</p>
 
-        <button className="edit-btn">Edit NGO Details</button>
+       <button
+  className="edit-btn"
+  onClick={() => navigate("/ngo/edit-profile")}
+>
+  Edit NGO Details
+</button>
       <button className="logout-btn" onClick={handleLogout}>Logout</button>
         <p className="status verified">✔ Verified</p>
       </div>
@@ -96,16 +101,29 @@ export default function NGODashboard() {
 
         {/* Events List */}
         <div className="events-list">
-          {events
-          .filter(e => e.status === filter)
-          .map(event => (
-            <div className="event-card" key={event._id}>
-              <h4>{event.title}</h4>
-              <p>{new Date(event.start_date).toLocaleDateString()}</p>
-              <p>{new Date(event.end_date).toLocaleDateString()}</p>
-            </div>
-          ))}
+  {events
+    .filter(e => e.status === filter)
+    .map(event => (
+      <div className="event-card" key={event._id}>
+        <img
+          src={`http://localhost:5000${event.image}`}
+          alt={event.title}
+        />
+
+        <div className="event-info">
+          <h3>{event.title}</h3>
+
+          <p>📍 {event.location}</p>
+
+          <p>
+            📅 {new Date(event.start_date).toLocaleDateString()}
+          </p>
+
+          <p>Status: {event.status}</p>
         </div>
+      </div>
+  ))}
+</div>
       </div>
 
     </div>

@@ -1,0 +1,45 @@
+.edit-ngo-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f5f7fa;
+}
+
+.edit-ngo-form {
+  background: #ffffff;
+  padding: 30px;
+  width: 380px;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.edit-ngo-form h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.edit-ngo-form input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.edit-ngo-form button {
+  width: 100%;
+  padding: 12px;
+  background-color: #1e88e5;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.edit-ngo-form button:hover {
+  background-color: #1565c0;
+}

@@ -60,7 +60,7 @@ const eventController = require("../controllers/eventController");
 // CREATE EVENT (NGO)
 router.post(
   "/create",
-  auth,
+  auth("ngo"),
   upload.single("image"),
   eventController.createEvent
 );
@@ -80,6 +80,6 @@ router.get("/details/:id", async (req, res) => {
 });
 
 // NGO EVENTS (dashboard)
-router.get("/ngo-events", auth, eventController.getNgoEvents);
+router.get("/ngo-events", auth("ngo"), eventController.getNgoEvents);
 
 module.exports = router;
