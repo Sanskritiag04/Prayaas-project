@@ -4,59 +4,105 @@ import axios from "axios";
 import "./NGODashboard.css";
 
 export default function NGODashboard() {
+
   const [filter, setFilter] = useState("upcoming");
   const navigate = useNavigate();
   const [ngo, setNgo] = useState(null);
   const [events, setEvents] = useState([]);
 
+  // NEW STATES
+  const [volunteers, setVolunteers] = useState([]);
+  const [selectedEvent, setSelectedEvent] = useState(null);
+
   useEffect(() => {
 
     const token = localStorage.getItem("token");
+
     if (!token) {
-    navigate("/login");
-    return;
-  }
+      navigate("/login");
+      return;
+    }
+
     axios.get("http://localhost:5000/api/ngo/dashboard", {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
+      headers: { Authorization: `Bearer ${token}` }
     })
     .then(res => setNgo(res.data.ngo))
     .catch(() => navigate("/login"));
 
     axios.get("http://localhost:5000/api/events/ngo-events", {
-  headers: {
-    Authorization: `Bearer ${token}`
-  }
-})
-.then(res => setEvents(res.data))
-.catch(err => console.log(err));
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    .then(res => setEvents(res.data))
+    .catch(err => console.log(err));
+
   }, []);
 
   const handleLogout = () => {
-  localStorage.removeItem("token");
-  localStorage.removeItem("userRole");
-  navigate("/login");
-};
+    localStorage.removeItem("token");
+    localStorage.removeItem("userRole");
+    navigate("/login");
+  };
 
-  // const upcomingEvents = [
-  //   { id: 1, title: "Tree Plantation Drive", date: "20 Feb 2026" },
-  //   { id: 2, title: "Health Checkup Camp", date: "5 Mar 2026" },
-  //   { id: 3, title: "Education Workshop", date: "18 Mar 2026" }
-  // ];
+  // ============================
+  // FETCH VOLUNTEERS
+  // ============================
+  const handleViewVolunteers = async (eventId) => {
 
-  // const pastEvents = [
-  //   { id: 4, title: "Blood Donation Camp", date: "10 Jan 2026" },
-  //   { id: 5, title: "Cleanliness Drive", date: "22 Dec 2025" }
-  // ];
+    try {
+      const token = localStorage.getItem("token");
 
-  // const eventsToShow =
-  //   filter === "upcoming" ? upcomingEvents : pastEvents;
+      const res = await axios.get(
+        `http://localhost:5000/api/event-registration/event/${eventId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
+      );
+
+      setVolunteers(res.data);
+      setSelectedEvent(eventId);
+
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  // ============================
+  // MARK ATTENDANCE
+  // ============================
+  const markAttendance = async (registrationId, status) => {
+
+    try {
+      const token = localStorage.getItem("token");
+
+      await axios.put(
+        "http://localhost:5000/api/event-registration/attendance",
+        {
+          registrationId,
+          attended: status
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
+      );
+
+      // update UI instantly
+      setVolunteers(prev =>
+        prev.map(v =>
+          v._id === registrationId ? { ...v, attended: status } : v
+        )
+      );
+
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <div className="ngo-dashboard">
 
+      {/* LEFT */}
       <div className="ngo-left">
+
         <img
           src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
           alt="NGO"
@@ -64,23 +110,28 @@ export default function NGODashboard() {
         />
 
         <h3>{ngo?.ngoName}</h3>
-        <p className="ngo-category">Category: Education & Health</p>
 
-       <button
-  className="edit-btn"
-  onClick={() => navigate("/ngo/edit-profile")}
->
-  Edit NGO Details
-</button>
-      <button className="logout-btn" onClick={handleLogout}>Logout</button>
-        <p className="status verified">✔ Verified</p>
+        <button
+          className="edit-btn"
+          onClick={() => navigate("/ngo/edit-profile")}
+        >
+          Edit NGO Details
+        </button>
+
+        <button className="logout-btn" onClick={handleLogout}>
+          Logout
+        </button>
+
       </div>
 
+      {/* RIGHT */}
       <div className="ngo-right">
 
-        {/* Top Bar */}
+        {/* FILTER */}
         <div className="ngo-topbar">
+
           <div className="filters">
+
             <button
               className={filter === "upcoming" ? "active" : ""}
               onClick={() => setFilter("upcoming")}
@@ -94,36 +145,87 @@ export default function NGODashboard() {
             >
               Past Events
             </button>
+
           </div>
 
-          <button className="post-btn" onClick={() => navigate("/ngo/post-event")}>+ Post Event</button>
+          <button
+            className="post-btn"
+            onClick={() => navigate("/ngo/post-event")}
+          >
+            + Post Event
+          </button>
+
         </div>
 
-        {/* Events List */}
+        {/* EVENTS */}
         <div className="events-list">
-  {events
-    .filter(e => e.status === filter)
-    .map(event => (
-      <div className="event-card" key={event._id}>
-        <img
-          src={`http://localhost:5000${event.image}`}
-          alt={event.title}
-        />
 
-        <div className="event-info">
-          <h3>{event.title}</h3>
+          {events
+            .filter(e => e.status === filter)
+            .map(event => (
 
-          <p>📍 {event.location}</p>
+              <div className="event-card" key={event._id}>
 
-          <p>
-            📅 {new Date(event.start_date).toLocaleDateString()}
-          </p>
+                <img
+                  src={`http://localhost:5000${event.image}`}
+                  alt={event.title}
+                />
 
-          <p>Status: {event.status}</p>
+                <div className="event-info">
+
+                  <h3>{event.title}</h3>
+
+                  <p>📍 {event.location}</p>
+
+                  <p>
+                    📅 {new Date(event.start_date).toLocaleDateString()}
+                  </p>
+
+                  <p>Status: {event.status}</p>
+
+                  {/* ✅ FIXED BUTTON */}
+                  <button
+                    className="view-btn"
+                    onClick={() => handleViewVolunteers(event._id)}
+                  >
+                    See Volunteers
+                  </button>
+
+                </div>
+
+              </div>
+
+          ))}
+
         </div>
-      </div>
-  ))}
-</div>
+
+        {/* VOLUNTEERS */}
+        {selectedEvent && (
+
+          <div className="volunteer-section">
+
+            <h2>Registered Volunteers</h2>
+
+            {volunteers.map(v => (
+
+              <div key={v._id} className="volunteer-row">
+
+                <span>{v.v_id?.name}</span>
+
+                <button
+                  onClick={() => markAttendance(v._id, true)}
+                >
+                  Mark Present
+                </button>
+
+              </div>
+
+            ))}
+
+          </div>
+
+        )}
+
       </div>
 
     </div>

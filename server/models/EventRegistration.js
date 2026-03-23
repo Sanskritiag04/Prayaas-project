@@ -19,6 +19,10 @@ const eventRegistrationSchema = new mongoose.Schema(
       ref: "Event",
       required: true
     },
+    attended: {
+      type: Boolean,
+      default: false
+    },
 
     status: {
       type: String,
