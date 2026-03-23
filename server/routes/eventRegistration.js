@@ -80,7 +80,7 @@ const Event = require("../models/Event");
 const auth = require("../middleware/auth");
 
 // REGISTER FOR EVENT
-router.post("/register", auth, async (req, res) => {
+router.post("/register", auth("volunteer"), async (req, res) => {
   const { event_id } = req.body;
 console.log("Received event_id:", event_id);
   if (!event_id) {
@@ -120,13 +120,13 @@ console.log("Received event_id:", event_id);
 });
 
 // GET VOLUNTEER REGISTERED EVENTS
-router.get("/my-events", auth, async (req, res) => {
+router.get("/my-events", auth("volunteer"), async (req, res) => {
   try {
     const registrations = await EventRegistration.find({
       v_id: req.user.id
     }).populate("event_id");
 
-    const events = registrations.map(r => r.event_id);
+    const events = registrations.map(r => r.event_id).filter(e => e !== null);
 
     res.json(events);
 

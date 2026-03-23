@@ -4,11 +4,14 @@ import { useNavigate } from "react-router-dom";
 import "./EditNGOProfile.css";
 
 export default function EditNGOProfile() {
+
   const [formData, setFormData] = useState({
     ngoName: "",
     state: "",
     pincode: ""
   });
+
+  const [image, setImage] = useState(null); // ✅ moved inside
 
   const navigate = useNavigate();
 
@@ -34,26 +37,43 @@ export default function EditNGOProfile() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    try {
-      await axios.put(
-        "http://localhost:5000/api/ngo/profile",
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`
-          }
+  const data = new FormData();
+
+  data.append("ngoName", formData.ngoName);
+  data.append("state", formData.state);
+  data.append("pincode", formData.pincode);
+
+  if (image) {
+    data.append("photo", image);
+  }
+
+  // ✅ ADD DEBUG HERE
+  for (let pair of data.entries()) {
+    console.log(pair[0], pair[1]);
+  }
+
+  try {
+    await axios.put(
+      "http://localhost:5000/api/ngo/profile",
+      data,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-Type": "multipart/form-data"
         }
-      );
+      }
+    );
 
-      alert("Profile updated successfully");
-      navigate("/ngo/dashboard");
+    alert("Updated successfully");
+    navigate("/ngo/dashboard");
 
-    } catch (error) {
-      alert("Update failed");
-    }
-  };
+  } catch (err) {
+    console.log(err.response); // ✅ ALSO ADD THIS
+    alert("Update failed");
+  }
+};
 
   return (
     <div className="edit-ngo-container">
@@ -63,7 +83,6 @@ export default function EditNGOProfile() {
         <input
           type="text"
           name="ngoName"
-          placeholder="NGO Name"
           value={formData.ngoName}
           onChange={handleChange}
           required
@@ -72,7 +91,6 @@ export default function EditNGOProfile() {
         <input
           type="text"
           name="state"
-          placeholder="State"
           value={formData.state}
           onChange={handleChange}
           required
@@ -81,10 +99,16 @@ export default function EditNGOProfile() {
         <input
           type="number"
           name="pincode"
-          placeholder="Pincode"
           value={formData.pincode}
           onChange={handleChange}
           required
+        />
+
+        {/* ✅ ADD THIS (MOST IMPORTANT) */}
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => setImage(e.target.files[0])}
         />
 
         <button type="submit">Save Changes</button>

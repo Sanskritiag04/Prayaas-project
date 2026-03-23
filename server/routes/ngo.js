@@ -5,7 +5,42 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const auth = require("../middleware/auth");
 
+const multer = require("multer");
+const path = require("path");
+const fs = require("fs");
 
+// ✅ Ensure folder exists
+const uploadPath = "uploads/profile";
+if (!fs.existsSync(uploadPath)) {
+  fs.mkdirSync(uploadPath, { recursive: true });
+}
+
+// ✅ MULTER STORAGE FIXED
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, uploadPath);
+  },
+  filename: (req, file, cb) => {
+    const userId = req.user ? req.user.id : "unknown"; // FIX
+    cb(null, `${userId}-${Date.now()}${path.extname(file.originalname)}`);
+  }
+});
+
+const upload = multer({
+  storage,
+  fileFilter: (req, file, cb) => {
+    if (
+      file.mimetype === "image/jpeg" ||
+      file.mimetype === "image/png"
+    ) {
+      cb(null, true);
+    } else {
+      cb(new Error("Only JPG/PNG allowed"), false);
+    }
+  }
+});
+
+// ================= REGISTER =================
 router.post("/register", async (req, res) => {
   try {
     let {
@@ -29,23 +64,11 @@ router.post("/register", async (req, res) => {
     }
 
     const existingNGO = await NGO.findOne({
-      $or: [
-        { email },
-        { registrationId },
-        { panNumber }
-      ]
+      $or: [{ email }, { registrationId }, { panNumber }]
     });
 
     if (existingNGO) {
-      if (existingNGO.email === email) {
-        return res.status(400).json({ message: "Email already registered" });
-      }
-      if (existingNGO.registrationId === registrationId) {
-        return res.status(400).json({ message: "Registration ID already exists" });
-      }
-      if (existingNGO.panNumber === panNumber) {
-        return res.status(400).json({ message: "PAN number already exists" });
-      }
+      return res.status(400).json({ message: "NGO already exists" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -65,49 +88,35 @@ router.post("/register", async (req, res) => {
     res.status(201).json({ message: "NGO registered successfully" });
 
   } catch (error) {
-    console.error("NGO REGISTER ERROR 👉", error);
-
-    if (error.code === 11000) {
-      return res.status(400).json({
-        message: "Duplicate field detected. Please check email, PAN or registration ID."
-      });
-    }
-
+    console.error(error);
     res.status(500).json({ message: "Server error" });
   }
 });
 
-
+// ================= LOGIN =================
 router.post("/login", async (req, res) => {
   try {
     let { email, password } = req.body;
 
     email = email.trim().toLowerCase();
 
-    // check NGO exists
     const ngo = await NGO.findOne({ email });
     if (!ngo) {
       return res.status(400).json({ message: "Invalid email or password" });
     }
 
-    // compare password
     const isMatch = await bcrypt.compare(password, ngo.password);
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid email or password" });
     }
 
-    // create token
     const token = jwt.sign(
-      {
-        id: ngo._id,
-        role: "ngo"
-      },
+      { id: ngo._id, role: "ngo" },
       "PRAYAAS_SECRET",
       { expiresIn: "1d" }
     );
 
-    res.status(200).json({
-      message: "Login successful",
+    res.json({
       token,
       ngo: {
         id: ngo._id,
@@ -117,82 +126,66 @@ router.post("/login", async (req, res) => {
     });
 
   } catch (error) {
-    console.error("NGO LOGIN ERROR 👉", error);
     res.status(500).json({ message: "Server error" });
   }
 });
 
+// ================= DASHBOARD =================
 router.get("/dashboard", auth("ngo"), async (req, res) => {
   try {
-
     const ngo = await NGO.findById(req.user.id).select("-password");
-
-    res.json({
-      message: "NGO dashboard data",
-      ngo
-    });
-
-  } catch (error) {
-    console.error(error);
+    res.json({ ngo });
+  } catch {
     res.status(500).json({ message: "Dashboard error" });
   }
 });
-// EDIT NGO PROFILE
-router.put("/edit-profile", auth("ngo"), async (req, res) => {
-  try {
-    const { ngoName, state, pincode } = req.body;
 
-    // basic validation
-    if (!ngoName || !state || !pincode) {
-      return res.status(400).json({
-        message: "All fields are required"
-      });
+// ================= UPDATE PROFILE (WITH PHOTO) =================
+router.put("/profile", auth("ngo"), (req, res) => {
+
+  upload.single("photo")(req, res, async (err) => {
+
+    if (err) {
+      return res.status(400).json({ message: err.message });
     }
 
-    const updatedNGO = await NGO.findByIdAndUpdate(
-      req.user.id,
-      {
+    try {
+      const { ngoName, state, pincode } = req.body;
+
+      // ✅ VALIDATION FIX
+      if (!ngoName || !state || !pincode) {
+        return res.status(400).json({ message: "All fields required" });
+      }
+
+      const updateData = {
         ngoName: ngoName.trim(),
         state: state.trim(),
         pincode: Number(pincode)
-      },
-      { new: true, runValidators: true }
-    ).select("-password");
+      };
 
-    res.json({
-      message: "NGO profile updated successfully",
-      ngo: updatedNGO
-    });
+      // ✅ ADD PHOTO IF EXISTS
+      if (req.file) {
+        updateData.photo = `/uploads/profile/${req.file.filename}`;
+      }
 
-  } catch (error) {
-    console.error("EDIT NGO PROFILE ERROR 👉", error);
-    res.status(500).json({ message: "Server error" });
-  }
-});
-// UPDATE NGO PROFILE
-router.put("/profile", auth("ngo"), async (req, res) => {
-  try {
-    const { ngoName, state, pincode } = req.body;
+      const updatedNGO = await NGO.findByIdAndUpdate(
+        req.user.id,
+        updateData,
+        { new: true }
+      ).select("-password");
 
-    const updatedNGO = await NGO.findByIdAndUpdate(
-      req.user.id,
-      {
-        ngoName,
-        state,
-        pincode
-      },
-      { new: true, runValidators: true }
-    ).select("-password");
+      res.json({
+        message: "Profile updated successfully",
+        ngo: updatedNGO
+      });
 
-    res.json({
-      message: "NGO profile updated successfully",
-      ngo: updatedNGO
-    });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Server error" });
+    }
 
-  } catch (error) {
-    console.error("NGO UPDATE ERROR 👉", error);
-    res.status(500).json({ message: "Update failed" });
-  }
+  });
+
 });
 
 module.exports = router;
