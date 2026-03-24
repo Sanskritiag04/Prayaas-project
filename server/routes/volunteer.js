@@ -5,6 +5,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const auth = require("../middleware/auth");
 const generateOTP = require("../utils/generateOTP");
+const sendEmail = require("../utils/sendEmail");
 const multer = require("multer");
 const path = require("path");
 
@@ -32,7 +33,7 @@ const upload = multer({
 
 
 router.post("/forgot-password", async (req, res) => {
-  const { email } = req.body;
+  const email = req.body.email.trim().toLowerCase();
 
   const volunteer = await Volunteer.findOne({ email });
   if (!volunteer) {
@@ -41,14 +42,15 @@ router.post("/forgot-password", async (req, res) => {
 
   const otp = generateOTP();
 
-  volunteer.resetOTP = otp;
-  volunteer.resetOTPExpiry = Date.now() + 60 * 1000; // 1 minute
+  volunteer.resetOTP = String(otp);
+  volunteer.resetOTPExpiry = Date.now() + 5*60 * 1000; // 5 minute
   await volunteer.save();
 
-  res.json({
-    message: "OTP sent to your email",
-    otp 
-  });
+ await sendEmail(email, otp);
+  console.log(otp)
+res.json({
+  message: "OTP sent to your email"
+});
 });
 
 router.put(
@@ -69,26 +71,64 @@ router.put(
 );
 
 
-
 router.post("/verify-otp", async (req, res) => {
-  const { email, otp } = req.body;
+  try {
+    const { email, otp } = req.body;
 
-  const volunteer = await Volunteer.findOne({ email });
-  if (!volunteer) {
+    const volunteer = await Volunteer.findOne({
+      email: email.trim().toLowerCase()
+    });
+//     console.log("ENTERED OTP:", otp);
+// console.log("DB OTP:", volunteer.resetOTP);
+    if (!volunteer) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (
+      String(volunteer.resetOTP) !== String(otp) ||
+      volunteer.resetOTPExpiry < Date.now()
+    ) {
+      return res.status(400).json({ message: "Invalid or expired OTP" });
+    }
+
+// const token = jwt.sign(
+//   { id: volunteer._id, role: "volunteer" }, // or volunteer._id
+//   "PRAYAAS_SECRET",
+//   { expiresIn: "1d" }
+// );
+
+// res.json({
+//   message: "OTP verified successfully",
+//   token
+// });
+res.json({message: "OTP verified successfully"});
+
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+router.post("/reset-password", async (req, res) => {
+  const { email, password } = req.body;
+
+  const user = await Volunteer.findOne({ email }); // or NGO
+
+  if (!user) {
     return res.status(404).json({ message: "User not found" });
   }
 
-  if (
-    volunteer.resetOTP !== otp ||
-    volunteer.resetOTPExpiry < Date.now()
-  ) {
-    return res.status(400).json({ message: "Invalid or expired OTP" });
-  }
+  const hashedPassword = await bcrypt.hash(password, 10);
+  user.password = hashedPassword;
 
-  res.json({ message: "OTP verified successfully" });
+  // clear OTP
+  user.resetOTP = null;
+  user.resetOTPExpiry = null;
+
+  await user.save();
+
+  res.json({ message: "Password updated successfully" });
 });
-
-
 
 router.post("/register", async (req, res) => {
   try {

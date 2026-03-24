@@ -188,4 +188,83 @@ router.put("/profile", auth("ngo"), (req, res) => {
 
 });
 
+const generateOTP = require("../utils/generateOTP");
+
+router.post("/forgot-password", async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    const ngo = await NGO.findOne({ email: email.trim().toLowerCase() });
+    if (!ngo) {
+      return res.status(404).json({ message: "Email not registered" });
+    }
+
+    const otp = generateOTP();
+
+    ngo.resetOTP = String(otp);
+    ngo.resetOTPExpiry = Date.now() + 5 * 60 * 1000; // 5 min
+
+    await ngo.save();
+
+    //console.log("NGO OTP:", otp); 
+
+    res.json({ message: "OTP sent to your email" });
+
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+router.post("/verify-otp", async (req, res) => {
+  try {
+    const { email, otp } = req.body;
+
+    const ngo = await NGO.findOne({ email: email.trim().toLowerCase() });
+
+    if (!ngo) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (
+      String(ngo.resetOTP) !== String(otp) ||
+      ngo.resetOTPExpiry < Date.now()
+    ) {
+      return res.status(400).json({ message: "Invalid or expired OTP" });
+    }
+//     const token = jwt.sign(
+//   { id: ngo._id, role: "ngo" }, // or volunteer._id
+//   "PRAYAAS_SECRET",
+//   { expiresIn: "1d" }
+// );
+
+// res.json({
+//   message: "OTP verified successfully",
+//   token
+// });
+res.json({message: "OTP verified successfully"});
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+router.post("/reset-password", async (req, res) => {
+  const { email, password } = req.body;
+
+  const user = await NGO.findOne({ email }); // or NGO
+
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
+  }
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+  user.password = hashedPassword;
+
+  // clear OTP
+  user.resetOTP = null;
+  user.resetOTPExpiry = null;
+
+  await user.save();
+
+  res.json({ message: "Password updated successfully" });
+});
 module.exports = router;

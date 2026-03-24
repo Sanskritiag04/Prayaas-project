@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./ForgotPassword.css";
 
@@ -7,8 +8,11 @@ export default function ForgotPassword() {
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
   const [step, setStep] = useState(1);
-  const [timeLeft, setTimeLeft] = useState(60);
+  const [timeLeft, setTimeLeft] = useState(300);
   const [msg, setMsg] = useState("");
+  const navigate = useNavigate();
+  const [newPassword, setNewPassword] = useState("");
+const [confirmPassword, setConfirmPassword] = useState("");
 
   // ⏱ TIMER
   useEffect(() => {
@@ -37,9 +41,37 @@ export default function ForgotPassword() {
         ? "http://localhost:5000/api/volunteer/verify-otp"
         : "http://localhost:5000/api/ngo/verify-otp";
 
-    const res = await axios.post(url, { email, otp });
-    setMsg(res.data.message);
+const res = await axios.post(url, { email, otp });
+setMsg(res.data.message);
+  setStep(3); 
+// localStorage.setItem("token", res.data.token); // ✅ IMPORTANT
+
+// if (role === "volunteer") {
+//   navigate("/dashboard");
+// } else {
+//   navigate("/ngo/dashboard");
+// }
   };
+  const resetPassword = async () => {
+  if (newPassword !== confirmPassword) {
+    return setMsg("Passwords do not match");
+  }
+
+  const url =
+    role === "volunteer"
+      ? "http://localhost:5000/api/volunteer/reset-password"
+      : "http://localhost:5000/api/ngo/reset-password";
+
+  const res = await axios.post(url, {
+    email,
+    password: newPassword
+  });
+
+  setMsg(res.data.message);
+  setTimeout(() => {
+    navigate("/login");
+  }, 1500);
+};
 
   return (
     <div className="login-card">
@@ -76,6 +108,25 @@ export default function ForgotPassword() {
           <button onClick={verifyOtp}>Verify OTP</button>
         </>
       )}
+      {step === 3 && (
+  <>
+    <input
+      type="password"
+      placeholder="New Password"
+      value={newPassword}
+      onChange={e => setNewPassword(e.target.value)}
+    />
+
+    <input
+      type="password"
+      placeholder="Confirm Password"
+      value={confirmPassword}
+      onChange={e => setConfirmPassword(e.target.value)}
+    />
+
+    <button onClick={resetPassword}>Update Password</button>
+  </>
+)}
 
       <p>{msg}</p>
     </div>

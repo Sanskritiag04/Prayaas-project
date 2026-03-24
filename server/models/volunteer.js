@@ -66,8 +66,8 @@ const volunteerSchema = new mongoose.Schema(
       }
     ],
 
-    // resetOTP: String,
-    // resetOTPExpiry: Date
+    resetOTP: String,
+    resetOTPExpiry: Date
   },
   { timestamps: true }
 );

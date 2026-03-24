@@ -23,6 +23,7 @@ export default function Login() {
     setError("");
 
     try {
+      //localStorage.clear();
       const url =
         form.role === "volunteer"
           ? "http://localhost:5000/api/volunteer/login"
