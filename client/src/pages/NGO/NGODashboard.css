@@ -157,3 +157,14 @@
 .logout-btn:hover {
   background: #c0392b;
 }
+.ngo-photo {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 15px;
+
+  /* ✅ ADD THESE */
+  border: 3px solid #2e8b57;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}

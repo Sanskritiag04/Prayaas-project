@@ -46,6 +46,12 @@ const ngoSchema = new mongoose.Schema(
       required: true
     },
 
+    // ✅ ADD THIS LINE
+    photo: {
+      type: String,
+      default: ""
+    },
+
     resetOTP: String,
     resetOTPExpiry: Date
   },

@@ -3,6 +3,7 @@ const router = express.Router();
 const EventRegistration = require("../models/EventRegistration");
 const Event = require("../models/Event");
 const auth = require("../middleware/auth");
+const Volunteer = require("../models/volunteer");
 
 
 router.post("/register", auth("volunteer"), async (req, res) => {
@@ -38,7 +39,9 @@ router.post("/register", auth("volunteer"), async (req, res) => {
     });
 
     await registration.save();
-
+    await Volunteer.findByIdAndUpdate(req.user.id, {
+      $inc: { points: 10 }
+    });
     res.json({ message: "Registered successfully" });
 
   } catch (err) {
@@ -82,9 +85,29 @@ router.get("/event/:eventId", auth("ngo"), async (req, res) => {
 });
 
 
-// ===================================
-// MARK ATTENDANCE (NGO)
-// ===================================
+
+// router.put("/attendance", auth("ngo"), async (req, res) => {
+//   const { registrationId, attended } = req.body;
+
+//   if (!registrationId) {
+//     return res.status(400).json({ message: "Registration ID required" });
+//   }
+
+//   try {
+//     const updated = await EventRegistration.findByIdAndUpdate(
+//       registrationId,
+//       { attended },
+//       { new: true }
+//     );
+
+//     res.json(updated);
+
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ message: "Attendance update failed" });
+//   }
+// });
+
 router.put("/attendance", auth("ngo"), async (req, res) => {
   const { registrationId, attended } = req.body;
 
@@ -93,13 +116,30 @@ router.put("/attendance", auth("ngo"), async (req, res) => {
   }
 
   try {
-    const updated = await EventRegistration.findByIdAndUpdate(
-      registrationId,
-      { attended },
-      { new: true }
-    );
+    const registration = await EventRegistration.findById(registrationId);
 
-    res.json(updated);
+    if (!registration) {
+      return res.status(404).json({ message: "Registration not found" });
+    }
+
+    // ✅ Give points ONLY first time
+    if (!registration.attended && attended === true) {
+
+      registration.attended = true;
+      await registration.save();
+
+      // ⭐ ADD 20 POINTS
+      await Volunteer.findByIdAndUpdate(registration.v_id, {
+        $inc: { points: 20 }
+      });
+
+    } else {
+      // normal update (no extra points)
+      registration.attended = attended;
+      await registration.save();
+    }
+
+    res.json(registration);
 
   } catch (err) {
     console.error(err);
@@ -107,6 +147,4 @@ router.put("/attendance", auth("ngo"), async (req, res) => {
   }
 });
 
-
-// ===================================
 module.exports = router;

@@ -8,15 +8,22 @@ const generateOTP = require("../utils/generateOTP");
 const sendEmail = require("../utils/sendEmail");
 const multer = require("multer");
 const path = require("path");
+const fs = require("fs");
 
+const uploadPath = "uploads/profile";
+
+if (!fs.existsSync(uploadPath)) {
+  fs.mkdirSync(uploadPath, { recursive: true });
+}
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "uploads/profile");
   },
   filename: (req, file, cb) => {
-    cb(null, `${req.user.id}-${Date.now()}${path.extname(file.originalname)}`);
-  }
+  const userId = req.user ? req.user.id : "unknown";
+  cb(null, `${userId}-${Date.now()}${path.extname(file.originalname)}`);
+}
 });
 
 const upload = multer({
@@ -54,11 +61,14 @@ res.json({
 });
 
 router.put(
-  "/upload-photo",
-  auth,
+  "/upload-photo",auth("volunteer"),
   upload.single("photo"),
   async (req, res) => {
     try {
+      if (!req.file) {
+        return res.status(400).json({ message: "No file uploaded" });
+      }
+      // console.log("FILE:", req.file); 
       const volunteer = await Volunteer.findById(req.user.id);
       volunteer.photo = `uploads/profile/${req.file.filename}`;
       await volunteer.save();
@@ -231,24 +241,10 @@ router.post("/login", async (req, res) => {
 router.get("/dashboard", auth("volunteer"), async (req, res) => {
   try {
     const volunteer = await Volunteer.findById(req.user.id).select("-password");
-
-    res.status(200).json({
-      message: "Volunteer dashboard data",
-      volunteer: {
-        id: volunteer._id,
-        name: volunteer.name,
-        email: volunteer.email,
-        badges: [{
-    name: "Beginner",
-    image: "beginner.png"
-  },
-  {
-    name: "Active Volunteer",
-    image: "gold.png"
-  }],
-        myEvents: []
-      }
-    });
+res.status(200).json({
+  message: "Volunteer dashboard data",
+  volunteer
+});
   } catch (error) {
     res.status(500).json({ message: "Dashboard error" });
   }
@@ -291,5 +287,31 @@ router.put("/profile", auth, async (req, res) => {
   }
 });
 
+
+router.get("/leaderboard", async (req, res) => {
+  try {
+    const users = await Volunteer.find()
+      .sort({ points: -1 })   // highest first
+      .limit(10);             // optional
+
+    res.json(users);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+router.post("/add-points", async (req, res) => {
+  const { userId, points } = req.body;
+
+  try {
+    await Volunteer.findByIdAndUpdate(userId, {
+      $inc: { points: points }
+    });
+
+    res.json({ message: "Points updated" });
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 
 module.exports= router;

@@ -44,7 +44,7 @@ const handlePhotoChange = async (e) => {
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
-          "Content-Type": "multipart/form-data"
+          //"Content-Type": "multipart/form-data"
         }
       }
     );
@@ -109,7 +109,14 @@ const handleLogout = () => {
       <div className="dashboard-wrapper">
         
         <div className="profile-card">
-          <img src="/profile.png" alt="profile" />
+          <img
+  src={
+    data.photo
+      ? `http://localhost:5000/${data.photo}`
+      : "https://cdn-icons-png.flaticon.com/512/847/847969.png"
+  }
+  alt="profile"
+/>
           <h3>{data.name}</h3>
           <p>{data.email}</p>
 

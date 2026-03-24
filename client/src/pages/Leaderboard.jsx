@@ -1,13 +1,16 @@
 import { useState } from "react";
+ import { useEffect} from "react";
+import axios from "axios";
 import "./Leaderboard.css";
 
 export default function Leaderboard() {
+  const [users, setUsers] = useState([]);
 
-  const [users, setUsers] = useState([
-    { id: 1, name: "Amit", points: 90 },
-    { id: 2, name: "Amisha", points: 40 },
-    { id: 3, name: "Rahul", points: 20 }
-  ]);
+  useEffect(() => {
+    axios.get("http://localhost:5000/api/volunteer/leaderboard")
+      .then(res => setUsers(res.data))
+      .catch(err => console.log(err));
+  }, []);
 
   // Badge logic
   const getBadge = (points) => {
@@ -35,7 +38,7 @@ export default function Leaderboard() {
           {users
             .sort((a, b) => b.points - a.points)
             .map((user, index) => (
-              <tr key={user.id}>
+              <tr key={user._id}>
                 <td>{index + 1}</td>
                 <td>{user.name}</td>
                 <td>{user.points}</td>

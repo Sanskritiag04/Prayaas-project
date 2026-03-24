@@ -1,4 +1,4 @@
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./NGODashboard.css";
@@ -10,7 +10,6 @@ export default function NGODashboard() {
   const [ngo, setNgo] = useState(null);
   const [events, setEvents] = useState([]);
 
-  // NEW STATES
   const [volunteers, setVolunteers] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
 
@@ -23,19 +22,24 @@ export default function NGODashboard() {
       return;
     }
 
+    // ✅ FETCH NGO DATA
     axios.get("http://localhost:5000/api/ngo/dashboard", {
       headers: { Authorization: `Bearer ${token}` }
     })
-    .then(res => setNgo(res.data.ngo))
+    .then(res => {
+      //console.log("NGO DATA:", res.data.ngo); // 🔍 DEBUG
+      setNgo(res.data.ngo);
+    })
     .catch(() => navigate("/login"));
 
+    // ✅ FETCH EVENTS
     axios.get("http://localhost:5000/api/events/ngo-events", {
       headers: { Authorization: `Bearer ${token}` }
     })
     .then(res => setEvents(res.data))
     .catch(err => console.log(err));
 
-  }, []);
+  }, [navigate]);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -47,7 +51,6 @@ export default function NGODashboard() {
   // FETCH VOLUNTEERS
   // ============================
   const handleViewVolunteers = async (eventId) => {
-
     try {
       const token = localStorage.getItem("token");
 
@@ -70,7 +73,6 @@ export default function NGODashboard() {
   // MARK ATTENDANCE
   // ============================
   const markAttendance = async (registrationId, status) => {
-
     try {
       const token = localStorage.getItem("token");
 
@@ -85,7 +87,6 @@ export default function NGODashboard() {
         }
       );
 
-      // update UI instantly
       setVolunteers(prev =>
         prev.map(v =>
           v._id === registrationId ? { ...v, attended: status } : v
@@ -103,13 +104,21 @@ export default function NGODashboard() {
       {/* LEFT */}
       <div className="ngo-left">
 
+        {/* ✅ PROFILE IMAGE FIXED */}
         <img
-          src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+          src={
+            ngo?.photo
+              ? `http://localhost:5000${ngo.photo}`
+              : "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+          }
           alt="NGO"
           className="ngo-photo"
+          onError={(e) => {
+            e.target.src = "https://cdn-icons-png.flaticon.com/512/3135/3135715.png";
+          }}
         />
 
-        <h3>{ngo?.ngoName}</h3>
+        <h3>{ngo?.ngoName || "NGO Name"}</h3>
 
         <button
           className="edit-btn"
@@ -166,9 +175,13 @@ export default function NGODashboard() {
 
               <div className="event-card" key={event._id}>
 
+                {/* ✅ EVENT IMAGE SAFE */}
                 <img
                   src={`http://localhost:5000${event.image}`}
                   alt={event.title}
+                  onError={(e) => {
+                    e.target.src = "https://via.placeholder.com/300x200";
+                  }}
                 />
 
                 <div className="event-info">
@@ -183,7 +196,6 @@ export default function NGODashboard() {
 
                   <p>Status: {event.status}</p>
 
-                  {/* ✅ FIXED BUTTON */}
                   <button
                     className="view-btn"
                     onClick={() => handleViewVolunteers(event._id)}
@@ -206,21 +218,25 @@ export default function NGODashboard() {
 
             <h2>Registered Volunteers</h2>
 
-            {volunteers.map(v => (
+            {volunteers.length === 0 ? (
+              <p>No volunteers registered</p>
+            ) : (
+              volunteers.map(v => (
 
-              <div key={v._id} className="volunteer-row">
+                <div key={v._id} className="volunteer-row">
 
-                <span>{v.v_id?.name}</span>
+                  <span>{v.v_id?.name}</span>
 
-                <button
-                  onClick={() => markAttendance(v._id, true)}
-                >
-                  Mark Present
-                </button>
+                  <button
+                    onClick={() => markAttendance(v._id, true)}
+                  >
+                    Mark Present
+                  </button>
 
-              </div>
+                </div>
 
-            ))}
+              ))
+            )}
 
           </div>
 

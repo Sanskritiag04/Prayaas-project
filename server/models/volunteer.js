@@ -65,6 +65,10 @@ const volunteerSchema = new mongoose.Schema(
         date: String
       }
     ],
+    points: {
+  type: Number,
+  default: 0
+},
 
     resetOTP: String,
     resetOTPExpiry: Date
