@@ -91,16 +91,6 @@ router.post("/verify-otp", async (req, res) => {
       return res.status(400).json({ message: "Invalid or expired OTP" });
     }
 
-// const token = jwt.sign(
-//   { id: volunteer._id, role: "volunteer" }, // or volunteer._id
-//   "PRAYAAS_SECRET",
-//   { expiresIn: "1d" }
-// );
-
-// res.json({
-//   message: "OTP verified successfully",
-//   token
-// });
 res.json({message: "OTP verified successfully"});
 
   } catch (err) {
