@@ -10,8 +10,8 @@ export default function NGODashboard() {
   const [ngo, setNgo] = useState(null);
   const [events, setEvents] = useState([]);
 
-  const [volunteers, setVolunteers] = useState([]);
-  const [selectedEvent, setSelectedEvent] = useState(null);
+  // const [volunteers, setVolunteers] = useState([]);
+  // const [selectedEvent, setSelectedEvent] = useState(null);
 
   useEffect(() => {
 
@@ -50,53 +50,53 @@ export default function NGODashboard() {
   // ============================
   // FETCH VOLUNTEERS
   // ============================
-  const handleViewVolunteers = async (eventId) => {
-    try {
-      const token = localStorage.getItem("token");
+  // const handleViewVolunteers = async (eventId) => {
+  //   try {
+  //     const token = localStorage.getItem("token");
 
-      const res = await axios.get(
-        `http://localhost:5000/api/event-registration/event/${eventId}`,
-        {
-          headers: { Authorization: `Bearer ${token}` }
-        }
-      );
+  //     const res = await axios.get(
+  //       `http://localhost:5000/api/event-registration/event/${eventId}`,
+  //       {
+  //         headers: { Authorization: `Bearer ${token}` }
+  //       }
+  //     );
 
-      setVolunteers(res.data);
-      setSelectedEvent(eventId);
+  //     setVolunteers(res.data);
+  //     setSelectedEvent(eventId);
 
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
 
   // ============================
   // MARK ATTENDANCE
   // ============================
-  const markAttendance = async (registrationId, status) => {
-    try {
-      const token = localStorage.getItem("token");
+  // const markAttendance = async (registrationId, status) => {
+  //   try {
+  //     const token = localStorage.getItem("token");
 
-      await axios.put(
-        "http://localhost:5000/api/event-registration/attendance",
-        {
-          registrationId,
-          attended: status
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` }
-        }
-      );
+  //     await axios.put(
+  //       "http://localhost:5000/api/event-registration/attendance",
+  //       {
+  //         registrationId,
+  //         attended: status
+  //       },
+  //       {
+  //         headers: { Authorization: `Bearer ${token}` }
+  //       }
+  //     );
 
-      setVolunteers(prev =>
-        prev.map(v =>
-          v._id === registrationId ? { ...v, attended: status } : v
-        )
-      );
+  //     setVolunteers(prev =>
+  //       prev.map(v =>
+  //         v._id === registrationId ? { ...v, attended: status } : v
+  //       )
+  //     );
 
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
 
   return (
     <div className="ngo-dashboard">
@@ -197,11 +197,11 @@ export default function NGODashboard() {
                   <p>Status: {event.status}</p>
 
                   <button
-                    className="view-btn"
-                    onClick={() => handleViewVolunteers(event._id)}
-                  >
-                    See Volunteers
-                  </button>
+  className="view-btn"
+  onClick={() => navigate(`/ngo/volunteers/${event._id}`)}
+>
+  See Volunteers
+</button>
 
                 </div>
 
@@ -210,37 +210,6 @@ export default function NGODashboard() {
           ))}
 
         </div>
-
-        {/* VOLUNTEERS */}
-        {selectedEvent && (
-
-          <div className="volunteer-section">
-
-            <h2>Registered Volunteers</h2>
-
-            {volunteers.length === 0 ? (
-              <p>No volunteers registered</p>
-            ) : (
-              volunteers.map(v => (
-
-                <div key={v._id} className="volunteer-row">
-
-                  <span>{v.v_id?.name}</span>
-
-                  <button
-                    onClick={() => markAttendance(v._id, true)}
-                  >
-                    Mark Present
-                  </button>
-
-                </div>
-
-              ))
-            )}
-
-          </div>
-
-        )}
 
       </div>
 

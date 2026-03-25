@@ -15,6 +15,7 @@ import FAQs from "./pages/FAQs";
 import EditProfile from "./pages/Volunteer/EditProfile";
 import PostEvent from "./pages/NGO/PostEvent";
 import EditNGOProfile from "./pages/NGO/EditNGOProfile" 
+import VolunteersPage from "./pages/NGO/VolunteersPage";
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
         <Route path="/faqs" element={<FAQs />} /> 
       <Route path="/ngo/post-event" element={<PostEvent />} />
       <Route path="/ngo/edit-profile" element={<EditNGOProfile />} />
+      <Route path="/ngo/volunteers/:eventId" element={<VolunteersPage />} />
       </Routes>
     </Router>
   );

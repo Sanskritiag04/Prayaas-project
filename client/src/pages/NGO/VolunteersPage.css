@@ -1,0 +1,68 @@
+.volunteers-container {
+  padding: 30px;
+}
+
+.volunteer-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  padding: 15px 20px;
+  border-radius: 10px;
+  margin-bottom: 12px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+}
+
+.volunteer-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.mark-btn {
+  padding: 6px 14px;
+  width: auto;              /* ✅ FIX: not full width */
+  background: #2e8b57;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.present-tag {
+  color: green;
+  font-weight: bold;
+}
+
+.selected-tag {
+  color: orange;
+  font-weight: bold;
+}
+
+.action-buttons {
+  margin-top: 20px;
+  display: flex;
+  gap: 15px;
+}
+
+.submit-btn {
+  padding: 10px 20px;
+  background: #2e8b57;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.certificate-btn {
+  padding: 10px 20px;
+  background: #ff9800;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.submit-btn:disabled {
+  background: gray;
+  cursor: not-allowed;
+}

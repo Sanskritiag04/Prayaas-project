@@ -19,6 +19,7 @@ export default function VolunteerDashboard() {
   const fileInputRef = useRef(null);
   const [myEvents, setMyEvents] = useState([]);
   const [activeEvent, setActiveEvent] = useState(null);
+  const [certificates, setCertificates] = useState([]);
 
 const handlePhotoClick = () => {
   fileInputRef.current.click();
@@ -88,7 +89,15 @@ const handleLogout = () => {
     .then(res => setData(res.data.volunteer))
     .catch(() => alert("Unauthorized"));
 
-  
+ axios
+  .get("http://localhost:5000/api/volunteer/my-certificates", {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
+  .then(res => setCertificates(res.data))
+  .catch(() => console.log("Could not load certificates"));
+
   axios
     .get("http://localhost:5000/api/event-registration/my-events", {
       headers: {
@@ -170,6 +179,30 @@ const handleLogout = () => {
 
 
           </section>
+         <section>
+  <h2>My Certificates</h2>
+
+  {certificates.length === 0 ? (
+    <p>No certificates yet</p>
+  ) : (
+    <div className="certificates-container">
+      {certificates.map(c => (
+        <div key={c._id} className="certificate-card">
+          <h4>{c.event_id?.title}</h4>
+          <p>Certificate of Participation</p>
+
+          <a
+            href={`http://localhost:5000/${c.certificate}`}
+            target="_blank"
+            rel="noreferrer"
+          >
+            Download
+          </a>
+        </div>
+      ))}
+    </div>
+  )}
+</section>
 
         </div>
       </div>

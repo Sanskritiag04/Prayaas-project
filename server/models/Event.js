@@ -44,6 +44,10 @@ const eventSchema = new mongoose.Schema(
       type: String,
       required: true
     },
+    attendanceSubmitted: {
+  type: Boolean,
+  default: false
+}
 //     max_volunteers: {
 //   type: Number,
 //   required: true

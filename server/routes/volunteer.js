@@ -11,6 +11,11 @@ const path = require("path");
 const fs = require("fs");
 
 const uploadPath = "uploads/profile";
+const certPath = "uploads/certificates";
+
+if (!fs.existsSync(certPath)) {
+  fs.mkdirSync(certPath, { recursive: true });
+}
 
 if (!fs.existsSync(uploadPath)) {
   fs.mkdirSync(uploadPath, { recursive: true });
@@ -112,7 +117,7 @@ res.json({message: "OTP verified successfully"});
 router.post("/reset-password", async (req, res) => {
   const { email, password } = req.body;
 
-  const user = await Volunteer.findOne({ email }); // or NGO
+  const user = await Volunteer.findOne({ email });
 
   if (!user) {
     return res.status(404).json({ message: "User not found" });
@@ -120,8 +125,6 @@ router.post("/reset-password", async (req, res) => {
 
   const hashedPassword = await bcrypt.hash(password, 10);
   user.password = hashedPassword;
-
-  // clear OTP
   user.resetOTP = null;
   user.resetOTPExpiry = null;
 
@@ -311,6 +314,25 @@ router.post("/add-points", async (req, res) => {
     res.json({ message: "Points updated" });
   } catch (err) {
     res.status(500).json(err);
+  }
+});
+
+// ================= GET VOLUNTEER CERTIFICATES =================
+const EventRegistration = require("../models/EventRegistration");
+
+router.get("/my-certificates", auth("volunteer"), async (req, res) => {
+  try {
+    const certificates = await EventRegistration.find({
+      v_id: req.user.id,
+      attended: true,
+      certificate: { $ne: null }   // only those with certificates
+    }).populate("event_id", "title");
+
+    res.json(certificates);
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Failed to fetch certificates" });
   }
 });
 

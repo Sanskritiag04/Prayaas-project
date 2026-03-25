@@ -28,7 +28,11 @@ const eventRegistrationSchema = new mongoose.Schema(
       type: String,
       enum: ["registered", "cancelled"],
       default: "registered"
-    }
+    },
+    certificate: {
+  type: String,   // file path or URL
+  default: null
+}
   },
   { timestamps: true }
 );
