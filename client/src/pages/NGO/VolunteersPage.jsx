@@ -9,6 +9,7 @@ export default function VolunteersPage() {
   const [volunteers, setVolunteers] = useState([]);
   const [attendance, setAttendance] = useState({});
   const [submitted, setSubmitted] = useState(false);
+  const [certificatesIssued, setCertificatesIssued] = useState(false);
 
   // ================= FETCH DATA =================
   useEffect(() => {
@@ -23,12 +24,14 @@ export default function VolunteersPage() {
 
     // fetch event status
     axios
-      .get(`http://localhost:5000/api/events/details/${eventId}`)
-      .then(res => {
-        if (res.data.attendanceSubmitted) {
-          setSubmitted(true);
-        }
-      });
+  .get(`http://localhost:5000/api/events/details/${eventId}`)
+  .then(res => {
+    if (res.data.attendanceSubmitted)
+      setSubmitted(true);
+
+    if (res.data.certificatesIssued)
+      setCertificatesIssued(true);
+  });
 
   }, [eventId]);
 
@@ -76,25 +79,63 @@ export default function VolunteersPage() {
     }
   };
 
-  const handleIssueCertificates = async () => {
+//   const handleIssueCertificates = async () => {
+//   const token = localStorage.getItem("token");
+
+//   try {
+//     const presentVolunteers = volunteers.filter(v => v.attended);
+
+//     let issuedCount = 0;
+//     let alreadyCount = 0;
+
+//     for (let v of presentVolunteers) {
+//       const res = await axios.get(
+//         `http://localhost:5000/api/event-registration/certificate/${v._id}`,
+//         {
+//           headers: { Authorization: `Bearer ${token}` }
+//         }
+//       );
+
+//       if (res.data.message === "Certificate issued") {
+//         issuedCount++;
+//       }
+
+//       if (res.data.message === "Already issued") {
+//         alreadyCount++;
+//       }
+//     }
+
+//     // ✅ Smart alert
+//     if (issuedCount > 0) {
+//       alert(`🎉 ${issuedCount} certificates issued successfully`);
+//       setCertificatesIssued(true);
+//     } else {
+//       alert("✅ All certificates already issued");
+//     }
+
+//   } catch (err) {
+//     console.log(err);
+//     alert("Certificate issuing failed");
+//   }
+// };
+
+const handleIssueCertificates = async () => {
   const token = localStorage.getItem("token");
 
   try {
-    const presentVolunteers = volunteers.filter(v => v.attended);
+    const res = await axios.put(
+      `http://localhost:5000/api/event-registration/issue-certificates/${eventId}`,
+      {},
+      {
+        headers: { Authorization: `Bearer ${token}` }
+      }
+    );
 
-    for (let v of presentVolunteers) {
-      await axios.get(
-        `http://localhost:5000/api/event-registration/certificate/${v._id}`,
-        {
-          headers: { Authorization: `Bearer ${token}` }
-        }
-      );
-    }
-
-    alert("🎉 Certificates issued successfully!");
+    alert(res.data.message);
+    setCertificatesIssued(true);
 
   } catch (err) {
-    console.log(err);
+    alert("Certificate issuing failed");
   }
 };
 
@@ -144,11 +185,12 @@ export default function VolunteersPage() {
 
         {submitted && (
           <button
-            className="certificate-btn"
-            onClick={handleIssueCertificates}
-          >
-            Issue Certificates
-          </button>
+  className="certificate-btn"
+  onClick={handleIssueCertificates}
+  disabled={certificatesIssued}
+>
+  {certificatesIssued ? "Certificates Issued ✔" : "Issue Certificates"}
+</button>
         )}
 
       </div>

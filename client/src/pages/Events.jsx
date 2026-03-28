@@ -145,7 +145,13 @@ export default function Events() {
 
       {/* EVENT DETAILS POPUP */}
 
-      {activeEvent && (
+      {activeEvent && 
+        (() => {
+
+  const registrationClosed =
+    new Date() > new Date(activeEvent.registration_deadline);
+
+  return (
 
         <div className="event-overlay">
 
@@ -207,11 +213,14 @@ export default function Events() {
               {type === "upcoming" && (
 
                 <button
-                  className="register-btn"
-                  onClick={handleRegister}
-                >
-                  Register as Volunteer
-                </button>
+  className="register-btn"
+  onClick={handleRegister}
+  disabled={registrationClosed}
+>
+  {registrationClosed
+    ? "Registration Closed"
+    : "Register as Volunteer"}
+</button>
 
               )}
 
@@ -220,8 +229,7 @@ export default function Events() {
           </div>
 
         </div>
-
-      )}
+  )})()}
 
     </>
   );

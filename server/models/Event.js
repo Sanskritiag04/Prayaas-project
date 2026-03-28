@@ -47,16 +47,15 @@ const eventSchema = new mongoose.Schema(
     attendanceSubmitted: {
   type: Boolean,
   default: false
-}
-//     max_volunteers: {
-//   type: Number,
-//   required: true
-// },
-
-// current_volunteers: {
-//   type: Number,
-//   default: 0
-// }
+},
+certificatesIssued: {
+  type: Boolean,
+  default: false
+},
+registration_deadline: {
+  type: Date,
+  required: true
+},
 
   },
   { timestamps: true }

@@ -6,6 +6,7 @@ import "./PostEvent.css";
 export default function PostEvent() {
 
   const navigate = useNavigate();
+  const today = new Date().toISOString().split("T")[0];
 
   const [formData, setFormData] = useState({
     title: "",
@@ -13,6 +14,7 @@ export default function PostEvent() {
     event_type: "",
     start_date: "",
     end_date: "",
+    registration_deadline: "",
     location: "",
     status: "upcoming"
   });
@@ -108,19 +110,31 @@ export default function PostEvent() {
 
           <label>Start Date</label>
           <input
-            type="date"
-            name="start_date"
-            onChange={handleChange}
-            required
-          />
+  type="date"
+  name="start_date"
+  min={today}
+  onChange={handleChange}
+  required
+/>
 
           <label>End Date</label>
           <input
-            type="date"
-            name="end_date"
-            onChange={handleChange}
-            required
-          />
+  type="date"
+  name="end_date"
+  min={formData.start_date || today}
+  onChange={handleChange}
+  required
+/>
+
+<label>Registration Deadline</label>
+<input
+  type="date"
+  name="registration_deadline"
+  min={today}
+  max={formData.start_date || ""}
+  onChange={handleChange}
+  required
+/>
 
           <label>Location</label>
           <input
@@ -131,11 +145,11 @@ export default function PostEvent() {
             required
           />
 
-          <label>Status</label>
+          {/* <label>Status</label>
           <select name="status" onChange={handleChange}>
             <option value="upcoming">Upcoming</option>
             <option value="past">Past</option>
-          </select>
+          </select> */}
 
           <label>Event Image</label>
           <input
