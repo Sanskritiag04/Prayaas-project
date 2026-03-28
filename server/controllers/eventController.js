@@ -1,30 +1,18 @@
 const Event = require("../models/Event");
-
-// CREATE EVENT
-// exports.createEvent = async (req, res) => {
-//   try {
-//     const event = new Event({
-//       ...req.body,
-//       ngo_id: req.user.id,
-//       image: `/uploads/events/${req.file.filename}`
-//     });
-
-//     await event.save();
-
-//     res.status(201).json({
-//       message: "Event created successfully",
-//       event
-//     });
-
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ message: "Server error" });
-//   }
-// };
+const NGO= require("../models/NGO")
 
 // CREATE EVENT
 exports.createEvent = async (req, res) => {
   try {
+
+    const ngo = await NGO.findById(req.user.id);
+
+    if (ngo.status !== "verified") {
+      return res.status(403).json({ 
+        message: "Your account is pending verification. You cannot post events yet." 
+      });
+    }
+
     const {
       title,
       description,
@@ -37,6 +25,8 @@ exports.createEvent = async (req, res) => {
 
     const today = new Date();
     today.setHours(0,0,0,0);
+    const deadlineDate = new Date(registration_deadline);
+deadlineDate.setHours(0, 0, 0, 0);
 
     //  validation 1 — start date cannot be past
     if (new Date(start_date) < today) {
@@ -59,8 +49,7 @@ if (new Date(registration_deadline) >= new Date(start_date)) {
   });
 }
 
-// deadline already passed
-if (new Date(registration_deadline) < today) {
+if (deadlineDate < today) {
   return res.status(400).json({
     message: "Registration deadline cannot be in past"
   });
@@ -98,23 +87,10 @@ if (new Date(registration_deadline) < today) {
   }
 };
 
-// GET UPCOMING EVENTS
-// exports.getUpcomingEvents = async (req, res) => {
-//   try {
-//     const events = await Event.find({ status: "upcoming" })
-//       .populate("ngo_id", "ngoName");
-
-//     res.json(events);
-
-//   } catch (error) {
-//     res.status(500).json({ message: "Server error" });
-//   }
-// };
 
 exports.getUpcomingEvents = async (req, res) => {
   try {
 
-    // ✅ automatically update old events
     await Event.updateMany(
       { end_date: { $lt: new Date() } },
       { status: "past" }
@@ -130,19 +106,6 @@ exports.getUpcomingEvents = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
-
-// GET PAST EVENTS
-// exports.getPastEvents = async (req, res) => {
-//   try {
-//     const events = await Event.find({ status: "past" })
-//       .populate("ngo_id", "ngoName");
-
-//     res.json(events);
-
-//   } catch (error) {
-//     res.status(500).json({ message: "Server error" });
-//   }
-// };
 
 exports.getPastEvents = async (req, res) => {
   try {
@@ -163,7 +126,6 @@ exports.getPastEvents = async (req, res) => {
   }
 };
 
-// GET EVENTS OF LOGGED IN NGO
 exports.getNgoEvents = async (req, res) => {
   try {
     const events = await Event.find({ ngo_id: req.user.id });
@@ -171,6 +133,44 @@ exports.getNgoEvents = async (req, res) => {
     res.json(events);
 
   } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+
+exports.deleteEvent = async (req, res) => {
+  try {
+    const event = await Event.findById(req.params.id);
+
+    if (!event) {
+      return res.status(404).json({ message: "Event not found" });
+    }
+
+    if (event.ngo_id.toString() !== req.user.id) {
+      return res.status(401).json({ message: "Unauthorized to delete this event" });
+    }
+
+  
+    const today = new Date();
+    const deadline = new Date(event.registration_deadline);
+    deadline.setHours(23, 59, 59, 999); 
+
+    if (today > deadline) {
+      return res.status(400).json({ 
+        message: "Cannot delete event after registration has ended" 
+      });
+    }
+
+    const EventRegistration = require("../models/EventRegistration");
+    await EventRegistration.deleteMany({ event_id: req.params.id });
+
+    
+    await Event.findByIdAndDelete(req.params.id);
+
+    res.json({ message: "Event and registrations deleted successfully" });
+
+  } catch (error) {
+    console.error(error);
     res.status(500).json({ message: "Server error" });
   }
 };

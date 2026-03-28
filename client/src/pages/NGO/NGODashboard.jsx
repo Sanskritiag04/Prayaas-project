@@ -9,9 +9,38 @@ export default function NGODashboard() {
   const navigate = useNavigate();
   const [ngo, setNgo] = useState(null);
   const [events, setEvents] = useState([]);
+  const [showSettings, setShowSettings] = useState(false);
+const [passwordForm, setPasswordForm] = useState({ oldPassword: "", newPassword: "" });
 
-  // const [volunteers, setVolunteers] = useState([]);
-  // const [selectedEvent, setSelectedEvent] = useState(null);
+const handlePasswordChange = async (e) => {
+  e.preventDefault();
+  try {
+    const token = localStorage.getItem("token");
+    await axios.put("http://localhost:5000/api/ngo/change-password", passwordForm, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    alert("Password updated!");
+    setShowSettings(false);
+  } catch (err) {
+    alert(err.response?.data?.message || "Update failed");
+  }
+};
+
+const handleDeleteAccount = async () => {
+  const confirm = window.confirm("CRITICAL WARNING: This will permanently delete your NGO profile and ALL your posted events. Volunteers will lose their registrations. Proceed?");
+  if (confirm) {
+    try {
+      const token = localStorage.getItem("token");
+      await axios.delete("http://localhost:5000/api/ngo/delete-account", {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      localStorage.clear();
+      navigate("/login");
+    } catch (err) {
+      alert("Delete failed");
+    }
+  }
+};
 
   useEffect(() => {
 
@@ -22,17 +51,16 @@ export default function NGODashboard() {
       return;
     }
 
-    // ✅ FETCH NGO DATA
     axios.get("http://localhost:5000/api/ngo/dashboard", {
       headers: { Authorization: `Bearer ${token}` }
     })
     .then(res => {
-      //console.log("NGO DATA:", res.data.ngo); // 🔍 DEBUG
+      //console.log("NGO DATA:", res.data.ngo); 
       setNgo(res.data.ngo);
     })
     .catch(() => navigate("/login"));
 
-    // ✅ FETCH EVENTS
+   
     axios.get("http://localhost:5000/api/events/ngo-events", {
       headers: { Authorization: `Bearer ${token}` }
     })
@@ -47,64 +75,29 @@ export default function NGODashboard() {
     navigate("/login");
   };
 
-  // ============================
-  // FETCH VOLUNTEERS
-  // ============================
-  // const handleViewVolunteers = async (eventId) => {
-  //   try {
-  //     const token = localStorage.getItem("token");
+  const handleDelete = async (eventId) => {
+  if (window.confirm("Are you sure? This will remove all registered volunteers and delete the event.")) {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await axios.delete(`http://localhost:5000/api/events/delete-event/${eventId}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
 
-  //     const res = await axios.get(
-  //       `http://localhost:5000/api/event-registration/event/${eventId}`,
-  //       {
-  //         headers: { Authorization: `Bearer ${token}` }
-  //       }
-  //     );
+      alert(res.data.message);
+      
+      setEvents(events.filter(e => e._id !== eventId));
+    } catch (err) {
+      alert(err.response?.data?.message || "Error deleting event");
+    }
+  }
+};
 
-  //     setVolunteers(res.data);
-  //     setSelectedEvent(eventId);
-
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
-
-  // ============================
-  // MARK ATTENDANCE
-  // ============================
-  // const markAttendance = async (registrationId, status) => {
-  //   try {
-  //     const token = localStorage.getItem("token");
-
-  //     await axios.put(
-  //       "http://localhost:5000/api/event-registration/attendance",
-  //       {
-  //         registrationId,
-  //         attended: status
-  //       },
-  //       {
-  //         headers: { Authorization: `Bearer ${token}` }
-  //       }
-  //     );
-
-  //     setVolunteers(prev =>
-  //       prev.map(v =>
-  //         v._id === registrationId ? { ...v, attended: status } : v
-  //       )
-  //     );
-
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
 
   return (
     <div className="ngo-dashboard">
-
-      {/* LEFT */}
       <div className="ngo-left">
 
-        {/* ✅ PROFILE IMAGE FIXED */}
+       
         <img
           src={
             ngo?.photo
@@ -126,6 +119,13 @@ export default function NGODashboard() {
         >
           Edit NGO Details
         </button>
+
+        <button 
+  className="settings-btn-ngo" 
+  onClick={() => setShowSettings(true)}
+>
+  Settings
+</button>
 
         <button className="logout-btn" onClick={handleLogout}>
           Logout
@@ -157,12 +157,17 @@ export default function NGODashboard() {
 
           </div>
 
-          <button
-            className="post-btn"
-            onClick={() => navigate("/ngo/post-event")}
-          >
-            + Post Event
-          </button>
+          {ngo?.status === "verified" ? (
+    <button className="post-btn" onClick={() => navigate("/ngo/post-event")}>
+      + Post Event
+    </button>
+  ) : (
+    <div className="status-notice">
+      {ngo?.status === "pending" ? 
+        "Account under verification. You can post events once approved." : 
+        "Account rejected. Please contact admin."}
+    </div>
+  )}
 
         </div>
 
@@ -202,6 +207,23 @@ export default function NGODashboard() {
 >
   See Volunteers
 </button>
+{filter === "upcoming" && (
+  <button
+    className="delete-btn"
+    style={{ 
+      backgroundColor: "#dc3545", 
+      color: "white", 
+      padding: "8px 15px", 
+      border: "none", 
+      borderRadius: "5px",
+      cursor: "pointer",
+      marginLeft: "10px"
+    }}
+    onClick={() => handleDelete(event._id)}
+  >
+    Delete
+  </button>
+)}
 
                 </div>
 
@@ -213,6 +235,42 @@ export default function NGODashboard() {
 
       </div>
 
+
+{showSettings && (
+        <div className="event-overlay">
+          <div className="settings-modal">
+            <button className="close-btn" onClick={() => setShowSettings(false)}>✕</button>
+            <h2>NGO Account Settings</h2>
+            
+            <form onSubmit={handlePasswordChange} className="settings-form">
+              <h4>Change Password</h4>
+              <input 
+                type="password" 
+                placeholder="Current Password" 
+                required 
+                onChange={(e) => setPasswordForm({...passwordForm, oldPassword: e.target.value})} 
+              />
+              <input 
+                type="password" 
+                placeholder="New Password" 
+                required 
+                onChange={(e) => setPasswordForm({...passwordForm, newPassword: e.target.value})} 
+              />
+              <button type="submit" className="save-btn">Update Password</button>
+            </form>
+
+            <hr style={{ margin: "20px 0" }} />
+
+            <div className="danger-zone">
+              <h4>Danger Zone</h4>
+              <p>Deleting your account will remove all your events and data permanently.</p>
+              <button className="delete-btn" onClick={handleDeleteAccount}>
+                Delete NGO Account
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -9,19 +9,19 @@ const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
 
-// ✅ Ensure folder exists
+
 const uploadPath = "uploads/profile";
 if (!fs.existsSync(uploadPath)) {
   fs.mkdirSync(uploadPath, { recursive: true });
 }
 
-// ✅ MULTER STORAGE FIXED
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, uploadPath);
   },
   filename: (req, file, cb) => {
-    const userId = req.user ? req.user.id : "unknown"; // FIX
+    const userId = req.user ? req.user.id : "unknown"; 
     cb(null, `${userId}-${Date.now()}${path.extname(file.originalname)}`);
   }
 });
@@ -41,30 +41,22 @@ const upload = multer({
 });
 
 // ================= REGISTER =================
-router.post("/register", async (req, res) => {
+router.post("/register", upload.single("panCard"), async (req, res) => {
   try {
-    let {
-      ngoName,
-      email,
-      registrationId,
-      panNumber,
-      state,
-      pincode,
-      password,
-      confirmPassword
-    } = req.body;
+    let { ngoName, email, registrationId, panNumber, state, pincode, password, confirmPassword } = req.body;
 
-    email = email.trim().toLowerCase();
-    registrationId = registrationId.trim();
-    panNumber = panNumber.trim().toUpperCase();
-    ngoName = ngoName.trim();
+    // 1. Check if file was uploaded
+    if (!req.file) {
+      return res.status(400).json({ message: "Please upload your PAN card image" });
+    }
 
     if (password !== confirmPassword) {
       return res.status(400).json({ message: "Passwords do not match" });
     }
 
+    // Existing "already exists" checks...
     const existingNGO = await NGO.findOne({
-      $or: [{ email }, { registrationId }, { panNumber }]
+      $or: [{ email: email.trim().toLowerCase() }, { registrationId: registrationId.trim() }, { panNumber: panNumber.trim().toUpperCase() }]
     });
 
     if (existingNGO) {
@@ -74,17 +66,17 @@ router.post("/register", async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const ngo = new NGO({
-      ngoName,
-      email,
-      registrationId,
-      panNumber,
+      ngoName: ngoName.trim(),
+      email: email.trim().toLowerCase(),
+      registrationId: registrationId.trim(),
+      panNumber: panNumber.trim().toUpperCase(),
       state,
       pincode: Number(pincode),
-      password: hashedPassword
+      password: hashedPassword,
+      panCard: `/uploads/profile/${req.file.filename}` // Store the path here
     });
 
     await ngo.save();
-
     res.status(201).json({ message: "NGO registered successfully" });
 
   } catch (error) {
@@ -92,6 +84,7 @@ router.post("/register", async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 });
+
 
 // ================= LOGIN =================
 router.post("/login", async (req, res) => {
@@ -267,4 +260,48 @@ router.post("/reset-password", async (req, res) => {
 
   res.json({ message: "Password updated successfully" });
 });
+
+// ================= CHANGE PASSWORD (NGO) =================
+router.put("/change-password", auth("ngo"), async (req, res) => {
+  try {
+    const { oldPassword, newPassword } = req.body;
+    const ngo = await NGO.findById(req.user.id);
+
+    const isMatch = await bcrypt.compare(oldPassword, ngo.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: "Current password is incorrect" });
+    }
+
+    ngo.password = await bcrypt.hash(newPassword, 10);
+    await ngo.save();
+
+    res.json({ message: "Password updated successfully" });
+  } catch (err) {
+    res.status(500).json({ message: "Error updating password" });
+  }
+});
+
+// ================= DELETE ACCOUNT (NGO) =================
+router.delete("/delete-account", auth("ngo"), async (req, res) => {
+  try {
+    const Event = require("../models/Event");
+    const EventRegistration = require("../models/EventRegistration");
+    const ngoId = req.user.id;
+
+    const events = await Event.find({ ngo_id: ngoId });
+    const eventIds = events.map(e => e._id);
+
+    await EventRegistration.deleteMany({ event_id: { $in: eventIds } });
+
+    await Event.deleteMany({ ngo_id: ngoId });
+
+    await NGO.findByIdAndDelete(ngoId);
+
+    res.json({ message: "NGO account and all associated data deleted." });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Failed to delete NGO account" });
+  }
+});
+
 module.exports = router;

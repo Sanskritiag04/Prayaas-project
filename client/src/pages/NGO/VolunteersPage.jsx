@@ -79,46 +79,6 @@ export default function VolunteersPage() {
     }
   };
 
-//   const handleIssueCertificates = async () => {
-//   const token = localStorage.getItem("token");
-
-//   try {
-//     const presentVolunteers = volunteers.filter(v => v.attended);
-
-//     let issuedCount = 0;
-//     let alreadyCount = 0;
-
-//     for (let v of presentVolunteers) {
-//       const res = await axios.get(
-//         `http://localhost:5000/api/event-registration/certificate/${v._id}`,
-//         {
-//           headers: { Authorization: `Bearer ${token}` }
-//         }
-//       );
-
-//       if (res.data.message === "Certificate issued") {
-//         issuedCount++;
-//       }
-
-//       if (res.data.message === "Already issued") {
-//         alreadyCount++;
-//       }
-//     }
-
-//     // ✅ Smart alert
-//     if (issuedCount > 0) {
-//       alert(`🎉 ${issuedCount} certificates issued successfully`);
-//       setCertificatesIssued(true);
-//     } else {
-//       alert("✅ All certificates already issued");
-//     }
-
-//   } catch (err) {
-//     console.log(err);
-//     alert("Certificate issuing failed");
-//   }
-// };
-
 const handleIssueCertificates = async () => {
   const token = localStorage.getItem("token");
 

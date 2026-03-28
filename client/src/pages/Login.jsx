@@ -23,11 +23,14 @@ export default function Login() {
     setError("");
 
     try {
-      //localStorage.clear();
-      const url =
-        form.role === "volunteer"
-          ? "http://localhost:5000/api/volunteer/login"
-          : "http://localhost:5000/api/ngo/login";
+      let url = "";
+    if (form.role === "volunteer") {
+      url = "http://localhost:5000/api/volunteer/login";
+    } else if (form.role === "ngo") {
+      url = "http://localhost:5000/api/ngo/login";
+    } else if (form.role === "admin") {
+      url = "http://localhost:5000/api/admin/login";
+    }
 
       const res = await axios.post(url, {
         email: form.email,
@@ -39,7 +42,9 @@ export default function Login() {
 
       alert("Login successful!");
 
-      navigate(form.role === "volunteer" ? "/dashboard" : "/ngo/dashboard");
+      if (form.role === "volunteer") navigate("/dashboard");
+    else if (form.role === "ngo") navigate("/ngo/dashboard");
+    else if (form.role === "admin") navigate("/admin/dashboard");
     } catch (err) {
       setError(err.response?.data?.message || "Login failed");
     }
@@ -71,6 +76,7 @@ export default function Login() {
           >
             <option value="volunteer">Volunteer</option>
             <option value="ngo">NGO</option>
+            <option value="admin">Admin</option>
           </select>
 
           <input

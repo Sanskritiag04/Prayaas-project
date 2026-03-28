@@ -31,6 +31,11 @@ const ngoSchema = new mongoose.Schema(
       trim: true
     },
 
+panCard: {
+  type: String,
+  required: true 
+},
+
     state: {
       type: String,
       required: true
@@ -46,11 +51,20 @@ const ngoSchema = new mongoose.Schema(
       required: true
     },
 
-    // ✅ ADD THIS LINE
     photo: {
       type: String,
       default: ""
     },
+    
+status: {
+  type: String,
+  enum: ["pending", "verified", "rejected"],
+  default: "pending"
+},
+adminRemarks: {
+  type: String,
+  default: ""
+},
 
     resetOTP: String,
     resetOTPExpiry: Date

@@ -32,7 +32,7 @@
   margin-bottom: 20px;
 }
 
-.edit-btn {
+.edit-btn, .settings-btn-ngo {
   background: #2e8b57;
   color: white;
   border: none;
@@ -44,7 +44,7 @@
   font-size: 14px;
 }
 
-.edit-btn:hover {
+.edit-btn:hover, .settings-btn-ngo:hover {
   background: #257346;
 }
 
@@ -57,13 +57,6 @@
   color: #2e8b57;
 }
 
-/* RIGHT SECTION */
-/* .ngo-right {
-  flex: 1;
-  padding: 35px;
-} */
-
-/* TOP BAR */
 .ngo-topbar {
   display: flex;
   justify-content: space-between;
@@ -167,4 +160,70 @@
   /* ✅ ADD THESE */
   border: 3px solid #2e8b57;
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.delete-btn{
+    background-color: #dc3545;
+      color: white; 
+      padding: "8px 15px"; 
+      border: "none";
+      border-radius: "5px";
+      cursor: "pointer";
+      margin-left: "10px";
+}
+
+/* Settings Modal specific styling */
+.settings-modal {
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 400px;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.settings-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 15px;
+}
+
+.settings-form input {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.save-btn {
+  background: #2e8b57;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.danger-zone {
+  padding: 15px;
+  border: 1px solid #ffcccc;
+  background: #fff5f5;
+  border-radius: 12px;
+}
+
+.danger-zone h4 { color: #dc3545; margin-bottom: 5px; }
+
+.delete-btn {
+  background: #dc3545;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 8px;
+  margin-top: 10px;
+  cursor: pointer;
+  width: 100%;
+  font-weight: 600;
 }

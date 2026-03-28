@@ -4,7 +4,7 @@ const router = express.Router();
 const upload = require("../middleware/uploadEventImage");
 const auth = require("../middleware/auth");
 const Event = require("../models/Event");
-
+const EventRegistration = require("../models/EventRegistration");
 const eventController = require("../controllers/eventController");
 
 // CREATE EVENT (NGO)
@@ -18,6 +18,7 @@ router.post(
 // GET EVENTS FOR VOLUNTEERS
 router.get("/upcoming", eventController.getUpcomingEvents);
 router.get("/past", eventController.getPastEvents);
+router.delete("/delete-event/:id", auth("ngo"), eventController.deleteEvent);
 
 // EVENT DETAILS
 router.get("/details/:id", async (req, res) => {
@@ -31,5 +32,40 @@ router.get("/details/:id", async (req, res) => {
 
 // NGO EVENTS (dashboard)
 router.get("/ngo-events", auth("ngo"), eventController.getNgoEvents);
+
+router.post("/report-event/:id", auth("volunteer"), async (req, res) => {
+  try {
+    const { reason } = req.body;
+    await Event.findByIdAndUpdate(req.params.id, {
+      isReported: true,
+      $inc: { reportCount: 1 },
+      $push: { reportReason: reason }
+    });
+    res.json({ message: "Event reported to Admin. Thank you for keeping Prayaas safe." });
+  } catch (err) {
+    res.status(500).json({ message: "Failed to report event" });
+  }
+});
+
+// GET TRENDING EVENTS (Top 3 by registration count)
+router.get("/trending", async (req, res) => {
+  try {
+
+    // 1. Group by event_id and count registrations
+    const trendingData = await EventRegistration.aggregate([
+      { $group: { _id: "$event_id", count: { $sum: 1 } } },
+      { $sort: { count: -1 } },
+      { $limit: 3 }
+    ]);
+
+    // 2. Get full details of those events
+    const eventIds = trendingData.map(item => item._id);
+    const trendingEvents = await Event.find({ _id: { $in: eventIds } }).populate("ngo_id", "ngoName");
+
+    res.json(trendingEvents);
+  } catch (err) {
+    res.status(500).json({ message: "Failed to fetch trending events" });
+  }
+});
 
 module.exports = router;

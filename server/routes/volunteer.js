@@ -336,4 +336,40 @@ router.get("/my-certificates", auth("volunteer"), async (req, res) => {
   }
 });
 
+// ================= CHANGE PASSWORD =================
+router.put("/change-password", auth("volunteer"), async (req, res) => {
+  try {
+    const { oldPassword, newPassword } = req.body;
+    const volunteer = await Volunteer.findById(req.user.id);
+
+    // 1. Verify old password
+    const isMatch = await bcrypt.compare(oldPassword, volunteer.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: "Current password is incorrect" });
+    }
+
+    // 2. Hash and save new password
+    volunteer.password = await bcrypt.hash(newPassword, 10);
+    await volunteer.save();
+
+    res.json({ message: "Password changed successfully" });
+  } catch (err) {
+    res.status(500).json({ message: "Error changing password" });
+  }
+});
+
+// ================= DELETE ACCOUNT =================
+router.delete("/delete-account", auth("volunteer"), async (req, res) => {
+  try {
+    // Optional: Delete their event registrations first to clean up
+    const EventRegistration = require("../models/EventRegistration");
+    await EventRegistration.deleteMany({ v_id: req.user.id });
+
+    await Volunteer.findByIdAndDelete(req.user.id);
+    res.json({ message: "Account deleted successfully" });
+  } catch (err) {
+    res.status(500).json({ message: "Failed to delete account" });
+  }
+});
+
 module.exports= router;

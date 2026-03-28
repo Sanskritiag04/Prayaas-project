@@ -10,6 +10,7 @@ import About from "./pages/About";
 import Leaderboard from "./pages/Leaderboard";
 import VolunteerDashboard from './pages/Volunteer/VolunteerDashboard';
 import NGODashboard from "./pages/NGO/NGODashboard";
+import AdminDashboard from "./pages/Admin/AdminDashboard";
 import ForgotPassword from "./pages/ForgotPassword";
 import FAQs from "./pages/FAQs"; 
 import EditProfile from "./pages/Volunteer/EditProfile";
@@ -36,6 +37,7 @@ function App() {
       <Route path="/ngo/post-event" element={<PostEvent />} />
       <Route path="/ngo/edit-profile" element={<EditNGOProfile />} />
       <Route path="/ngo/volunteers/:eventId" element={<VolunteersPage />} />
+      <Route path="/admin/dashboard" element={<AdminDashboard />} />
       </Routes>
     </Router>
   );

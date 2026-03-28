@@ -56,6 +56,15 @@ registration_deadline: {
   type: Date,
   required: true
 },
+isReported: {
+  type: Boolean,
+  default: false
+},
+reportCount: {
+  type: Number,
+  default: 0
+},
+reportReason: [String] 
 
   },
   { timestamps: true }

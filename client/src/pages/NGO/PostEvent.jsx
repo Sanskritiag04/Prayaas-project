@@ -106,6 +106,9 @@ export default function PostEvent() {
             <option value="education">Education</option>
             <option value="health">Health</option>
             <option value="environment">Environment</option>
+            <option value="food">Food</option>
+            <option value="animal_welfare">Animal Welfare</option>
+            <option value="other">Other</option>
           </select>
 
           <label>Start Date</label>

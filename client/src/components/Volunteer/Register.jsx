@@ -38,6 +38,18 @@ export default function Register() {
 
   const validateForm = () => {
 
+    const namePattern = /^[A-Za-z\s]+$/;
+    if (!namePattern.test(form.name.trim())) {
+    alert("Full Name should only contain letters and spaces");
+    return false;
+  }
+  
+  // Ensure the name isn't just one letter (like "A")
+  if (form.name.trim().length < 2) {
+    alert("Full Name must be at least 2 characters long");
+    return false;
+  }
+
     if (
       !form.email.includes("@") ||
       !(form.email.endsWith(".com") || form.email.endsWith(".in"))

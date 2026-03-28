@@ -14,8 +14,8 @@ export default function Leaderboard() {
 
   // Badge logic
   const getBadge = (points) => {
-    if (points >= 80) return "Elite";
-    if (points >= 40) return "Intermediate";
+    if (points >= 150) return "Elite";
+    if (points >= 80) return "Intermediate";
     return "Beginner";
   };
 

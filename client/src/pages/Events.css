@@ -220,3 +220,111 @@
   background: #ccc;
   cursor: not-allowed;
 }
+
+/* Container for buttons in popup */
+.action-row {
+  display: flex;
+  flex-direction: column; /* Stack buttons for better mobile/popup fit */
+  gap: 12px;
+  margin-top: 25px;
+}
+
+/* Register button should take full width in the column */
+.register-btn {
+  margin-top: 0; /* Reset previous margin */
+  width: 100%;
+}
+
+/* New Styled Report Button */
+.report-btn-styled {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: 2px solid #dc3545;
+  background: white;
+  color: #dc3545;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.report-btn-styled:hover {
+  background: #fff5f5;
+  box-shadow: 0 4px 12px rgba(220, 53, 69, 0.15);
+}
+
+.register-btn:disabled {
+  background: #bdc3c7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Filter Controls Layout */
+.filter-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin: 0 auto 40px;
+  max-width: 800px;
+}
+
+.search-input {
+  padding: 12px 25px;
+  border-radius: 30px;
+  border: 2px solid #e0e0e0;
+  width: 350px;
+  font-size: 15px;
+  transition: border-color 0.3s;
+}
+
+.search-input:focus {
+  border-color: #2e8b57;
+  outline: none;
+}
+
+.category-select {
+  padding: 11px 20px;
+  border-radius: 30px;
+  border: 2px solid #e0e0e0;
+  background: white;
+  cursor: pointer;
+  font-weight: 600;
+  color: #555;
+}
+
+/* Trending Badge on Card */
+.event-card {
+  position: relative; /* Needed for absolute badge */
+}
+
+.trending-fire-badge {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background: rgba(255, 69, 0, 0.9);
+  color: white;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+  z-index: 10;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.trending-highlight {
+  border: 2px solid #ff45001a;
+  box-shadow: 0 10px 25px rgba(255, 69, 0, 0.1);
+}

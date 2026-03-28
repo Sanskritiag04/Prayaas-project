@@ -23,7 +23,7 @@ router.post("/register", auth("volunteer"), async (req, res) => {
 
     // AUTO CLOSE REGISTRATION
 const today = new Date();
-today.setHours(0,0,0,0);
+//today.setHours(0,0,0,0);
 
 const deadline = new Date(event.registration_deadline);
 deadline.setHours(23,59,59,999);
@@ -101,7 +101,13 @@ router.put("/attendance-bulk", auth("ngo"), async (req, res) => {
   try {
     const event = await Event.findById(eventId);
 
-    // ❌ STOP if already submitted
+    const now = new Date();
+    if (now < new Date(event.end_date)) {
+      return res.status(400).json({
+        message: "Cannot take attendance until the event has ended."
+      });
+    }
+
     if (event.attendanceSubmitted) {
       return res.status(400).json({
         message: "Attendance already submitted"
@@ -123,7 +129,6 @@ router.put("/attendance-bulk", auth("ngo"), async (req, res) => {
       }
     }
 
-    // ✅ MARK EVENT AS DONE
     event.attendanceSubmitted = true;
     await event.save();
 
@@ -134,56 +139,16 @@ router.put("/attendance-bulk", auth("ngo"), async (req, res) => {
   }
 });
 
-// router.get("/certificate/:registrationId", auth("ngo"), async (req, res) => {
-//   try {
-//     const registration = await EventRegistration.findById(
-//       req.params.registrationId
-//     )
-//       .populate("v_id", "name")
-//       .populate("event_id", "title ngo_id start_date");
-//       if (registration.certificate) {
-//   return res.json({ message: "Already issued" });
-// }
-
-//     if (!registration || !registration.attended) {
-//       return res.status(400).json({ message: "Not eligible" });
-//     }
-
-//     const volunteerName = registration.v_id.name;
-//     const eventName = registration.event_id.title;
-//     const eventDate = registration.event_id.start_date;
-
-//     const ngo = await require("../models/NGO").findById(
-//       registration.event_id.ngo_id
-//     );
-
-//     const ngoName = ngo.ngoName;
-
-//     const filePath = `uploads/certificates/${registration._id}.pdf`;
-
-//     // ✅ correct parameter order
-//     await generateCertificate(
-//       volunteerName,
-//       eventName,
-//       ngoName,
-//       eventDate,
-//       filePath
-//     );
-
-//     registration.certificate = filePath;
-//     await registration.save();
-
-//     res.json({ message: "Certificate issued" });
-
-//   } catch (err) {
-//     console.error(err);
-//     res.status(500).json({ message: "Certificate error" });
-//   }
-// });
-
 router.put("/issue-certificates/:eventId", auth("ngo"), async (req, res) => {
   try {
     const event = await Event.findById(req.params.eventId);
+
+    const now = new Date();
+    if (now < new Date(event.end_date)) {
+      return res.status(400).json({
+        message: "Certificates can only be issued after the event ends."
+      });
+    }
 
     if (event.certificatesIssued) {
       return res.json({ message: "Already issued" });
