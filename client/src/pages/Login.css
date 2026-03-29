@@ -3,93 +3,137 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg,#e8f5e9,#ffffff);
+  /* Matching the Hero section background */
+  background: radial-gradient(circle at 10% 20%, rgba(16, 185, 129, 0.05) 0%, transparent 40%),
+              radial-gradient(circle at 90% 80%, rgba(5, 150, 105, 0.05) 0%, transparent 40%),
+              #ffffff;
+  position: relative;
 }
 
 .login-card {
-  width: 360px;
+  width: 400px; /* Slightly wider for better spacing */
   background: white;
-  padding: 35px;
-  border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  padding: 45px;
+  border-radius: 24px;
+  box-shadow: 0 20px 50px rgba(6, 78, 59, 0.08); /* Soft emerald-tinted shadow */
+  border: 1px solid #f3f4f6;
+  text-align: center;
 }
 
 .login-card h2 {
-  text-align: center;
-  color: #2e8b57;
+  font-size: 32px;
+  font-weight: 800;
+  color: #064e3b; /* Deep Emerald */
+  margin-bottom: 10px;
+  letter-spacing: -1px;
 }
 
 .login-card p {
-  text-align: center;
-  font-size: 14px;
-  margin-bottom: 20px;
+  color: #6b7280;
+  font-size: 15px;
+  margin-bottom: 30px;
+  line-height: 1.5;
 }
 
-.login-card input {
+/* INPUTS & SELECTS */
+.login-card input, 
+.role-select {
   width: 100%;
-  padding: 12px;
-  margin: 10px 0;
-  border-radius: 8px;
-  border: 1px solid #ccc;
+  padding: 14px 20px;
+  margin-bottom: 15px;
+  border-radius: 12px;
+  border: 2px solid #f3f4f6;
+  font-size: 15px;
+  color: #374151;
+  background-color: #f9fafb;
+  transition: all 0.3s ease;
 }
 
-.login-card input:focus {
-  border-color: #2e8b57;
+.login-card input:focus, 
+.role-select:focus {
+  border-color: #10b981;
+  background-color: #ffffff;
   outline: none;
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
 }
 
+/* PRIMARY BUTTON */
 .login-card button {
   width: 100%;
-  padding: 12px;
-  background: #2e8b57;
+  padding: 16px;
+  background: #10b981;
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 12px;
   font-size: 16px;
-  margin-top: 15px;
+  font-weight: 700;
+  margin-top: 10px;
   cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 20px rgba(16, 185, 129, 0.15);
 }
 
+.login-card button:hover {
+  background: #059669;
+  transform: translateY(-2px);
+  box-shadow: 0 15px 30px rgba(16, 185, 129, 0.25);
+}
+
+/* ERROR TEXT */
+.error-text {
+  color: #ef4444;
+  background: #fef2f2;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  border: 1px solid #fee2e2;
+}
+
+/* LINKS */
 .links {
   display: flex;
-  justify-content: space-between;
-  margin-top: 12px;
-  font-size: 13px;
+  flex-direction: column; /* Stacked links look cleaner here */
+  gap: 10px;
+  margin-top: 25px;
+  font-size: 14px;
 }
 
 .links a {
   text-decoration: none;
-  color: #2e8b57;
+  color: #10b981;
+  font-weight: 600;
+  transition: color 0.2s;
 }
 
-.error-text {
-  color: red;
-  margin-bottom: 10px;
-  font-size: 14px;
+.links a:hover {
+  color: #065f46;
+  text-decoration: underline;
 }
 
-.role-select {
-  width: 100%;
-  padding: 12px;
-  margin-bottom: 12px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  font-size: 14px;
-}
-
+/* BACK BUTTON */
 .back-btn {
   position: absolute;
-  top: 18px;
-  left: 18px;
-  background: #2e8b57;
-  color: white;
-  border: none;
-  padding: 7px 14px;
-  border-radius: 6px;
+  top: 25px;
+  left: 25px;
+  background: white;
+  color: #064e3b;
+  border: 2px solid #f3f4f6;
+  padding: 10px 20px;
+  border-radius: 50px;
   cursor: pointer;
-  font-size: 13px;
+  font-size: 14px;
+  font-weight: 700;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .back-btn:hover {
-  background: #256f46;
+  background: #f9fafb;
+  border-color: #10b981;
+  color: #10b981;
+  transform: translateX(-5px);
 }

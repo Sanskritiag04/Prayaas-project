@@ -38,7 +38,7 @@ const Hero = () => (
       </div>
 
       {/* Stats */}
-      <div className="hero-stats">
+      {/* <div className="hero-stats">
         <div className="stat">
           <h3>10,000+</h3>
           <p>Active Volunteers</p>
@@ -51,7 +51,7 @@ const Hero = () => (
           <h3>2,500+</h3>
           <p>Events Completed</p>
         </div>
-      </div>
+      </div> */}
 
     </div>
   </section>

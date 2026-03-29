@@ -1,12 +1,14 @@
-.common-navbar {
+ .common-navbar {
   height: 80px;
   display: flex;
   align-items: center;
-  border-bottom: 1px solid #f3f4f6;
+  backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.9);
+  border-bottom: 1px solid #e5e7eb;
   position: sticky;
   top: 0;
-  background: white;
   z-index: 1000;
+  transition: all 0.3s ease;
 }
 
 .common-nav-container {
@@ -16,63 +18,60 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 20px;
+  padding: 0 24px;
 }
 
-/* LOGO */
 .common-logo {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-weight: 700;
-  font-size: 22px;
-  color: #1f4f3c;
+  gap: 10px;
+  font-weight: 800;
+  font-size: 26px;
+  color: #064e3b; /* Deep Emerald */
+  letter-spacing: -0.5px;
 }
 
 .common-logo-icon {
-  background: #2e8b57;
+  background: linear-gradient(135deg, #10b981, #059669);
   color: white;
-  padding: 6px;
-  border-radius: 8px;
+  padding: 8px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(16, 185, 129, 0.2);
 }
 
-/* NAV LINKS */
 .common-nav-links {
   display: flex;
-  gap: 32px;
+  gap: 35px;
 }
 
 .common-nav-links a {
   text-decoration: none;
-  color: #6b7280;
+  color: #4b5563;
   font-weight: 500;
-  transition: 0.3s;
+  font-size: 15px;
+  transition: color 0.3s ease;
 }
 
 .common-nav-links a:hover {
-  color: #2e8b57;
-  font-weight: 600;
-}
-
-/* LOGIN BUTTON */
-.common-nav-auth {
-  display: flex;
-  align-items: center;
+  color: #10b981;
 }
 
 .common-login-btn {
-  background: #2e8b57;
+  background: #10b981;
   color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 8px;
+  padding: 12px 30px;
+  border-radius: 50px; /* Pill shape */
   font-weight: 600;
-  cursor: pointer;
-  margin-left: 15px;
   text-decoration: none;
-  transition: 0.3s;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
 }
 
 .common-login-btn:hover {
-  background: #256f46;
+  background: #059669;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(16, 185, 129, 0.3);
 }

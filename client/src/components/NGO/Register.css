@@ -1,83 +1,134 @@
+/* Wrapper to provide the radial gradient background */
+.ngo-register-page-wrapper {
+  min-height: 100vh;
+  padding: 60px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at 10% 20%, rgba(16, 185, 129, 0.05) 0%, transparent 40%),
+              radial-gradient(circle at 90% 80%, rgba(5, 150, 105, 0.05) 0%, transparent 40%),
+              #ffffff;
+}
+
 .ngo-register-container {
-  width: 420px;
-  margin: 50px auto;
-  padding: 30px;
+  width: 100%;
+  max-width: 550px; /* Increased for better readability */
   background: #ffffff;
-  border-radius: 14px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  padding: 50px;
+  border-radius: 28px;
+  box-shadow: 0 20px 50px rgba(6, 78, 59, 0.08);
+  border: 1px solid #f3f4f6;
+  position: relative;
 }
 
 .ngo-register-container h2 {
   text-align: center;
-  margin-bottom: 20px;
-  color: #2e8b57;
+  font-size: 34px;
+  font-weight: 900;
+  color: #064e3b; /* Deep Emerald */
+  margin-bottom: 10px;
+  letter-spacing: -1px;
+}
+
+.ngo-register-container p.subtitle {
+  text-align: center;
+  color: #6b7280;
+  margin-bottom: 30px;
+  font-size: 15px;
 }
 
 .ngo-register-container label {
   display: block;
-  margin-top: 12px;
-  font-weight: 500;
-  color: #333;
+  margin-top: 20px;
+  font-weight: 700;
+  font-size: 14px;
+  color: #374151;
+  margin-left: 5px;
 }
 
+/* INPUT & SELECT STYLING */
 .ngo-register-container input,
 .ngo-register-container select {
   width: 100%;
-  padding: 10px;
-  margin-top: 6px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
+  padding: 14px 18px;
+  margin-top: 8px;
+  border-radius: 12px;
+  border: 2px solid #f3f4f6;
+  background-color: #f9fafb;
+  font-size: 15px;
+  color: #111827;
+  transition: all 0.3s ease;
 }
 
+.ngo-register-container input:focus,
+.ngo-register-container select:focus {
+  border-color: #10b981;
+  background-color: #ffffff;
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+}
+
+/* PASSWORD BOX SPECIAL HANDLING */
 .password-box {
   display: flex;
   align-items: center;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  margin-top: 6px;
+  background-color: #f9fafb;
+  border: 2px solid #f3f4f6;
+  border-radius: 12px;
+  margin-top: 8px;
+  transition: all 0.3s ease;
+}
+
+.password-box:focus-within {
+  border-color: #10b981;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
 }
 
 .password-box input {
-  border: none;
+  border: none !important;
+  background: transparent !important;
+  margin-top: 0 !important;
+  box-shadow: none !important;
   flex: 1;
-  padding: 10px;
 }
 
 .password-box span {
   cursor: pointer;
-  padding: 0 10px;
+  padding: 0 15px;
+  font-size: 18px;
+  color: #9ca3af;
+  user-select: none;
 }
 
-.ngo-register-container button {
-  width: 100%;
-  margin-top: 20px;
+.password-box span:hover {
+  color: #10b981;
+}
+
+/* FILE INPUT STYLING */
+.ngo-register-container input[type="file"] {
+  background: #f0fdf4;
+  border: 2px dashed #d1fae5;
   padding: 12px;
-  background: linear-gradient(135deg, #2e8b57, #3cb371);
+}
+
+/* SUBMIT BUTTON */
+.ngo-register-container button[type="submit"] {
+  width: 100%;
+  margin-top: 35px;
+  padding: 16px;
+  background: linear-gradient(135deg, #10b981, #059669);
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 14px;
   font-size: 16px;
+  font-weight: 700;
   cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 20px rgba(16, 185, 129, 0.2);
 }
 
-.ngo-register-container button:hover {
-  opacity: 0.9;
-}
-
-/* BACK BUTTON */
-.back-btn {
-  position: absolute;
-  top: 18px;
-  left: 18px;
-  background: #2e8b57;
-  color: white;
-  border: none;
-  padding: 7px 14px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 13px;
-}
-
-.back-btn:hover {
-  background: #256f46;
+.ngo-register-container button[type="submit"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 30px rgba(16, 185, 129, 0.3);
 }

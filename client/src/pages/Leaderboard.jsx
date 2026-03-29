@@ -22,7 +22,7 @@ export default function Leaderboard() {
   return (
     <div className="leaderboard-container">
 
-      <h2>🏆 Volunteer Leaderboard</h2>
+      <h2>Volunteer Leaderboard</h2>
 
       <table>
         <thead>

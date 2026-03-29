@@ -80,8 +80,10 @@ export default function NGORegister() {
   };
 
   return (
+    <div className="ngo-register-page-wrapper">
     <div className="ngo-register-container">
       <h2>NGO Registration</h2>
+      <p className="subtitle">Partner with Prayaas to reach passionate volunteers.</p>
 
       <form onSubmit={handleSubmit}>
         <label>NGO Name</label>
@@ -133,7 +135,7 @@ export default function NGORegister() {
             required
           />
           <span onClick={() => setShowPassword(!showPassword)}>
-            {showPassword ? "🙈" : "👁"}
+            {showPassword ? "@" : "👁"}
           </span>
         </div>
 
@@ -149,6 +151,7 @@ export default function NGORegister() {
 
         <button type="submit">Register NGO</button>
       </form>
+    </div>
     </div>
   );
 }

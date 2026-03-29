@@ -1,104 +1,139 @@
-body {
-  background: linear-gradient(135deg, #e0f7fa, #e8f5e9);
-  font-family: Arial, sans-serif;
+/* Full page wrapper for the premium background */
+.volunteer-register-page-wrapper {
+  min-height: 100vh;
+  padding: 40px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at 10% 20%, rgba(16, 185, 129, 0.05) 0%, transparent 40%),
+              radial-gradient(circle at 90% 80%, rgba(5, 150, 105, 0.05) 0%, transparent 40%),
+              #ffffff;
 }
 
-/* Main box */
+/* Main box - Upgraded to a floating card style */
 .register-container {
-  width: 420px;
-  margin: 60px auto;
-  padding: 35px;
+  width: 100%;
+  max-width: 480px;
+  padding: 45px;
   background: white;
-  border-radius: 15px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  border-radius: 28px;
+  box-shadow: 0 20px 50px rgba(6, 78, 59, 0.08);
+  border: 1px solid #f3f4f6;
   position: relative;
 }
 
-/* Heading */
+/* Heading - Deep Emerald */
 .register-container h2 {
   text-align: center;
-  color: #2e8b57;
-  margin-bottom: 20px;
-  font-size: 24px;
+  color: #064e3b;
+  margin-bottom: 10px;
+  font-size: 32px;
+  font-weight: 900;
+  letter-spacing: -1px;
 }
 
-/* Labels */
+.register-container p.subtitle {
+  text-align: center;
+  color: #6b7280;
+  font-size: 15px;
+  margin-bottom: 30px;
+}
+
+/* Labels - Stronger & more professional */
 .register-container label {
   font-size: 14px;
-  font-weight: 600;
-  color: #333;
+  font-weight: 700;
+  color: #374151;
   display: block;
-  margin-top: 10px;
+  margin-top: 18px;
+  margin-left: 4px;
 }
 
-/* Inputs & select */
+/* Inputs & select - Pill shaped & soft background */
 .register-container input,
 .register-container select {
   width: 100%;
-  margin-top: 6px;
-  padding: 12px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  font-size: 14px;
+  margin-top: 8px;
+  padding: 14px 18px;
+  border-radius: 12px;
+  border: 2px solid #f3f4f6;
+  background-color: #f9fafb;
+  font-size: 15px;
+  color: #111827;
   box-sizing: border-box;
+  transition: all 0.3s ease;
 }
 
-/* Focus */
+/* Focus states - High Glow */
 .register-container input:focus,
 .register-container select:focus {
   outline: none;
-  border-color: #2e8b57;
-  box-shadow: 0 0 5px #2e8b57;
+  border-color: #10b981;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
 }
 
-/* Submit button */
+/* Submit button - Gradient with depth */
 .register-container button[type="submit"] {
   width: 100%;
-  padding: 12px;
-  margin-top: 20px;
-  background: linear-gradient(135deg, #2e8b57, #3cb371);
+  padding: 16px;
+  margin-top: 35px;
+  background: linear-gradient(135deg, #10b981, #059669);
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 14px;
   font-size: 16px;
+  font-weight: 700;
   cursor: pointer;
-  transition: 0.3s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 10px 20px rgba(16, 185, 129, 0.15);
 }
 
 .register-container button[type="submit"]:hover {
-  background: linear-gradient(135deg, #3cb371, #2e8b57);
-  transform: scale(1.02);
+  transform: translateY(-2px);
+  box-shadow: 0 15px 30px rgba(16, 185, 129, 0.25);
 }
 
-/* 👁 PASSWORD & CONFIRM PASSWORD EYE ICON STYLE */
+/* 👁 PASSWORD BOX - Refined Positioning */
 .password-box {
   position: relative;
   width: 100%;
-  margin-top: 6px;
+  margin-top: 8px;
 }
 
 .password-box input {
-  width: 100%;
-  padding: 12px;
-  padding-right: 40px; /* space for eye icon */
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  font-size: 14px;
-  box-sizing: border-box; /* important for layout */
+  margin-top: 0;
+  padding-right: 45px; /* space for icon */
 }
 
 .password-box span {
   position: absolute;
-  right: 12px;
+  right: 15px;
   top: 50%;
   transform: translateY(-50%);
   cursor: pointer;
   font-size: 18px;
+  color: #9ca3af;
   user-select: none;
-  transition: color 0.2s;
+  transition: color 0.2s ease;
 }
 
-/* Optional hover effect for better UX */
 .password-box span:hover {
-  color: #2e8b57;
+  color: #10b981;
+}
+
+/* Animation for page load */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.register-container {
+  animation: fadeInUp 0.6s ease-out;
 }

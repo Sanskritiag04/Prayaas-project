@@ -1,229 +1,330 @@
+/* --- ROOT LAYOUT --- */
 .ngo-dashboard {
-  display: flex;
-  min-height: 100vh;
-  background: #f4f7f6;
-  font-family: Arial, sans-serif;
+  display: grid;
+  grid-template-columns: 280px 1fr; /* Fixed Sidebar Width */
+  height: 100vh;
+  overflow: hidden;
+  background: #f8fafc;
 }
 
-/* LEFT SECTION */
+/* --- FIXED LEFT SIDEBAR --- */
 .ngo-left {
-  width: 260px;
-  background: white;
-  padding: 30px 20px;
+  background: #ffffff;
+  border-right: 1px solid #e5e7eb;
+  padding: 45px 24px;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
   text-align: center;
-  box-shadow: 2px 0 8px rgba(0,0,0,0.08);
+  box-sizing: border-box;
 }
 
 .ngo-photo {
-  width: 110px;
-  height: 110px;
-  border-radius: 50%;
+  width: 120px !important;
+  height: 120px !important;
+  border-radius: 50% !important;
   object-fit: cover;
-  margin-bottom: 15px;
+  margin: 0 auto 15px;
+  border: 4px solid #ecfdf5;
+  box-shadow: 0 8px 20px rgba(16, 185, 129, 0.15);
 }
 
 .ngo-left h3 {
-  margin: 10px 0 5px;
+  font-size: 20px;
+  font-weight: 800;
+  color: #064e3b;
+  margin-bottom: 5px;
 }
 
 .ngo-category {
-  color: #666;
-  font-size: 14px;
-  margin-bottom: 20px;
+  color: #6b7280;
+  font-size: 13px;
+  margin-bottom: 25px;
 }
 
+/* Sidebar Buttons */
 .edit-btn, .settings-btn-ngo {
-  background: #2e8b57;
-  color: white;
-  border: none;
-  padding: 10px;
   width: 100%;
-  border-radius: 6px;
-  cursor: pointer;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
+  padding: 12px;
+  border-radius: 12px;
+  border: none;
+  font-weight: 700;
   font-size: 14px;
+  cursor: pointer;
+  transition: 0.3s;
+  background: #10b981;
+  color: white;
 }
 
-.edit-btn:hover, .settings-btn-ngo:hover {
-  background: #257346;
+.settings-btn-ngo {
+  background: #f0fdf4;
+  color: #10b981;
+  border: 1px solid #d1fae5;
 }
 
-.status {
-  margin-top: 12px;
-  font-weight: 600;
+.settings-btn-ngo:hover {
+  background: #d1fae5;
 }
 
-.verified {
-  color: #2e8b57;
+.logout-btn {
+  margin-top: auto; /* Pushes to bottom */
+  background: #fef2f2;
+  color: #ef4444;
+  padding: 12px;
+  border: 1px solid #fee2e2;
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.logout-btn:hover {
+  background: #ef4444;
+  color: white;
+}
+
+/* --- RIGHT CONTENT AREA --- */
+.ngo-right {
+  height: 100vh;
+  overflow-y: auto;
+  padding: 40px;
+  scroll-behavior: smooth;
 }
 
 .ngo-topbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 25px;
+  margin-bottom: 35px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #e5e7eb;
 }
 
+/* Filters */
+.filters {
+  display: flex;
+  gap: 12px;
+}
+
+.filters button {
+  padding: 10px 20px;
+  border-radius: 50px;
+  border: 1px solid #e5e7eb;
+  background: white;
+  color: #4b5563;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.filters .active {
+  background: #10b981;
+  color: white;
+  border-color: #10b981;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+}
+
+.post-btn {
+  background: #064e3b; /* Darker Emerald for primary action */
+  color: white;
+  padding: 12px 24px;
+  border-radius: 50px;
+  font-weight: 700;
+  transition: 0.3s;
+}
+
+.post-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(6, 78, 59, 0.2);
+}
+
+.status-notice {
+  background: #fffbeb;
+  color: #92400e;
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-size: 14px;
+  border: 1px solid #fef3c7;
+  font-weight: 600;
+}
+
+/* --- EVENT CARDS --- */
+.events-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 30px;
+}
+
+.event-card {
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid #f3f4f6;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+}
+
+.event-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.event-info {
+  padding: 24px;
+}
+
+.event-info h3 {
+  font-size: 20px;
+  font-weight: 800;
+  color: #111827;
+  margin-bottom: 12px;
+}
+
+.event-info p {
+  color: #6b7280;
+  font-size: 14px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Action Buttons in Card */
+.view-btn {
+  width: 100%;
+  margin-top: 15px;
+  padding: 12px;
+  background: #f0fdf4;
+  color: #10b981;
+  border: none;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.delete-btn-card {
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px;
+  background: white;
+  color: #ef4444;
+  border: 1px solid #fee2e2;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.delete-btn-card:hover {
+  background: #fef2f2;
+}
+
+
+
+/* --- 1. SIDEBAR LOGOUT & SPACING --- */
+/* --- 1. SIDEBAR RESTRUCTURE --- */
+.ngo-left {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  padding: 40px 24px;
+  background: #ffffff;
+  border-right: 1px solid #e5e7eb;
+  box-sizing: border-box;
+}
+
+/* Grouping the name and email */
+.ngo-left h3 {
+  margin: 15px 0 5px;
+  font-size: 20px;
+  font-weight: 800;
+  color: #064e3b;
+}
+
+.ngo-category {
+  margin-bottom: 25px;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+/* --- 2. BUTTON GROUPING --- */
+/* This container ensures all buttons are stacked together */
+.sidebar-actions, 
+.ngo-left {
+  display: flex;
+  flex-direction: column;
+  gap: 12px; /* Consistent gap between ALL buttons */
+}
+
+.edit-btn, 
+.settings-btn-ngo, 
+.logout-btn {
+  width: 100% !important;
+  padding: 12px !important;
+  border-radius: 12px !important;
+  font-weight: 700 !important;
+  font-size: 14px !important;
+  cursor: pointer !important;
+  border: none !important;
+  margin: 0 !important; /* Remove any old margins */
+  transition: 0.3s;
+}
+
+/* --- 3. COLORS & STYLES --- */
+.edit-btn {
+  background: #10b981 !important;
+  color: white !important;
+}
+
+.settings-btn-ngo {
+  background: #ecfdf5 !important;
+  color: #059669 !important;
+  border: 1px solid #a7f3d0 !important;
+}
+
+.logout-btn {
+  margin-top: 10px !important; /* Just a small gap, not "auto" */
+  background: #fee2e2 !important;
+  color: #ef4444 !important;
+  border: 1px solid #fecaca !important;
+}
+
+.logout-btn:hover {
+  background: #ef4444 !important;
+  color: white !important;
+}
+
+/* --- 4. TOPBAR / POST BUTTON FIX --- */
+.ngo-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.post-btn {
+  flex: 0 1 auto !important; /* Stop stretching */
+  width: auto !important;
+  padding: 12px 25px !important;
+  background: #064e3b !important;
+  color: white !important;
+  border-radius: 50px !important;
+  font-weight: 700;
+}
+
+/* --- 3. FILTER BUTTON REFINEMENT --- */
 .filters {
   display: flex;
   gap: 10px;
 }
 
 .filters button {
-  flex: 1;             
-  padding: 10px 0;
-  border: none;
-  cursor: pointer;
-  border-radius: 8px;
-  background: #ddd;
-  font-weight: 500;
-}
-
-.filters .active {
-  background: #2e8b57;
-  color: white;
-}
-
-
-.post-btn {
-  background: #2e8b57;
-  color: white;
-  padding: 10px 18px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 600;
+  padding: 10px 20px !important;
+  border-radius: 50px !important;
   white-space: nowrap;
-  width: auto;
-  transition: background 0.2s ease;
 }
 
-.post-btn:hover {
-  background: #256f47;
-}
-
-.events-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 20px;
-}
-
-
-.ngo-right {
-  width: 75%;
-  padding: 40px;
-}
-
-.event-card {
-  background: white;
-  padding: 22px;
-  border-radius: 14px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.event-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 15px 30px rgba(0,0,0,0.12);
-}
-
-.event-card h4 {
-  margin-bottom: 6px;
-}
-
-.event-card p {
-  color: #666;
-}
-
-.logout-btn {
-  margin-top: 15px;
-  background: #e74c3c;
-  color: white;
-  border: none;
-  padding: 10px;
-  width: 100%;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 500;
-}
-
-.logout-btn:hover {
-  background: #c0392b;
-}
+/* --- 4. PROFILE IMAGE CENTER FIX --- */
 .ngo-photo {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
+  display: block;
+  margin: 0 auto 15px !important;
   object-fit: cover;
-  margin-bottom: 15px;
-
-  /* ✅ ADD THESE */
-  border: 3px solid #2e8b57;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-}
-
-.delete-btn{
-    background-color: #dc3545;
-      color: white; 
-      padding: "8px 15px"; 
-      border: "none";
-      border-radius: "5px";
-      cursor: "pointer";
-      margin-left: "10px";
-}
-
-/* Settings Modal specific styling */
-.settings-modal {
-  background: white;
-  padding: 30px;
-  border-radius: 20px;
-  width: 90%;
-  max-width: 400px;
-  position: relative;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-}
-
-.settings-form {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-top: 15px;
-}
-
-.settings-form input {
-  padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 14px;
-}
-
-.save-btn {
-  background: #2e8b57;
-  color: white;
-  border: none;
-  padding: 12px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 600;
-}
-
-.danger-zone {
-  padding: 15px;
-  border: 1px solid #ffcccc;
-  background: #fff5f5;
-  border-radius: 12px;
-}
-
-.danger-zone h4 { color: #dc3545; margin-bottom: 5px; }
-
-.delete-btn {
-  background: #dc3545;
-  color: white;
-  border: none;
-  padding: 10px;
-  border-radius: 8px;
-  margin-top: 10px;
-  cursor: pointer;
-  width: 100%;
-  font-weight: 600;
 }

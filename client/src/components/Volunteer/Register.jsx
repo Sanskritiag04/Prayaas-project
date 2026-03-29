@@ -114,10 +114,11 @@ export default function Register() {
 
 
   return (
+    <div className="volunteer-register-page-wrapper">
     <div className="register-container">
 
       <h2>Volunteer Registration</h2>
-
+    <p className="subtitle">Start your journey of making a real difference.</p>
       <form onSubmit={handleSubmit}>
 
         <label>Full Name</label>
@@ -157,7 +158,7 @@ export default function Register() {
             required
           />
           <span onClick={() => setShowPassword(!showPassword)}>
-            {showPassword ? "🙈" : "👁"}
+            {showPassword ? "@" : "👁"}
           </span>
         </div>
 
@@ -172,13 +173,14 @@ export default function Register() {
             required
           />
           <span onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
-            {showConfirmPassword ? "🙈" : "👁"}
+            {showConfirmPassword ? "@" : "👁"}
           </span>
         </div>
 
         <button type="submit">Create Account</button>
 
       </form>
+    </div>
     </div>
   );
 }

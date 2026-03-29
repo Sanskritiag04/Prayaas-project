@@ -21,7 +21,6 @@ export default function PostEvent() {
 
   const [image, setImage] = useState(null);
 
-  // HANDLE INPUT CHANGE
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -29,12 +28,10 @@ export default function PostEvent() {
     });
   };
 
-  // HANDLE IMAGE
   const handleImageChange = (e) => {
     setImage(e.target.files[0]);
   };
 
-  // HANDLE SUBMIT
   const handleSubmit = async (e) => {
     e.preventDefault();
 

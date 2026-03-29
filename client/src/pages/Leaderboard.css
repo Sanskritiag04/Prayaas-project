@@ -1,56 +1,117 @@
 .leaderboard-container {
-  width: 70%;
-  margin: 50px auto;
+  width: 85%;
+  max-width: 1000px;
+  margin: 60px auto;
   text-align: center;
+  font-family: 'Inter', sans-serif;
 }
 
 .leaderboard-container h2 {
-  color: #2d8654;
-  margin-bottom: 20px;
+  font-size: 36px;
+  font-weight: 800;
+  color: #064e3b; /* Deep Emerald */
+  margin-bottom: 40px;
+  letter-spacing: -1px;
+}
+
+/* PODIUM STYLING (Top 3 Visual) */
+/* You can add a wrapper in JSX for the top 3 players if you want a podium look, 
+   but for now, let's style the table to feel like a high-end dashboard */
+
+.leaderboard-card {
+  background: white;
+  padding: 20px;
+  border-radius: 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  border: 1px solid #f3f4f6;
+  overflow: hidden;
 }
 
 table {
   width: 100%;
-  border-collapse: collapse;
-  background: white;
-  box-shadow: 0 0 10px #ccc;
-}
-
-th, td {
-  padding: 12px;
-  border-bottom: 1px solid #ddd;
+  border-collapse: separate;
+  border-spacing: 0 10px; /* Adds space between rows */
+  background: transparent;
 }
 
 th {
-  background: #2e8b57;
-  color: white;
-}
-
-tr:hover {
-  background: #f3f3f3;
-}
-
-/* BADGES */
-.badge {
-  padding: 6px 12px;
-  border-radius: 20px;
+  background: transparent;
+  color: #6b7280; /* Muted gray for headers */
+  font-weight: 600;
+  text-transform: uppercase;
   font-size: 13px;
-  font-weight: bold;
+  letter-spacing: 1px;
+  padding: 15px 20px;
+  border: none;
+}
+
+td {
+  padding: 20px;
+  background: white;
+  border-top: 1px solid #f9fafb;
+  border-bottom: 1px solid #f9fafb;
+  font-size: 16px;
+  color: #111827;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+/* Rounded corners for the "row" effect */
+td:first-child {
+  border-left: 1px solid #f3f4f6;
+  border-top-left-radius: 16px;
+  border-bottom-left-radius: 16px;
+  font-weight: 800;
+  color: #10b981; /* Rank number in green */
+}
+
+td:last-child {
+  border-right: 1px solid #f3f4f6;
+  border-top-right-radius: 16px;
+  border-bottom-right-radius: 16px;
+}
+
+tr:hover td {
+  background: #f0fdf4; /* Very light mint on hover */
+  transform: scale(1.01);
+  border-color: #d1fae5;
+}
+
+/* SPECIAL STYLING FOR TOP 3 */
+tr:nth-child(1) td:first-child { color: #fbbf24; font-size: 22px; } /* Gold */
+tr:nth-child(2) td:first-child { color: #94a3b8; font-size: 20px; } /* Silver */
+tr:nth-child(3) td:first-child { color: #b45309; font-size: 18px; } /* Bronze */
+
+/* BADGES (Modernized) */
+.badge {
+  padding: 6px 14px;
+  border-radius: 50px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .elite {
-  background: gold;
-  color: black;
+  background: #fef3c7;
+  color: #92400e; /* Elegant Gold/Amber */
+  border: 1px solid #fde68a;
 }
 
 .intermediate {
-  background: #4caf50;
-  color: white;
+  background: #dcfce7;
+  color: #166534; /* Elegant Emerald */
+  border: 1px solid #bbf7d0;
 }
 
 .beginner {
-  background: #2196f3;
-  color: white;
+  background: #eff6ff;
+  color: #1e40af; /* Elegant Blue */
+  border: 1px solid #dbeafe;
 }
 
-
+/* Points column bolding */
+td:nth-child(3) {
+  font-weight: 700;
+  color: #065f46;
+}
