@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import NavbarDashboard from "../../components/Volunteer/NavbarDashboard";
+import NavbarDashboard from "../../components/common/NavbarDashboard";
 import "./Dashboard.css";
 import { useNavigate } from "react-router-dom";
 import goldBadge from "../../assets/badges/gold-badge.png";
@@ -16,13 +16,6 @@ const badgeList = [
   { name: "Community Hero", image: comm_hero, minPoints: 500 }
 ];
 
-// const badgeMilestones = [
-//   { name: "Beginner", minPoints: 0 },
-//   { name: "Active Volunteer", minPoints: 50 },
-//   { name: "Pro Philanthropist", minPoints: 200 },
-//   { name: "Community Hero", minPoints: 500 }
-// ];
-
 
 export default function VolunteerDashboard() {
   const [data, setData] = useState(null);
@@ -33,6 +26,8 @@ export default function VolunteerDashboard() {
   const [certificates, setCertificates] = useState([]);
 const [showSettings, setShowSettings] = useState(false);
 const [passwordForm, setPasswordForm] = useState({ oldPassword: "", newPassword: "" });
+const [view, setView] = useState("overview");
+
 
 const handlePasswordChange = async (e) => {
   e.preventDefault();
@@ -153,7 +148,7 @@ const handleLogout = () => {
 
   if (!data) return <p>Loading...</p>;
 
-  // ✅ PERFORM CALCULATIONS AFTER DATA IS GUARANTEED TO EXIST
+  
   const currentPoints = data.points || 0;
   const nextBadge = badgeList.find(b => b.minPoints > currentPoints) || null;
   const currentBadge = [...badgeList].reverse().find(b => b.minPoints <= currentPoints);
@@ -164,6 +159,7 @@ const handleLogout = () => {
     const progressInsideRange = currentPoints - currentBadge.minPoints;
     progressPercent = (progressInsideRange / range) * 100;
   }
+
 
  return (
   <>
@@ -215,7 +211,7 @@ const handleLogout = () => {
       {/* --- SCROLLABLE RIGHT CONTENT --- */}
       <main className="dashboard-content">
         {/* Navbar inside the scrollable area so it can be sticky at the top */}
-        <NavbarDashboard />
+        <NavbarDashboard/>
 
          {/* ✅ EVENTS SECTION */}
           <section>
@@ -304,6 +300,7 @@ const handleLogout = () => {
               </div>
             )}
           </section>
+          {view === "community" && <CommunityFeed volunteerId={data._id} />}
         </div>
       </main>
     </div>

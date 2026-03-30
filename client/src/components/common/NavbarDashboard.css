@@ -1,0 +1,72 @@
+.dash-navbar {
+  height: 70px;
+  width: 100%;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  border-bottom: 1px solid #f1f5f9;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  box-sizing: border-box;
+}
+
+.nav-left {
+  font-size: 24px;
+  font-weight: 800;
+  color: #064e3b;
+  flex: 1;
+}
+
+.nav-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex: 2; /* Keeps links centered */
+}
+
+.nav-center a {
+  text-decoration: none;
+  color: #64748b;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 8px 18px;
+  border-radius: 50px;
+  transition: 0.3s ease;
+  white-space: nowrap;
+}
+
+.nav-center a.active {
+  background: #ecfdf5;
+  color: #059669;
+}
+
+/* --- FIXING THE BUTTON WIDTH --- */
+.nav-right {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.nav-post-story-btn {
+  background: #10b981;
+  color: white;
+  border: none;
+  padding: 8px 16px; /* Reduced padding */
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  width: fit-content; /* Prevents stretching */
+  white-space: nowrap;
+  transition: 0.3s;
+}
+
+.nav-post-story-btn:hover {
+  background: #059669;
+  transform: translateY(-1px);
+}

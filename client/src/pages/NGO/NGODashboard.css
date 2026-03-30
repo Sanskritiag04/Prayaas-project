@@ -87,7 +87,7 @@
 .ngo-right {
   height: 100vh;
   overflow-y: auto;
-  padding: 40px;
+  /* padding: 40px; */
   scroll-behavior: smooth;
 }
 
@@ -327,4 +327,29 @@
   display: block;
   margin: 0 auto 15px !important;
   object-fit: cover;
+}
+
+/* --- RIGHT CONTENT AREA --- */
+.ngo-right {
+  height: 100vh;
+  overflow-y: auto;
+  background: #f8fafc;
+  display: flex;
+  flex-direction: column;
+  padding: 0 !important; /* CRITICAL: Remove padding so Navbar touches edges */
+}
+
+.content-padding {
+  padding: 30px 40px; /* Re-apply padding here for cards and headers */
+  box-sizing: border-box;
+}
+
+/* Ensure the topbar stays consistent */
+.ngo-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 35px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #e5e7eb;
 }

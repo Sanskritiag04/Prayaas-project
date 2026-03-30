@@ -13,7 +13,8 @@ app.use("/api/admin", require("./routes/admin"));
 app.use("/uploads", express.static("uploads"));
 app.use("/api/event-registration", require("./routes/eventRegistration"));
 
-
+const postRoutes = require('./routes/post');
+app.use('/api/posts', postRoutes);
 const connectDB = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URI);

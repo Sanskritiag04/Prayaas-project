@@ -1,0 +1,296 @@
+.community-page-wrapper {
+  background: #f8fafc;
+  min-height: 100vh;
+}
+
+.feed-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.feed-intro {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.feed-intro h1 {
+  color: #064e3b;
+  font-size: 32px;
+  font-weight: 800;
+}
+
+.posts-column {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.post-card {
+  background: white;
+  border-radius: 20px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  overflow: hidden;
+}
+
+.post-header {
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  background: #fafafa;
+}
+
+.post-card img {
+  width: 100%;
+  max-height: 500px;
+  object-fit: cover;
+}
+
+.post-body {
+  padding: 20px;
+}
+
+.like-btn {
+  background: #f0fdf4;
+  color: #10b981;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 50px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+/* Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+/* Modal Box */
+.impact-modal {
+  background: white;
+  width: 90%;
+  max-width: 500px;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.modal-header h2 {
+  color: #064e3b;
+  margin: 0;
+}
+
+.close-x {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #64748b;
+}
+
+/* Form Styling */
+.impact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.impact-form label {
+  font-weight: 700;
+  font-size: 14px;
+  color: #334155;
+}
+
+.impact-form textarea, .impact-form input {
+  padding: 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 14px;
+}
+
+.impact-form textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+/* Button Styling */
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.submit-story-btn {
+  flex: 2;
+  background: #10b981;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.cancel-btn {
+  flex: 1;
+  background: #f1f5f9;
+  color: #64748b;
+  border: none;
+  padding: 12px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.submit-story-btn:hover { background: #059669; }
+
+.file-previews {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 10px;
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.preview-item {
+  display: flex;
+  justify-content: space-between;
+  background: #f8fafc;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+.preview-item button {
+  background: none;
+  border: none;
+  color: #ef4444;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+
+/* Container for the slider */
+.post-slider-container {
+  position: relative;
+  width: 100%;
+  background: #000;
+  overflow: hidden;
+}
+
+/* The actual scrollable area */
+.post-slider {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory; /* This creates the "swipe" lock effect */
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Hide scrollbar but keep functionality */
+.post-slider::-webkit-scrollbar {
+  display: none;
+}
+
+.slider-img {
+  flex: 0 0 100%; /* Each image takes 100% of the width */
+  width: 100%;
+  height: 450px; /* Standard Instagram-ish height */
+  object-fit: cover;
+  scroll-snap-align: start;
+}
+
+/* Indicator Dots */
+.slider-dots {
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 5px;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 5px 10px;
+  border-radius: 20px;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+}
+
+.post-header {
+  display: flex;
+  justify-content: space-between; /* Pushes name/date to left, flag to right */
+  align-items: center;
+  padding: 15px;
+}
+
+.header-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.report-post-btn {
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  color: #94a3b8; /* Light slate color */
+  padding: 5px;
+  border-radius: 50%;
+  transition: 0.3s;
+}
+
+.report-post-btn:hover {
+  color: #ef4444; /* Turns red on hover */
+  background: #fef2f2;
+}
+
+.report-select {
+  padding: 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.submit-report-btn {
+  flex: 2;
+  background: #ef4444; /* Red for warning actions */
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+}

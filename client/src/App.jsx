@@ -17,6 +17,7 @@ import EditProfile from "./pages/Volunteer/EditProfile";
 import PostEvent from "./pages/NGO/PostEvent";
 import EditNGOProfile from "./pages/NGO/EditNGOProfile" 
 import VolunteersPage from "./pages/NGO/VolunteersPage";
+import CommunityFeed from './pages/CommunityFeed';
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
       <Route path="/ngo/edit-profile" element={<EditNGOProfile />} />
       <Route path="/ngo/volunteers/:eventId" element={<VolunteersPage />} />
       <Route path="/admin/dashboard" element={<AdminDashboard />} />
+      <Route path="/community" element={<CommunityFeed />} />
       </Routes>
     </Router>
   );

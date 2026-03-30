@@ -36,10 +36,33 @@ export default function Login() {
         email: form.email,
         password: form.password
       });
-
+      
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("userRole", form.role);
 
+      const userData = res.data.volunteer || res.data.ngo;
+
+      if (userData) {
+  // 3. Store the ID and Name (Check if it's ._id or .id)
+  localStorage.setItem("userId", userData._id || userData.id);
+  
+  // Store the name so the feed knows who posted
+  const nameToStore = userData.ngoName || userData.name || "NGO Partner";
+  localStorage.setItem("userName", nameToStore);
+  
+  console.log("Logged in user ID saved:", userData._id || userData.id);
+} else {
+  console.error("User data missing in backend response!", res.data);
+}
+    
+    // localStorage.setItem("userId", userData._id); 
+    
+    // // For NGOs, save the NGO name specifically
+    // if (form.role === "ngo") {
+    //   localStorage.setItem("userName", userData.ngoName);
+    // } else {
+    //   localStorage.setItem("userName", userData.name || userData.username);
+    // }
       alert("Login successful!");
 
       if (form.role === "volunteer") navigate("/dashboard");
@@ -52,12 +75,6 @@ export default function Login() {
 
   return (
     <div className="login-wrapper">
-      {/* <button
-        className="back-btn"
-        onClick={() => navigate("/")}
-      >
-        ⬅ Back
-      </button> */}
       <div className="login-card">
 
         <h2>Login to Prayaas</h2>
