@@ -277,29 +277,43 @@ const handleLogout = () => {
           </section>
 
           {/* ✅ CERTIFICATES SECTION */}
-          <section>
-            <h2>My Certificates</h2>
-            {certificates.length === 0 ? (
-              <p className="empty-state">No certificates earned yet.</p>
-            ) : (
-              <div className="certificates-container">
-                {certificates.map((c) => (
-                  <div key={c._id} className="certificate-card">
-                    <div className="cert-icon">📜</div>
-                    <h4>{c.event_id?.title}</h4>
-                    <p>Certificate of Participation</p>
-                    <a
-                      href={`http://localhost:5000/${c.certificate}`}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      Download PDF
-                    </a>
-                  </div>
-                ))}
-              </div>
-            )}
-          </section>
+         <section className="certificates-section">
+  <h2 className="section-title">My Certificates</h2>
+  {certificates.length === 0 ? (
+    <div className="empty-state-container">
+      <p className="empty-state">No certificates earned yet. Volunteer more to earn rewards! 🌱</p>
+    </div>
+  ) : (
+    <div className="certificates-grid">
+      {certificates.map((c) => (
+        <div key={c._id} className="certificate-card">
+          <div className="cert-header">
+            <div className="cert-badge">
+              <span className="cert-icon">📜</span>
+            </div>
+            <span className="cert-type">Participation</span>
+          </div>
+          
+          <div className="cert-body">
+            <h4>{c.event_id?.title || "Event Participation"}</h4>
+            <p>Issued by Prayaas Partner NGO</p>
+          </div>
+
+          <div className="cert-footer">
+            <a
+              href={`http://localhost:5000/${c.certificate}`}
+              target="_blank"
+              className="download-cert-btn"
+              rel="noreferrer"
+            >
+              Download PDF
+            </a>
+          </div>
+        </div>
+      ))}
+    </div>
+  )}
+</section>
           {view === "community" && <CommunityFeed volunteerId={data._id} />}
         </div>
       </main>

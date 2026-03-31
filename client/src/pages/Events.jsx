@@ -96,178 +96,6 @@ const filteredEvents = events.filter(e => {
     return matchesSearch && matchesCategory;
   });
 
-//   return (
-//     <>
-
-//       <div className={`events-page ${activeEvent ? "blurred" : ""}`}>
-
-//         <h1 className="events-heading">Discover Events</h1>
-
-//         <p className="events-subheading">
-//           Join hands, make an impact, and be the reason for someone’s smile.
-//         </p>
-
-
-//         {/* FILTER BUTTONS */}
-
-//         <div className="event-filters">
-
-//           <button
-//             className={type === "upcoming" ? "active" : ""}
-//             onClick={() => setType("upcoming")}
-//           >
-//             Upcoming Events
-//           </button>
-
-//           <button
-//             className={type === "past" ? "active" : ""}
-//             onClick={() => setType("past")}
-//           >
-//             Past Events
-//           </button>
-
-//         </div>
-
-
-//         {/* EVENTS LIST */}
-
-//         <div className="events-container">
-
-//           {events.map((event) => (
-
-//             <div className="event-card" key={event._id}>
-
-//               <img
-//                 src={`http://localhost:5000${event.image}`}
-//                 alt={event.title}
-//               />
-
-//               <div className="event-info">
-
-//                 <h3>{event.title}</h3>
-
-//                 <p>📍 {event.location}</p>
-
-//                 <p>
-//                   📅 {new Date(event.start_date).toLocaleDateString()}
-//                 </p>
-
-//                 <button
-//                   className="details-btn"
-//                   onClick={() => setActiveEvent(event)}
-//                 >
-//                   View Details
-//                 </button>
-
-//               </div>
-
-//             </div>
-
-//           ))}
-
-//         </div>
-
-//       </div>
-
-
-//       {/* EVENT DETAILS POPUP */}
-
-//       {activeEvent && 
-//         (() => {
-
-//   const registrationClosed =
-//     new Date() > new Date(activeEvent.registration_deadline);
-
-//   return (
-
-//         <div className="event-overlay">
-
-//           <div className="expanded-card">
-
-//             <button
-//               className="close-btn"
-//               onClick={() => setActiveEvent(null)}
-//             >
-//               ✕
-//             </button>
-
-//             <img
-//               src={`http://localhost:5000${activeEvent.image}`}
-//               alt={activeEvent.title}
-//             />
-
-//             <div className="expanded-content">
-
-//               <span className="event-type">
-//                 {activeEvent.event_type}
-//               </span>
-
-//               <h2>{activeEvent.title}</h2>
-
-//               <p className="description">
-//                 {activeEvent.description}
-//               </p>
-
-//               <div className="meta">
-//   <p>
-//     <strong>🏢 Hosted By:</strong> {activeEvent.ngo_id?.ngoName || "Prayaas Partner"}
-//   </p>
-//   <p>
-//     <strong>📍 Location:</strong> {activeEvent.location}
-//   </p>
-//   <p>
-//     <strong>📅 Registration Deadline:</strong>{" "}
-//     <span style={{ color: registrationClosed ? "#dc3545" : "#2e8b57", fontWeight: "bold" }}>
-//       {new Date(activeEvent.registration_deadline).toDateString()}
-//     </span>
-//   </p>
-//   <p>
-//     <strong>📅 Event Starts:</strong>{" "}
-//     {new Date(activeEvent.start_date).toDateString()}
-//   </p>
-//   {activeEvent.end_date && (
-//     <p>
-//       <strong>📅 Event Ends:</strong>{" "}
-//       {new Date(activeEvent.end_date).toDateString()}
-//     </p>
-//   )}
-//   <p>
-//     <strong>Status:</strong> {activeEvent.status}
-//   </p>
-// </div>
-
-
-//               {/* REGISTER BUTTON */}
-
-//               <div className="action-row">
-//   {type === "upcoming" && (
-//     <button
-//       className={`register-btn ${registrationClosed ? "disabled" : ""}`}
-//       onClick={handleRegister}
-//       disabled={registrationClosed}
-//     >
-//       {registrationClosed ? "Registration Closed" : "Register as Volunteer"}
-//     </button>
-//   )}
-
-//   <button 
-//     className="report-btn-styled" 
-//     onClick={() => handleReport(activeEvent._id)}
-//   >
-//     🚩 Report Event
-//   </button>
-// </div>
-
-//             </div>
-
-//           </div>
-
-//         </div>
-//   )})()}
-
-//     </>
-//   );
-// }
 
 return (
     <>
@@ -319,8 +147,14 @@ return (
             <p className="no-results">No events found matching your criteria.</p>
           ) : (
             filteredEvents.map((event) => {
-              // Check if this specific event is in the trending list
-              const isTrending = trending.some(t => t._id === event._id);
+              const todayStr = new Date().toISOString().split('T')[0];
+  // Get event's date in YYYY-MM-DD format
+  const eventDateStr = new Date(event.start_date).toISOString().split('T')[0];
+
+  const isInTrendingList = trending.some(t => t._id === event._id);
+  const isUpcomingOrToday = eventDateStr >= todayStr;
+  
+  const isTrending = isInTrendingList && isUpcomingOrToday;
 
               return (
                 <div className={`event-card ${isTrending ? "trending-highlight" : ""}`} key={event._id}>

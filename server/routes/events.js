@@ -50,17 +50,23 @@ router.post("/report-event/:id", auth("volunteer"), async (req, res) => {
 // GET TRENDING EVENTS (Top 3 by registration count)
 router.get("/trending", async (req, res) => {
   try {
+    const now = new Date();
 
-    // 1. Group by event_id and count registrations
+    // 1. Group and count registrations for ALL events
     const trendingData = await EventRegistration.aggregate([
       { $group: { _id: "$event_id", count: { $sum: 1 } } },
-      { $sort: { count: -1 } },
-      { $limit: 3 }
+      { $sort: { count: -1 } }
     ]);
 
-    // 2. Get full details of those events
+    // 2. Get full details
     const eventIds = trendingData.map(item => item._id);
-    const trendingEvents = await Event.find({ _id: { $in: eventIds } }).populate("ngo_id", "ngoName");
+    const allPotentialEvents = await Event.find({ _id: { $in: eventIds } })
+      .populate("ngo_id", "ngoName");
+
+    // 3. FILTER: Only keep events where start_date is in the future
+    const trendingEvents = allPotentialEvents
+      .filter(event => new Date(event.start_date) >= now)
+      .slice(0, 3); // Take only top 3 upcoming
 
     res.json(trendingEvents);
   } catch (err) {

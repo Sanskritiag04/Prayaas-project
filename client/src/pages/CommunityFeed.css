@@ -267,12 +267,12 @@
   cursor: pointer;
   color: #94a3b8; /* Light slate color */
   padding: 5px;
-  border-radius: 50%;
+  /* border-radius: 50%; */
   transition: 0.3s;
 }
 
 .report-post-btn:hover {
-  color: #ef4444; /* Turns red on hover */
+  color: #ef4444; 
   background: #fef2f2;
 }
 
