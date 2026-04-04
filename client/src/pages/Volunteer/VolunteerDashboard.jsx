@@ -149,17 +149,20 @@ const handleLogout = () => {
   if (!data) return <p>Loading...</p>;
 
   
-  const currentPoints = data.points || 0;
-  const nextBadge = badgeList.find(b => b.minPoints > currentPoints) || null;
-  const currentBadge = [...badgeList].reverse().find(b => b.minPoints <= currentPoints);
+const currentPoints = data?.points || 0;
+const currentBadge = [...badgeList].reverse().find(b => currentPoints >= b.minPoints) || badgeList[0];
+const nextBadge = badgeList.find(b => b.minPoints > currentPoints);
 
-  let progressPercent = 100;
-  if (nextBadge) {
-    const range = nextBadge.minPoints - currentBadge.minPoints;
-    const progressInsideRange = currentPoints - currentBadge.minPoints;
-    progressPercent = (progressInsideRange / range) * 100;
-  }
+let progressPercent = 0;
 
+if (nextBadge) {
+  const totalRangeNeeded = nextBadge.minPoints - currentBadge.minPoints;
+  const pointsGainedSinceLastBadge = currentPoints - currentBadge.minPoints;
+  
+  progressPercent = (pointsGainedSinceLastBadge / totalRangeNeeded) * 100;
+} else {
+  progressPercent = 100;
+}
 
  return (
   <>
@@ -213,7 +216,7 @@ const handleLogout = () => {
         {/* Navbar inside the scrollable area so it can be sticky at the top */}
         <NavbarDashboard/>
 
-         {/* ✅ EVENTS SECTION */}
+         {/* EVENTS SECTION */}
           <section>
             <div className="section-header">
                <h2>My Registered Events</h2>
@@ -237,14 +240,14 @@ const handleLogout = () => {
           </section>
 
         <div className="content-padding">
-          {/* ✅ PROGRESS & ACHIEVEMENTS SECTION */}
+          {/* PROGRESS & ACHIEVEMENTS SECTION */}
           <section className="achievements-section">
             <div className="points-header">
               <h2>Badges & Achievements</h2>
               <span className="total-points">⭐ {currentPoints} Points</span>
             </div>
 
-            {nextBadge && (
+            {/* {nextBadge && (
               <div className="progress-container">
                 <div className="progress-labels">
                   <span>Current: <strong>{currentBadge.name}</strong></span>
@@ -260,7 +263,34 @@ const handleLogout = () => {
                   Collect {nextBadge.minPoints - currentPoints} more points to unlock {nextBadge.name}!
                 </p>
               </div>
-            )}
+            )} */}
+
+            {/* Replace your progress-container block with this */}
+<div className="progress-container">
+  <div className="progress-labels">
+    <span>Current: <strong>{currentBadge?.name}</strong></span>
+    {nextBadge ? (
+      <span>Next: <strong>{nextBadge.name}</strong></span>
+    ) : (
+      <span className="max-level"> Max Level Reached!</span>
+    )}
+  </div>
+  
+  <div className="progress-bar-bg">
+    <div
+      className="progress-bar-fill"
+      style={{ width: `${progressPercent}%` }}
+    ></div>
+  </div>
+
+  {nextBadge ? (
+    <p className="progress-hint">
+      Collect {nextBadge.minPoints - currentPoints} more points to unlock {nextBadge.name}!
+    </p>
+  ) : (
+    <p className="progress-hint">You are a top-tier volunteer for Prayaas!</p>
+  )}
+</div>
 
             <div className="badges">
               {badgeList.map((badge, index) => {
@@ -276,7 +306,7 @@ const handleLogout = () => {
             </div>
           </section>
 
-          {/* ✅ CERTIFICATES SECTION */}
+          {/* CERTIFICATES SECTION */}
          <section className="certificates-section">
   <h2 className="section-title">My Certificates</h2>
   {certificates.length === 0 ? (

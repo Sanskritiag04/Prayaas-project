@@ -145,7 +145,7 @@ router.put("/profile", auth("ngo"), (req, res) => {
     try {
       const { ngoName, state, pincode } = req.body;
 
-      // ✅ VALIDATION FIX
+      
       if (!ngoName || !state || !pincode) {
         return res.status(400).json({ message: "All fields required" });
       }
@@ -156,7 +156,6 @@ router.put("/profile", auth("ngo"), (req, res) => {
         pincode: Number(pincode)
       };
 
-      // ✅ ADD PHOTO IF EXISTS
       if (req.file) {
         updateData.photo = `/uploads/profile/${req.file.filename}`;
       }
@@ -224,16 +223,7 @@ router.post("/verify-otp", async (req, res) => {
     ) {
       return res.status(400).json({ message: "Invalid or expired OTP" });
     }
-//     const token = jwt.sign(
-//   { id: ngo._id, role: "ngo" }, // or volunteer._id
-//   "PRAYAAS_SECRET",
-//   { expiresIn: "1d" }
-// );
 
-// res.json({
-//   message: "OTP verified successfully",
-//   token
-// });
 res.json({message: "OTP verified successfully"});
   } catch (err) {
     res.status(500).json({ message: "Server error" });

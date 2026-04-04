@@ -8,8 +8,8 @@ import axios from "axios";
 export default function Register() {
 
   const navigate = useNavigate();
-  const [showPassword, setShowPassword] = useState(false); // 👁 Password
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false); // 👁 Confirm Password
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false); 
 
   const [form, setForm] = useState({
     name: "",
@@ -44,7 +44,6 @@ export default function Register() {
     return false;
   }
   
-  // Ensure the name isn't just one letter (like "A")
   if (form.name.trim().length < 2) {
     alert("Full Name must be at least 2 characters long");
     return false;
@@ -147,7 +146,6 @@ export default function Register() {
         <label>Pincode (6 digits)</label>
         <input name="pincode" onChange={handleChange} required />
 
-        {/* PASSWORD WITH EYE */}
         <label>Password</label>
         <div className="password-box">
           <input
@@ -162,7 +160,6 @@ export default function Register() {
           </span>
         </div>
 
-        {/* CONFIRM PASSWORD WITH EYE */}
         <label>Confirm Password</label>
         <div className="password-box">
           <input

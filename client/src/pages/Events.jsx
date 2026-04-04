@@ -75,6 +75,13 @@ export default function Events() {
   };
 
   const handleReport = async (eventId) => {
+    const token = localStorage.getItem("token");
+    const role = localStorage.getItem("userRole");
+
+    if (!token || role !== "volunteer") {
+      alert("Please login as a volunteer first");
+      return;
+    }
   const reason = prompt("Why are you reporting this event?");
   if (!reason) return;
 
@@ -90,12 +97,16 @@ export default function Events() {
 };
 
 const filteredEvents = events.filter(e => {
-    const matchesSearch = e.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                          e.location.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = category === "All" || e.event_type === category;
-    return matchesSearch && matchesCategory;
-  });
+  const title = e.title ? e.title.toLowerCase() : "";
+  const location = e.location ? e.location.toLowerCase() : "";
+  const query = searchQuery.toLowerCase();
 
+  const matchesSearch = title.includes(query) || location.includes(query);
+  const matchesCategory = category === "All" || 
+    e.event_type.toLowerCase() === category.toLowerCase();
+
+  return matchesSearch && matchesCategory;
+});
 
 return (
     <>
@@ -121,7 +132,7 @@ return (
           </button>
         </div>
 
-        {/* 🔍 SEARCH & CATEGORY FILTERS (Moved below tabs) */}
+        {/* SEARCH & CATEGORY FILTERS (Moved below tabs) */}
         <div className="filter-controls">
           <div className="search-wrapper">
             <input 
@@ -133,22 +144,22 @@ return (
           </div>
           <select className="category-select" onChange={(e) => setCategory(e.target.value)}>
             <option value="All">All Categories</option>
-            <option value="Education">Education</option>
-            <option value="Environment">Environment</option>
-            <option value="Health">Health</option>
-            <option value="Food">Food</option>
-            <option value="Animal Welfare">Animal Welfare</option>
+            <option value="education">Education</option>
+            <option value="environment">Environment</option>
+            <option value="health">Health</option>
+            <option value="food">Food</option>
+            <option value="animal_welfare">Animal Welfare</option>
           </select>
         </div>
 
-        {/* 📅 MAIN EVENTS LIST */}
+        {/*  MAIN EVENTS LIST */}
         <div className="events-container">
           {filteredEvents.length === 0 ? (
             <p className="no-results">No events found matching your criteria.</p>
           ) : (
             filteredEvents.map((event) => {
               const todayStr = new Date().toISOString().split('T')[0];
-  // Get event's date in YYYY-MM-DD format
+
   const eventDateStr = new Date(event.start_date).toISOString().split('T')[0];
 
   const isInTrendingList = trending.some(t => t._id === event._id);

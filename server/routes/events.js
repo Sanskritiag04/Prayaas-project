@@ -30,7 +30,7 @@ router.get("/details/:id", async (req, res) => {
   }
 });
 
-// NGO EVENTS (dashboard)
+
 router.get("/ngo-events", auth("ngo"), eventController.getNgoEvents);
 
 router.post("/report-event/:id", auth("volunteer"), async (req, res) => {
@@ -52,21 +52,19 @@ router.get("/trending", async (req, res) => {
   try {
     const now = new Date();
 
-    // 1. Group and count registrations for ALL events
     const trendingData = await EventRegistration.aggregate([
       { $group: { _id: "$event_id", count: { $sum: 1 } } },
       { $sort: { count: -1 } }
     ]);
 
-    // 2. Get full details
     const eventIds = trendingData.map(item => item._id);
     const allPotentialEvents = await Event.find({ _id: { $in: eventIds } })
       .populate("ngo_id", "ngoName");
 
-    // 3. FILTER: Only keep events where start_date is in the future
+   
     const trendingEvents = allPotentialEvents
       .filter(event => new Date(event.start_date) >= now)
-      .slice(0, 3); // Take only top 3 upcoming
+      .slice(0, 3); 
 
     res.json(trendingEvents);
   } catch (err) {

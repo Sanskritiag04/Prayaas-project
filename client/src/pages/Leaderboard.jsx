@@ -1,7 +1,7 @@
-import { useState } from "react";
- import { useEffect} from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import "./Leaderboard.css";
+import NavbarDashboard from "../components/common/NavbarDashboard";
 
 export default function Leaderboard() {
   const [users, setUsers] = useState([]);
@@ -12,46 +12,56 @@ export default function Leaderboard() {
       .catch(err => console.log(err));
   }, []);
 
-  // Badge logic
-  const getBadge = (points) => {
-    if (points >= 150) return "Elite";
-    if (points >= 80) return "Intermediate";
+  const getBadgeName = (points) => {
+    if (points >= 500) return "Community Hero";
+    if (points >= 200) return "Pro Philanthropist";
+    if (points >= 50) return "Active Volunteer";
     return "Beginner";
   };
 
   return (
     <div className="leaderboard-container">
-
+      {/* <NavbarDashboard/> */}
       <h2>Volunteer Leaderboard</h2>
 
-      <table>
+      <table className="leaderboard-table">
         <thead>
           <tr>
             <th>Rank</th>
-            <th>Name</th>
-            <th>Points</th>
-            <th>Badge</th>
+            <th>Volunteer Name</th>
+            <th>Total Points</th>
+            <th>Current Rank</th>
           </tr>
         </thead>
 
         <tbody>
           {users
             .sort((a, b) => b.points - a.points)
-            .map((user, index) => (
-              <tr key={user._id}>
-                <td>{index + 1}</td>
-                <td>{user.name}</td>
-                <td>{user.points}</td>
-                <td>
-                  <span className={`badge ${getBadge(user.points).toLowerCase()}`}>
-                    {getBadge(user.points)}
-                  </span>
-                </td>
-              </tr>
-            ))}
+            .map((user, index) => {
+              const badgeName = getBadgeName(user.points || 0);
+              const badgeClass = badgeName.toLowerCase().replace(/\s+/g, '-');
+              
+              return (
+                <tr key={user._id} className={index === 0 ? "top-rank" : ""}>
+                  <td className="rank-cell">
+                    {index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : index + 1}
+                  </td>
+                  <td className="name-cell">
+                    <strong>{user.name}</strong>
+                  </td>
+                  <td className="points-cell">
+                    <span className="points-pill">{user.points || 0} pts</span>
+                  </td>
+                  <td>
+                    <span className={`badge-pill ${badgeClass}`}>
+                      {badgeName}
+                    </span>
+                  </td>
+                </tr>
+              );
+            })}
         </tbody>
       </table>
-
     </div>
   );
 }

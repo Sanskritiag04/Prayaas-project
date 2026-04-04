@@ -1,20 +1,27 @@
 const nodemailer = require("nodemailer");
 
-const sendEmail = async (to, otp) => {
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: "prayaas59@gmail.com",
-      pass: "fpox hbop ikai qsqm"
-    }
-  });
+// const sendEmail = async (to, otp) => {
+//   const transporter = nodemailer.createTransport({
+//     service: "gmail",
+//     auth: {
+//       user: "prayaas.demo26@gmail.com",
+//       pass: "fpox hbop ikai qsqm"
+//     }
+//   });
 
-  await transporter.sendMail({
-    from: "prayaas59@gmail.com",
-    to,
-    subject: "OTP Verification",
-    text: `Your OTP is: ${otp}`
-  });
+//   await transporter.sendMail({
+//     from: "prayaas.demo26@gmail.com",
+//     to,
+//     subject: "OTP Verification",
+//     text: `Your OTP is: ${otp}`
+//   });
+// };
+
+// sendEmail.js
+const sendEmail = async (to, otp) => {
+  console.log(`DEMO MODE: SENDING EMAIL TO: ${to}`);
+  console.log(`YOUR GENERATED OTP IS: ${otp}`);
+  return Promise.resolve({ success: true });
 };
 
 module.exports = sendEmail;

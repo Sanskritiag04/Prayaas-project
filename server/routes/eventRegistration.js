@@ -182,7 +182,6 @@ router.put("/issue-certificates/:eventId", auth("ngo"), async (req, res) => {
       await reg.save();
     }
 
-    // ✅ LOCK FOREVER
     event.certificatesIssued = true;
     await event.save();
 

@@ -39,7 +39,7 @@ export default function FAQs() {
       <div className="faq-box">
         <h4>5. How do I contact support?</h4>
         <p>
-          You can contact us through the About page.
+          E-mail: prayaas59@gmail.com
         </p>
       </div>
 

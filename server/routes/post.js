@@ -20,7 +20,13 @@ router.post('/create',upload.array('images', 5), async (req, res) => {
   try {
     const { ngo_id, ngoName, caption, image } = req.body;
     const imagePaths = req.files.map(file => `/uploads/feed/${file.filename}`);
-    // Check if critical data is missing
+    
+if (!ngo || ngo.status !== "verified") {
+      return res.status(403).json({ 
+        message: "Access Denied: Only verified NGOs can post." 
+      });
+    }
+
     if (!ngo_id || !caption) {
       return res.status(400).json({ message: "NGO ID and Caption are required" });
     }
@@ -30,18 +36,18 @@ router.post('/create',upload.array('images', 5), async (req, res) => {
       ngoName: ngoName || "Anonymous NGO",
       caption,
       images: imagePaths,
-      likes: [] // Initialize empty likes array
+      likes: [] 
     });
 
     const savedPost = await newPost.save();
     res.status(201).json(savedPost);
   } catch (err) {
-    console.error("Backend Error:", err); // This will show the real error in your terminal
+    console.error("Backend Error:", err); 
     res.status(500).json(err);
   }
 });
 
-// 2. Get All Posts (For the Feed)
+
 router.get('/all', async (req, res) => {
   try {
     const posts = await Post.find().sort({ createdAt: -1 }); // Newest first
@@ -56,7 +62,9 @@ router.put('/like/:postId', async (req, res) => {
   try {
     const post = await Post.findById(req.params.postId);
     const { volunteerId } = req.body;
-    
+    if (!volunteerId || volunteerId === "undefined") {
+       return res.status(401).json({ message: "Login required" });
+    }
     if (!post.likes.includes(volunteerId)) {
       await post.updateOne({ $push: { likes: volunteerId } });
       res.status(200).json("Post liked");

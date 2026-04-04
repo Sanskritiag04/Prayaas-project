@@ -16,7 +16,8 @@ const Navbar = () => (
         <Link to="/events">Events</Link>
         <Link to="/leaderboard">Leaderboard</Link>
         <Link to="/about">About</Link>
-        <Link to="/faqs">FAQs</Link>   
+        <Link to="/faqs">FAQs</Link> 
+        <Link to="/community">Impact Stories</Link>  
       </div>
 
       <div className="common-nav-auth">

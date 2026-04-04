@@ -61,7 +61,7 @@ router.post("/forgot-password", async (req, res) => {
  await sendEmail(email, otp);
   console.log(otp)
 res.json({
-  message: "OTP sent to your email"
+  message: "OTP sent successfully!"
 });
 });
 
@@ -304,7 +304,7 @@ router.get("/leaderboard", async (req, res) => {
   try {
     const users = await Volunteer.find()
       .sort({ points: -1 })   // highest first
-      .limit(10);             // optional
+      .limit(10);             
 
     res.json(users);
   } catch (err) {
@@ -351,13 +351,10 @@ router.put("/change-password", auth("volunteer"), async (req, res) => {
     const { oldPassword, newPassword } = req.body;
     const volunteer = await Volunteer.findById(req.user.id);
 
-    // 1. Verify old password
     const isMatch = await bcrypt.compare(oldPassword, volunteer.password);
     if (!isMatch) {
       return res.status(400).json({ message: "Current password is incorrect" });
     }
-
-    // 2. Hash and save new password
     volunteer.password = await bcrypt.hash(newPassword, 10);
     await volunteer.save();
 

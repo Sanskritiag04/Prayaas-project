@@ -52,19 +52,6 @@ const volunteerSchema = new mongoose.Schema(
       default: "https://cdn-icons-png.flaticon.com/512/847/847969.png"
     },
 
-    badges: [
-      {
-        name: String,
-        image: String
-      }
-    ],
-
-    myEvents: [
-      {
-        title: String,
-        date: String
-      }
-    ],
     points: {
   type: Number,
   default: 0

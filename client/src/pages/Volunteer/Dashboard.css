@@ -347,7 +347,7 @@
   border: 2px dashed #e2e8f0;
 }
 
-/* Dark semi-transparent overlay */
+
 .event-overlay {
   position: fixed;
   top: 0;
@@ -355,14 +355,14 @@
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(4px); /* Modern blur effect */
+  backdrop-filter: blur(4px); 
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
 }
 
-/* Modal Styling */
+
 .settings-modal {
   background: white;
   width: 90%;
@@ -379,7 +379,7 @@
   to { transform: translateY(0); opacity: 1; }
 }
 
-/* Header & Typography */
+
 .settings-modal h2 {
   margin-top: 0;
   color: #1e293b;
@@ -393,7 +393,7 @@
   font-weight: 600;
 }
 
-/* Form Inputs */
+
 .settings-form {
   display: flex;
   flex-direction: column;
@@ -410,11 +410,11 @@
 }
 
 .settings-form input:focus {
-  border-color: #10b981; /* Emerald/Prayaas Theme Color */
+  border-color: #10b981;
   box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
 }
 
-/* Buttons */
+
 .close-btn {
   position: absolute;
   top: 20px;
@@ -447,7 +447,7 @@
   background: #059669;
 }
 
-/* Danger Zone */
+
 hr {
   border: 0;
   border-top: 1px solid #f1f5f9;
@@ -487,4 +487,101 @@ hr {
 
 .delete-btn:hover {
   background: #be123c;
+}
+
+
+/* --- FIXING THE STRETCHED EVENT CARDS --- */
+.event-grid {
+  display: grid;
+  /* minmax prevents stretching: cards won't get smaller than 280px or bigger than 1fr */
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+  gap: 25px;
+  margin-top: 20px;
+}
+
+.event-card {
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s;
+  height: 100%; /* Ensures cards in a row have equal height */
+}
+
+.event-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.event-card img {
+  width: 100%;
+  height: 180px; /* FIXED HEIGHT prevents vertical stretching */
+  object-fit: cover;
+}
+
+.event-card-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex-grow: 1; /* Pushes button to the bottom */
+}
+
+.event-card-body h4 {
+  margin: 0;
+  color: #1e293b;
+  font-size: 1.1rem;
+}
+
+.event-card-body p {
+  font-size: 0.9rem;
+  color: #64748b;
+  margin: 0;
+}
+
+.event-card-body button {
+  margin-top: auto; /* Aligns button at the bottom */
+  background: #10b981;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+/* --- FIXING THE BADGE METER (PROGRESS BAR) --- */
+.achievements-section {
+  background: white;
+  padding: 30px;
+  border-radius: 24px;
+  border: 1px solid #e2e8f0;
+  margin-top: 40px;
+}
+
+.progress-bar-bg {
+  width: 100%;
+  height: 14px !important; 
+  background-color: #f1f5f9 !important; 
+  border-radius: 50px;
+  overflow: hidden;
+  margin: 15px 0;
+  position: relative;
+}
+
+.progress-bar-fill {
+  height: 100% !important;
+  background: linear-gradient(90deg, #10b981, #34d399) !important; 
+  border-radius: 50px;
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 5px; 
+}
+
+.progress-hint {
+  font-size: 0.85rem;
+  color: #64748b;
+  margin-top: 10px;
+  font-style: italic;
 }

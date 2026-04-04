@@ -14,10 +14,6 @@
   letter-spacing: -1px;
 }
 
-/* PODIUM STYLING (Top 3 Visual) */
-/* You can add a wrapper in JSX for the top 3 players if you want a podium look, 
-   but for now, let's style the table to feel like a high-end dashboard */
-
 .leaderboard-card {
   background: white;
   padding: 20px;
@@ -30,13 +26,13 @@
 table {
   width: 100%;
   border-collapse: separate;
-  border-spacing: 0 10px; /* Adds space between rows */
+  border-spacing: 0 10px; 
   background: transparent;
 }
 
 th {
   background: transparent;
-  color: #6b7280; /* Muted gray for headers */
+  color: #6b7280; 
   font-weight: 600;
   text-transform: uppercase;
   font-size: 13px;
@@ -77,41 +73,35 @@ tr:hover td {
   border-color: #d1fae5;
 }
 
-/* SPECIAL STYLING FOR TOP 3 */
+
 tr:nth-child(1) td:first-child { color: #fbbf24; font-size: 22px; } /* Gold */
 tr:nth-child(2) td:first-child { color: #94a3b8; font-size: 20px; } /* Silver */
 tr:nth-child(3) td:first-child { color: #b45309; font-size: 18px; } /* Bronze */
 
-/* BADGES (Modernized) */
-.badge {
-  padding: 6px 14px;
-  border-radius: 50px;
-  font-size: 12px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.elite {
-  background: #fef3c7;
-  color: #92400e; /* Elegant Gold/Amber */
-  border: 1px solid #fde68a;
-}
-
-.intermediate {
-  background: #dcfce7;
-  color: #166534; /* Elegant Emerald */
-  border: 1px solid #bbf7d0;
-}
-
-.beginner {
-  background: #eff6ff;
-  color: #1e40af; /* Elegant Blue */
-  border: 1px solid #dbeafe;
-}
-
-/* Points column bolding */
 td:nth-child(3) {
   font-weight: 700;
   color: #065f46;
+}
+
+.badge-pill {
+  padding: 5px 12px;
+  border-radius: 50px;
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.beginner { background: #f1f5f9; color: #64748b; }
+.active-volunteer { background: #ecfdf5; color: #059669; }
+.pro-philanthropist { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
+.community-hero { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+
+.rank-cell { font-weight: 900; font-size: 1.1rem; color: #1e293b; }
+.top-rank { background: #f0fdfa; }
+
+.points-pill {
+  background: #f1f5f9;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-weight: 700;
+  color: #1e293b;
 }

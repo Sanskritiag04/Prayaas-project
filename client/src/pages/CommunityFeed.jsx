@@ -11,6 +11,7 @@ const CommunityFeed = () => {
   const [showReportModal, setShowReportModal] = useState(false);
 const [reportingPostId, setReportingPostId] = useState(null);
 const [reportReason, setReportReason] = useState("");
+const [ngoStatus, setNgoStatus] = useState("");
 
   const volunteerId = localStorage.getItem("userId"); 
   const userRole = localStorage.getItem("userRole");
@@ -25,6 +26,14 @@ const [reportReason, setReportReason] = useState("");
 
   useEffect(() => {
     fetchPosts();
+    if (userRole === "ngo") {
+    const token = localStorage.getItem("token");
+    axios.get("http://localhost:5000/api/ngo/dashboard", {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    .then(res => setNgoStatus(res.data.ngo.status))
+    .catch(err => console.error("Error fetching status", err));
+  }
   }, []);
 
   const handleFileChange = (e) => {
@@ -35,6 +44,10 @@ const [reportReason, setReportReason] = useState("");
   // --- HANDLE SUBMIT STORY ---
   const handlePostSubmit = async (e) => {
     e.preventDefault();
+    if (userRole === "ngo" && ngoStatus !== "verified") {
+    alert("Your account must be verified by Admin to post stories.");
+    return;
+  }
     const storedId = localStorage.getItem("userId");
   const storedName = localStorage.getItem("userName");
 
@@ -55,11 +68,7 @@ const formData = new FormData();
     selectedFiles.forEach((file) => {
   formData.append("images", file); 
 });
-//     for (let i = 0; i < selectedFiles.length; i++) {
-//     formData.append("images", selectedFiles[i]);
-//   }
 
-  // Debug: Check if multiple files are in the FormData before sending
   for (var pair of formData.entries()) {
     console.log(pair[0]+ ', ' + pair[1]); 
   }
@@ -72,21 +81,22 @@ const formData = new FormData();
       setCaption("");
       setSelectedFiles([]);
       fetchPosts();
-      alert("Impact Story Posted! 🎉");
+      alert("Impact Story Posted!");
     } catch (err) {
       console.error(err);
     }
 };
 
 const handleLike = async (postId) => {
-  if (!volunteerId || volunteerId === "undefined") {
-    alert("Please login as a volunteer to like posts!");
+  const storedId = localStorage.getItem("userId");
+  if (!storedId || storedId === "undefined" || storedId === "null") {
+    alert("Please login to like posts!");
     return;
   }
 
   try {
     await axios.put(`http://localhost:5000/api/posts/like/${postId}`, { 
-      volunteerId: volunteerId // Pass this in req.body
+      volunteerId: storedId// Pass this in req.body
     });
     fetchPosts(); // Refresh feed to show the new like count
   } catch (err) {
@@ -112,7 +122,7 @@ const handleReportSubmit = async (e) => {
 
   return (
     <div className="community-page-wrapper">
-      <NavbarDashboard setShowModal={setShowModal}/>
+      <NavbarDashboard setShowModal={setShowModal} ngoStatus={ngoStatus}/>
       
       <div className="feed-container">
         <div className="posts-column">
@@ -124,7 +134,6 @@ const handleReportSubmit = async (e) => {
       <small>{new Date(post.createdAt).toLocaleDateString()}</small>
     </div>
     
-    {/* ✅ REPORT SYMBOL (Flag Icon) */}
     {userRole === "volunteer" && (
       <button 
         className="report-post-btn" 
@@ -139,7 +148,6 @@ const handleReportSubmit = async (e) => {
     )}
     </div>
 
-    {/* --- INSTAGRAM STYLE SLIDER --- */}
     <div className="post-slider-container">
       <div className="post-slider">
         {post.images && post.images.map((img, index) => (
@@ -152,7 +160,6 @@ const handleReportSubmit = async (e) => {
         ))}
       </div>
       
-      {/* Indicator Dots (Instagram style) */}
       {post.images?.length > 1 && (
         <div className="slider-dots">
           {post.images.map((_, i) => (
