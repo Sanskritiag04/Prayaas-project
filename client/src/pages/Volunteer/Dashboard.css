@@ -1,4 +1,4 @@
-/* --- ROOT & SIDEBAR --- */
+
 .dashboard-wrapper {
   display: grid;
   grid-template-columns: 280px 1fr;
@@ -59,7 +59,7 @@
   border: 1px solid #fee2e2;
 }
 
-/* --- MAIN CONTENT & ACHIEVEMENTS --- */
+
 .dashboard-content {
   height: 100vh;
   overflow-y: auto;
@@ -81,7 +81,6 @@
   font-weight: 800;
 }
 
-/* --- 🏆 PROGRESS BAR FIX (Force Visibility) --- */
 .progress-container {
   background: white;
   padding: 25px;
@@ -102,19 +101,19 @@
 .progress-bar-bg {
   width: 100% !important;
   height: 12px !important;
-  background-color: #f1f5f9 !important; /* Visible gray track */
+  background-color: #f1f5f9 !important; 
   border-radius: 10px;
   overflow: hidden;
 }
 
 .progress-bar-fill {
   height: 100% !important;
-  background: #10b981 !important; /* Solid green fill */
+  background: #10b981 !important; 
   border-radius: 10px;
   transition: width 0.5s ease;
 }
 
-/* --- 🏅 BADGE FIX (Force Small Size) --- */
+
 .badges {
   display: flex !important;
   flex-wrap: wrap !important;
@@ -123,7 +122,7 @@
 }
 
 .badge-card {
-  width: 120px !important; /* Cap card width */
+  width: 120px !important; 
   padding: 20px !important;
   background: #f9fafb !important;
   border: 1px solid #f3f4f6 !important;
@@ -134,7 +133,7 @@
 }
 
 .badge-card img {
-  width: 60px !important; /* FORCES BADGE TO STAY SMALL */
+  width: 60px !important; 
   height: 60px !important;
   object-fit: contain !important;
   margin-bottom: 10px !important;
@@ -152,47 +151,46 @@
   opacity: 0.5;
 }
 
-/* --- EVENT CARDS --- */
-/* --- OVERLAY --- */
+
 .event-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(6, 78, 59, 0.6); /* Deeper emerald tint */
+  background: rgba(6, 78, 59, 0.6); 
   backdrop-filter: blur(8px);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 9999; /* Ensure it's above everything */
+  z-index: 9999; 
 }
 
-/* --- THE CARD --- */
+
 .expanded-card {
   background: white;
   width: 90%;
-  max-width: 650px; /* Professional width */
+  max-width: 650px; 
   max-height: 90vh;
   border-radius: 28px;
-  overflow: hidden; /* Important to clip the image corners */
+  overflow: hidden; 
   position: relative;
   box-shadow: 0 30px 60px rgba(0,0,0,0.4);
   display: flex;
   flex-direction: column;
 }
 
-/* --- THE IMAGE (Fixed stretching) --- */
+
 .expanded-card img {
-  width: 100% !important; /* Forces full width */
-  height: 280px !important; /* Fixed height for consistency */
-  object-fit: cover !important; /* Prevents stretching/distortion */
+  width: 100% !important; 
+  height: 280px !important; 
+  object-fit: cover !important; 
   display: block;
 }
 
-/* --- THE CLOSE BUTTON (Floating Style) --- */
+
 .close-btn {
   position: absolute;
   top: 15px;
   right: 15px;
-  background: rgba(255, 255, 255, 0.9); /* Glass effect */
+  background: rgba(255, 255, 255, 0.9);
   border: none;
   width: 35px;
   height: 35px;
@@ -211,10 +209,10 @@
 .close-btn:hover {
   background: #ffffff;
   transform: scale(1.1);
-  color: #ef4444; /* Turns red on hover */
+  color: #ef4444; 
 }
 
-/* --- CONTENT PADDING --- */
+
 .expanded-content {
   padding: 30px 35px;
   overflow-y: auto;
@@ -255,7 +253,7 @@
   gap: 10px;
 }
 
-/* Container Layout */
+
 .certificates-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -263,7 +261,7 @@
   padding: 20px 0;
 }
 
-/* Individual Card */
+
 .certificate-card {
   background: #ffffff;
   border: 1px solid #e2e8f0;
@@ -278,10 +276,10 @@
 .certificate-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-  border-color: #10b981; /* Matches your emerald theme */
+  border-color: #10b981; 
 }
 
-/* Card Header */
+
 .cert-header {
   display: flex;
   justify-content: space-between;
@@ -308,7 +306,7 @@
   letter-spacing: 0.5px;
 }
 
-/* Card Body */
+
 .cert-body h4 {
   margin: 0 0 8px 0;
   color: #1e293b;
@@ -322,7 +320,7 @@
   margin-bottom: 24px;
 }
 
-/* Download Button */
+
 .download-cert-btn {
   display: block;
   text-align: center;
@@ -340,11 +338,153 @@
   background: #059669;
 }
 
-/* Empty State */
+
 .empty-state-container {
   text-align: center;
   padding: 50px;
   background: #f8fafc;
   border-radius: 20px;
   border: 2px dashed #e2e8f0;
+}
+
+/* Dark semi-transparent overlay */
+.event-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px); /* Modern blur effect */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Modal Styling */
+.settings-modal {
+  background: white;
+  width: 90%;
+  max-width: 450px;
+  padding: 30px;
+  border-radius: 20px;
+  position: relative;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  animation: modalSlideUp 0.3s ease-out;
+}
+
+@keyframes modalSlideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* Header & Typography */
+.settings-modal h2 {
+  margin-top: 0;
+  color: #1e293b;
+  font-size: 1.5rem;
+  margin-bottom: 25px;
+}
+
+.settings-modal h4 {
+  color: #475569;
+  margin: 15px 0 10px 0;
+  font-weight: 600;
+}
+
+/* Form Inputs */
+.settings-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.settings-form input {
+  padding: 12px 15px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.settings-form input:focus {
+  border-color: #10b981; /* Emerald/Prayaas Theme Color */
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+/* Buttons */
+.close-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  color: #94a3b8;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.close-btn:hover {
+  color: #1e293b;
+}
+
+.save-btn {
+  background: #10b981;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background 0.2s;
+}
+
+.save-btn:hover {
+  background: #059669;
+}
+
+/* Danger Zone */
+hr {
+  border: 0;
+  border-top: 1px solid #f1f5f9;
+  margin: 25px 0;
+}
+
+.danger-zone {
+  background: #fff1f2;
+  padding: 15px;
+  border-radius: 12px;
+  border: 1px solid #fecdd3;
+}
+
+.danger-zone h4 {
+  color: #be123c;
+  margin-top: 0;
+}
+
+.danger-zone p {
+  font-size: 0.85rem;
+  color: #9f1239;
+  margin-bottom: 15px;
+}
+
+.delete-btn {
+  background: #e11d48;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  width: 100%;
+  transition: background 0.2s;
+}
+
+.delete-btn:hover {
+  background: #be123c;
 }

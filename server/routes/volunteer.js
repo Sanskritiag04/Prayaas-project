@@ -190,7 +190,7 @@ router.post("/register", async (req, res) => {
     });
 
   } catch (error) {
-    console.error("REGISTER ERROR 👉", error);
+    console.error("REGISTER ERROR ", error);
     res.status(500).json({ message: "Server error" });
   }
 });
@@ -234,7 +234,7 @@ router.post("/login", async (req, res) => {
     });
 
   } catch (error) {
-    console.error("LOGIN ERROR 👉", error);
+    console.error("LOGIN ERROR ", error);
     res.status(500).json({ message: "Server error" });
   }
 });
@@ -253,40 +253,49 @@ res.status(200).json({
   }
 });
 
-router.get("/profile", auth, async (req, res) => {
+router.get("/profile", auth("volunteer"), async (req, res) => {
   try {
-    const volunteer = await Volunteer.findById(req.user.id).select("-password");
-    res.json(volunteer);
+    const userId = req.user.id || req.user._id;
+    const volunteer = await Volunteer.findById(userId).select("-password");
+    
+    if (!volunteer) return res.status(404).json({ message: "Not found" });
+    
+    res.json(volunteer); 
   } catch (err) {
-    res.status(500).json({ message: "Failed to fetch profile" });
+    res.status(500).json({ message: "Server error" });
   }
 });
 
-
-router.put("/profile", auth, async (req, res) => {
+router.put("/profile", auth("volunteer"), async (req, res) => {
   try {
+    const userId = req.user.id || req.user._id;
+
+    // Destructure the fields from the body
     const { name, phone, age, city, state, pincode } = req.body;
 
+    // Create an update object containing only fields that have values
+    const updateData = {};
+    if (name) updateData.name = name;
+    if (phone) updateData.phone = phone;
+    if (age) updateData.age = age;
+    if (city) updateData.city = city;
+    if (state) updateData.state = state;
+    if (pincode) updateData.pincode = pincode;
+
     const updatedVolunteer = await Volunteer.findByIdAndUpdate(
-      req.user.id,
-      {
-        name,
-        phone,
-        age,
-        city,
-        state,
-        pincode
-      },
+      userId,
+      { $set: updateData }, // Use $set to only update provided fields
       { new: true, runValidators: true }
     ).select("-password");
 
-    res.json({
-      message: "Profile updated successfully",
-      volunteer: updatedVolunteer
-    });
+    if (!updatedVolunteer) {
+      return res.status(404).json({ message: "Volunteer not found" });
+    }
+
+    res.json({ message: "Profile updated successfully", volunteer: updatedVolunteer });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Profile update failed" });
+    console.error("Update Error:", err);
+    res.status(500).json({ message: err.message || "Profile update failed" });
   }
 });
 
@@ -358,10 +367,9 @@ router.put("/change-password", auth("volunteer"), async (req, res) => {
   }
 });
 
-// ================= DELETE ACCOUNT =================
+
 router.delete("/delete-account", auth("volunteer"), async (req, res) => {
   try {
-    // Optional: Delete their event registrations first to clean up
     const EventRegistration = require("../models/EventRegistration");
     await EventRegistration.deleteMany({ v_id: req.user.id });
 

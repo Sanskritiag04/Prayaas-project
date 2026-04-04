@@ -163,7 +163,7 @@ return (
     </main>
 
     {/* SETTINGS MODAL */}
-    {showSettings && (
+    {/* {showSettings && (
       <div className="event-overlay">
         <div className="settings-modal">
           <button className="close-btn" onClick={() => setShowSettings(false)}>✕</button>
@@ -172,6 +172,37 @@ return (
             <input type="password" placeholder="New Password" required onChange={(e) => setPasswordForm({...passwordForm, newPassword: e.target.value})} />
             <button type="submit" className="save-btn">Update</button>
           </form>
+        </div>
+      </div>
+    )} */}
+
+      {showSettings && (
+      <div className="event-overlay">
+        <div className="settings-modal">
+          <button className="close-btn" onClick={() => setShowSettings(false)}>✕</button>
+          <h2>Account Settings</h2>
+          <form onSubmit={handlePasswordChange} className="settings-form">
+            <h4>Change Password</h4>
+            <input 
+              type="password" 
+              placeholder="Current Password" 
+              required 
+              onChange={(e) => setPasswordForm({...passwordForm, oldPassword: e.target.value})} 
+            />
+            <input 
+              type="password" 
+              placeholder="New Password" 
+              required 
+              onChange={(e) => setPasswordForm({...passwordForm, newPassword: e.target.value})} 
+            />
+            <button type="submit" className="save-btn">Update Password</button>
+          </form>
+          <hr />
+          <div className="danger-zone">
+            <h4>Danger Zone</h4>
+            <p>Once you delete your account, there is no going back.</p>
+            <button className="delete-btn" onClick={handleDeleteAccount}>Delete My Account</button>
+          </div>
         </div>
       </div>
     )}

@@ -1,13 +1,12 @@
-/* --- ROOT LAYOUT --- */
 .ngo-dashboard {
   display: grid;
-  grid-template-columns: 280px 1fr; /* Fixed Sidebar Width */
+  grid-template-columns: 280px 1fr; 
   height: 100vh;
   overflow: hidden;
   background: #f8fafc;
 }
 
-/* --- FIXED LEFT SIDEBAR --- */
+
 .ngo-left {
   background: #ffffff;
   border-right: 1px solid #e5e7eb;
@@ -42,7 +41,6 @@
   margin-bottom: 25px;
 }
 
-/* Sidebar Buttons */
 .edit-btn, .settings-btn-ngo {
   width: 100%;
   margin-bottom: 12px;
@@ -68,7 +66,7 @@
 }
 
 .logout-btn {
-  margin-top: auto; /* Pushes to bottom */
+  margin-top: auto;
   background: #fef2f2;
   color: #ef4444;
   padding: 12px;
@@ -83,7 +81,7 @@
   color: white;
 }
 
-/* --- RIGHT CONTENT AREA --- */
+
 .ngo-right {
   height: 100vh;
   overflow-y: auto;
@@ -100,7 +98,7 @@
   border-bottom: 1px solid #e5e7eb;
 }
 
-/* Filters */
+
 .filters {
   display: flex;
   gap: 12px;
@@ -125,7 +123,7 @@
 }
 
 .post-btn {
-  background: #064e3b; /* Darker Emerald for primary action */
+  background: #064e3b; 
   color: white;
   padding: 12px 24px;
   border-radius: 50px;
@@ -148,7 +146,6 @@
   font-weight: 600;
 }
 
-/* --- EVENT CARDS --- */
 .events-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -189,7 +186,7 @@
   gap: 8px;
 }
 
-/* Action Buttons in Card */
+
 .view-btn {
   width: 100%;
   margin-top: 15px;
@@ -219,9 +216,6 @@
 }
 
 
-
-/* --- 1. SIDEBAR LOGOUT & SPACING --- */
-/* --- 1. SIDEBAR RESTRUCTURE --- */
 .ngo-left {
   display: flex;
   flex-direction: column;
@@ -232,7 +226,7 @@
   box-sizing: border-box;
 }
 
-/* Grouping the name and email */
+
 .ngo-left h3 {
   margin: 15px 0 5px;
   font-size: 20px;
@@ -246,13 +240,12 @@
   color: #6b7280;
 }
 
-/* --- 2. BUTTON GROUPING --- */
-/* This container ensures all buttons are stacked together */
+
 .sidebar-actions, 
 .ngo-left {
   display: flex;
   flex-direction: column;
-  gap: 12px; /* Consistent gap between ALL buttons */
+  gap: 12px; 
 }
 
 .edit-btn, 
@@ -265,11 +258,11 @@
   font-size: 14px !important;
   cursor: pointer !important;
   border: none !important;
-  margin: 0 !important; /* Remove any old margins */
+  margin: 0 !important; 
   transition: 0.3s;
 }
 
-/* --- 3. COLORS & STYLES --- */
+
 .edit-btn {
   background: #10b981 !important;
   color: white !important;
@@ -282,7 +275,7 @@
 }
 
 .logout-btn {
-  margin-top: 10px !important; /* Just a small gap, not "auto" */
+  margin-top: 10px !important;
   background: #fee2e2 !important;
   color: #ef4444 !important;
   border: 1px solid #fecaca !important;
@@ -293,7 +286,7 @@
   color: white !important;
 }
 
-/* --- 4. TOPBAR / POST BUTTON FIX --- */
+
 .ngo-topbar {
   display: flex;
   justify-content: space-between;
@@ -301,7 +294,7 @@
 }
 
 .post-btn {
-  flex: 0 1 auto !important; /* Stop stretching */
+  flex: 0 1 auto !important; 
   width: auto !important;
   padding: 12px 25px !important;
   background: #064e3b !important;
@@ -310,7 +303,7 @@
   font-weight: 700;
 }
 
-/* --- 3. FILTER BUTTON REFINEMENT --- */
+
 .filters {
   display: flex;
   gap: 10px;
@@ -322,29 +315,29 @@
   white-space: nowrap;
 }
 
-/* --- 4. PROFILE IMAGE CENTER FIX --- */
+
 .ngo-photo {
   display: block;
   margin: 0 auto 15px !important;
   object-fit: cover;
 }
 
-/* --- RIGHT CONTENT AREA --- */
+
 .ngo-right {
   height: 100vh;
   overflow-y: auto;
   background: #f8fafc;
   display: flex;
   flex-direction: column;
-  padding: 0 !important; /* CRITICAL: Remove padding so Navbar touches edges */
+  padding: 0 !important; 
 }
 
 .content-padding {
-  padding: 30px 40px; /* Re-apply padding here for cards and headers */
+  padding: 30px 40px; 
   box-sizing: border-box;
 }
 
-/* Ensure the topbar stays consistent */
+
 .ngo-topbar {
   display: flex;
   justify-content: space-between;
@@ -352,4 +345,146 @@
   margin-bottom: 35px;
   padding-bottom: 20px;
   border-bottom: 1px solid #e5e7eb;
+}
+
+
+.event-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+
+.settings-modal {
+  background: white;
+  width: 90%;
+  max-width: 450px;
+  padding: 30px;
+  border-radius: 20px;
+  position: relative;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  animation: modalSlideUp 0.3s ease-out;
+}
+
+@keyframes modalSlideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+
+.settings-modal h2 {
+  margin-top: 0;
+  color: #1e293b;
+  font-size: 1.5rem;
+  margin-bottom: 25px;
+}
+
+.settings-modal h4 {
+  color: #475569;
+  margin: 15px 0 10px 0;
+  font-weight: 600;
+}
+
+
+.settings-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.settings-form input {
+  padding: 12px 15px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.settings-form input:focus {
+  border-color: #10b981; 
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+
+.close-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  color: #94a3b8;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.close-btn:hover {
+  color: #1e293b;
+}
+
+.save-btn {
+  background: #10b981;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background 0.2s;
+}
+
+.save-btn:hover {
+  background: #059669;
+}
+
+
+hr {
+  border: 0;
+  border-top: 1px solid #f1f5f9;
+  margin: 25px 0;
+}
+
+.danger-zone {
+  background: #fff1f2;
+  padding: 15px;
+  border-radius: 12px;
+  border: 1px solid #fecdd3;
+}
+
+.danger-zone h4 {
+  color: #be123c;
+  margin-top: 0;
+}
+
+.danger-zone p {
+  font-size: 0.85rem;
+  color: #9f1239;
+  margin-bottom: 15px;
+}
+
+.delete-btn {
+  background: #e11d48;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  width: 100%;
+  transition: background 0.2s;
+}
+
+.delete-btn:hover {
+  background: #be123c;
 }

@@ -36,7 +36,6 @@ module.exports = function (requiredRole) {
   return function (req, res, next) {
     const authHeader = req.headers?.authorization;
 
-    // 1. Check if Header exists
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
       return res.status(401).json({ message: "No token provided or invalid format" });
     }
@@ -44,19 +43,13 @@ module.exports = function (requiredRole) {
     const token = authHeader.split(" ")[1];
 
     try {
-      // 2. Verify Token
       const decoded = jwt.verify(token, "PRAYAAS_SECRET");
 
-      // 3. Role Check
-      // If a specific role is required (like 'admin'), check if it matches
       if (requiredRole && decoded.role !== requiredRole) {
         return res.status(403).json({ 
           message: `Access denied: Requires ${requiredRole} privileges` 
         });
       }
-
-      // 4. Attach decoded data to request
-      // This allows you to use req.user.id and req.user.role in your controllers
       req.user = decoded;
 
       next();

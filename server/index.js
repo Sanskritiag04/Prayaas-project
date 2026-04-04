@@ -15,20 +15,20 @@ app.use("/api/event-registration", require("./routes/eventRegistration"));
 
 const postRoutes = require('./routes/post');
 app.use('/api/posts', postRoutes);
-// const connectDB = async () => {
-//   try {
-//     await mongoose.connect(process.env.MONGO_URI);
-//     console.log("Prayaas connected to MongoDB Atlas");
-//   } catch (err) {
-//     console.error("Connection Failed:", err.message);
-//     process.exit(1);
-//   }
-// };
-// connectDB();
+const connectDB = async () => {
+  try {
+    await mongoose.connect(process.env.MONGO_URI);
+    console.log("Prayaas connected to MongoDB Atlas");
+  } catch (err) {
+    console.error("Connection Failed:", err.message);
+    process.exit(1);
+  }
+};
+connectDB();
 
-mongoose.connect("mongodb://127.0.0.1:27017/prayaas")
-  .then(() => console.log("MongoDB connected"))
-  .catch(err => console.log(err));
+// mongoose.connect("mongodb://127.0.0.1:27017/prayaas")
+//   .then(() => console.log("MongoDB connected"))
+//   .catch(err => console.log(err));
 
 const Admin = require("./models/Admin");
 const bcrypt = require("bcryptjs");
@@ -48,4 +48,4 @@ app.listen(5000, () => {
   console.log("Server running on port 5000");
 });
 
-//module.exports = connectDB;
+module.exports = connectDB;

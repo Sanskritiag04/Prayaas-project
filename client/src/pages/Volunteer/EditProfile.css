@@ -19,10 +19,6 @@
   padding: 8px;
 }
 
-.edit-icon {
-  cursor: pointer;
-  font-size: 18px;
-}
 
 button {
   width: 100%;
@@ -31,4 +27,37 @@ button {
   color: white;
   border: none;
   border-radius: 5px;
+}
+
+.input-wrapper {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  margin-left: 20px;
+}
+
+input:disabled {
+  background: transparent;
+  border: none;
+  color: #555;
+  cursor: default;
+}
+
+.active-input {
+  border: 1px solid #10b981 !important; /* Prayaas Emerald */
+  background: white !important;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.edit-icon {
+  cursor: pointer;
+  margin-left: 10px;
+  filter: grayscale(1);
+  transition: 0.2s;
+}
+
+.edit-icon:hover {
+  filter: grayscale(0);
+  transform: scale(1.2);
 }
