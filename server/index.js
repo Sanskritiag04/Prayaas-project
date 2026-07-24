@@ -13,6 +13,8 @@ app.use("/api/admin", require("./routes/admin"));
 app.use("/uploads", express.static("uploads"));
 app.use("/api/event-registration", require("./routes/eventRegistration"));
 
+// console.log('Mount path: /api/admin');
+
 const postRoutes = require('./routes/post');
 app.use('/api/posts', postRoutes);
 const connectDB = async () => {

@@ -6,6 +6,9 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const auth = require("../middleware/auth");
 
+router.get('/test', (req, res) => {
+  res.send('Admin route working');
+});
 // LOGIN Method
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
